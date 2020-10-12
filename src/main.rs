@@ -15,20 +15,20 @@ use big_s::S;
 
 enum Foo {
     L(String),
-    C(String, Vec<Foo>, String),
+    C(&'static str, String, Vec<Foo>),
 }
 
 impl Foo {
     pub fn strs(&self) -> Vec<String> {
         match self {
             Foo::L(s) => vec![s.clone()],
-            Foo::C(s, t, u) => {
-                let mut ans = vec![s.clone()];
+            Foo::C(tagname, tag_remaining, t) => {
+                let mut ans = vec![format!("<{}{}", tagname, tag_remaining)];
                 for a in t {
                     let mut k: Vec<_> = a.strs().into_iter().map(|b| format!("  {}", b)).collect();
                     ans.append(&mut k);
                 }
-                ans.push(u.clone());
+                ans.push(format!("</{}>", tagname));
                 ans
             }
         }
@@ -44,13 +44,15 @@ impl std::fmt::Display for Foo {
 fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
     let mut global_ind = 0;
     Foo::C(
-        S(r##"<ol class="goog-toc">"##),
+        "ol",
+        S(r##" class="goog-toc">"##),
         toc.into_iter()
             .enumerate()
             .map(|(sec_num_minus_1, t)| {
                 Foo::C(
+                    "li",
                     format!(
-                        r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
+                        r##" class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
                         if global_ind == 0 {
                             S("")
                         } else {
@@ -59,34 +61,28 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
                         sec_num_minus_1 + 1,
                         t.0
                     ),
-                    vec![Foo::C(
-                        S(r##"<ol class="goog-toc">"##),
-                        {
-                            let mut v = vec![];
-                            global_ind += 1;
-                            let mut subsec_num = 1;
-                            for a in t.1 {
-                                v.push(Foo::L(format!(
-                                    r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
+                    vec![Foo::C("ol", S(r##" class="goog-toc">"##), {
+                        let mut v = vec![];
+                        global_ind += 1;
+                        let mut subsec_num = 1;
+                        for a in t.1 {
+                            v.push(Foo::L(format!(
+                                r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
           </strong>{}</a></li>"##,
-                                    global_ind,
-                                    sec_num_minus_1 + 1,
-                                    subsec_num,
-                                    a
-                                )));
-                                global_ind += 1;
-                                subsec_num += 1;
-                            }
+                                global_ind,
+                                sec_num_minus_1 + 1,
+                                subsec_num,
+                                a
+                            )));
+                            global_ind += 1;
+                            subsec_num += 1;
+                        }
 
-                            v
-                        },
-                        S(r##"</ol>"##),
-                    )],
-                    S(r##"</li>"##),
+                        v
+                    })],
                 )
             })
             .collect(),
-        S("</ol>"),
     )
     .to_string()
 }
