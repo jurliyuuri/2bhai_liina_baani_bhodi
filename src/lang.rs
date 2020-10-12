@@ -4,11 +4,11 @@ pub fn linmarn() -> Vec<Foo> {
     vec![
         Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
         Foo::c1("div", Foo::ls(r##"<hr>"##)),
-        Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
+        Foo::ls(r##"<div><img src="linzi/在.png"
           border="0"></div>"##),
-        Foo::ls(r##"<div style="display:block;text-align:left">総画：4</div>"##),
-        Foo::ls(r##"<div style="display:block;text-align:left">筆順：丶ノ一一</div>"##),
-        Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--1"></a>字源</h3>"##),
+        Foo::ls(r##"<div>総画：4</div>"##),
+        Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--1"></a>字源</h3>"##),
         Foo::c1("ul",
             Foo::ls(r##"<li>象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。
           </li>"##)
@@ -28,8 +28,8 @@ pub fn linmarn() -> Vec<Foo> {
         ]),
         Foo::c1("div",
             Foo::bl("div", vec![
-                Foo::ls(r##"<div style="display:block;text-align:left"></div>"##),
-                Foo::ls(r##"<div style="display:block;text-align:left"><img
+                Foo::ls(r##"<div></div>"##),
+                Foo::ls(r##"<div><img
                 src="grau_prua_yr/在.png" width="200" height="91" border="0">
             </div>"##)
             ])
@@ -71,7 +71,7 @@ pub fn air() -> Vec<Foo> {
       </h2>"##,
         ),
         Foo::c1("div", Foo::ls(r##"<hr>"##)),
-        Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--9"></a>発音</h3>"##),
+        Foo::ls(r##"<h3><a name="TOC--9"></a>発音</h3>"##),
         Foo::ls(r##"<div>aima</div>"##),
         Foo::ls(r##"<h3><a name="TOC--10"></a>動詞</h3>"##),
         Foo::ls(r##"<div>在る。</div>"##),

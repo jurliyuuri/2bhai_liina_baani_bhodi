@@ -27,7 +27,7 @@ impl Foo {
         Foo::C(s, S(">"), v)
     }
     pub fn bl(s: &'static str, v: Vec<Foo>) -> Foo {
-        Foo::C(s, S(r##" style="display:block;text-align:left">"##), v)
+        Foo::C(s, S(">"), v)
     }
 
     pub fn c1(s: &'static str, v: Foo) -> Foo {
