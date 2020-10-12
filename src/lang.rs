@@ -2,6 +2,8 @@ use super::*;
 
 pub fn linmarn() -> Vec<Foo> {
     vec![
+        Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
+        Foo::c1("div", Foo::ls(r##"<hr>"##)),
         Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
           border="0"></div>"##),
         Foo::ls(r##"<div style="display:block;text-align:left">総画：4</div>"##),
