@@ -102,18 +102,13 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
     .to_string()
 }
 
-fn content() -> String {
+fn content(langs: Vec<Vec<Foo>>) -> String {
     Foo::c(
         "article",
-        vec![
-            Foo::c("section", linmarn()),
-            Foo::c("section", proto()),
-            Foo::c("section", pekzep()),
-            Foo::c("section", takang()),
-            Foo::c("section", ezzia()),
-            Foo::c("section", bhat()),
-            Foo::c("section", lip_zep()),
-        ],
+        langs
+            .into_iter()
+            .map(|lang| Foo::c("section", lang))
+            .collect(),
     )
     .to_string()
 }
@@ -437,7 +432,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ("バート語", vec!["発音", "動詞", "無変化動詞"]),
                 ("リパライン語", vec!["発音", "名詞", "動詞", "熟語"])
             ]),
-            content: &content()
+            content: &content(vec![
+                linmarn(),
+                proto(),
+                pekzep(),
+                takang(),
+                ezzia(),
+                bhat(),
+                lip_zep(),
+            ])
         }
         .render()
         .unwrap()
