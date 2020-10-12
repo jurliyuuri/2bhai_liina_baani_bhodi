@@ -13,60 +13,85 @@ struct LinzklarTemplate<'a> {
 
 use big_s::S;
 
-fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
-    let mut ans = String::new();
-    ans.push_str(r##"<ol class="goog-toc">"##);
+enum Foo {
+    L(String),
+    C(String, Vec<Foo>, String),
+}
 
-    let mut global_ind = 0;
-    let mut sec_num = 1;
-
-    for t in toc {
-        ans.push_str(&format!(
-            r##"
-  <li class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
-            if global_ind == 0 {
-                S("")
-            } else {
-                format!("{}", global_ind)
-            },
-            sec_num,
-            t.0
-        ));
-        global_ind += 1;
-        ans.push_str(
-            r##"
-    <ol class="goog-toc">"##,
-        );
-
-        let mut subsec_num = 1;
-        for a in t.1 {
-            ans.push_str(&format!(
-                r##"
-      <li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}"##,
-                global_ind, sec_num, subsec_num
-            ));
-            global_ind += 1;
-            subsec_num += 1;
-            ans.push_str(&format!(
-                r##"
-          </strong>{}</a></li>"##,
-                a
-            ));
+impl Foo {
+    pub fn strs(&self) -> Vec<String> {
+        match self {
+            Foo::L(s) => vec![s.clone()],
+            Foo::C(s, t, u) => {
+                let mut ans = vec![s.clone()];
+                for a in t {
+                    let mut k: Vec<_> = a.strs().into_iter().map(|b| format!("  {}", b)).collect();
+                    ans.append(&mut k);
+                }
+                ans.push(u.clone());
+                ans
+            }
         }
-        ans.push_str(
-            r##"
-    </ol>"##,
-        );
-        ans.push_str(
-            r##"
-  </li>"##,
-        );
-
-        sec_num += 1;
     }
+}
 
-    ans.push_str("\n</ol>");
-    ans
+impl std::fmt::Display for Foo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.strs().join("\n"))
+    }
+}
+
+fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
+    Foo::C(
+        S(r##"<ol class="goog-toc">"##),
+        {
+            let mut ans2 = vec![];
+
+            let mut global_ind = 0;
+            let mut sec_num = 1;
+
+            for t in toc {
+                ans2.push(Foo::C(
+                    format!(
+                        r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
+                        if global_ind == 0 {
+                            S("")
+                        } else {
+                            format!("{}", global_ind)
+                        },
+                        sec_num,
+                        t.0
+                    ),
+                    vec![Foo::C(
+                        S(r##"<ol class="goog-toc">"##),
+                        {
+                            let mut v = vec![];
+                            global_ind += 1;
+                            let mut subsec_num = 1;
+                            for a in t.1 {
+                                v.push(Foo::L(format!(
+                                    r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
+          </strong>{}</a></li>"##,
+                                    global_ind, sec_num, subsec_num, a
+                                )));
+                                global_ind += 1;
+                                subsec_num += 1;
+                            }
+
+                            sec_num += 1;
+
+                            v
+                        },
+                        S(r##"</ol>"##),
+                    )],
+                    S(r##"</li>"##),
+                ));
+            }
+            ans2
+        },
+        S("</ol>"),
+    )
+    .to_string()
 }
 
 const CONTENT: &str = r##"<div>
