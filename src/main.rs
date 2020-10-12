@@ -108,28 +108,14 @@ fn content() -> String {
         vec![Foo::bl(
             "div",
             [
-                &vec![
-                    Foo::bl(
-                        "div",
-                        [
-                            &linmarn()[..],
-                            &proto()[..],
-                            &pekzep()[..],
-                            &takang_former()[..],
-                        ]
-                        .concat(),
-                    ),
-                    Foo::bl(
-                        "div",
-                        [
-                            &takang_latter()[..],
-                            &vec![Foo::c("div", ezzia_former())][..],
-                            &ezzia_latter()[..],
-                            &vec![bhat_former()][..],
-                        ]
-                        .concat(),
-                    ),
-                ][..],
+                &linmarn()[..],
+                &proto()[..],
+                &pekzep()[..],
+                &takang_former()[..],
+                &takang_latter()[..],
+                &ezzia_former()[..],
+                &ezzia_latter()[..],
+                &vec![bhat_former()][..],
                 &bhat_latter()[..],
                 &lip_zep()[..],
             ]
@@ -138,42 +124,44 @@ fn content() -> String {
     )
     .to_string()
 }
+
 fn linmarn() -> Vec<Foo> {
     vec![
-                    Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
+        Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
           border="0"></div>"##),
-                    Foo::ls(r##"<div style="display:block;text-align:left">総画：4</div>"##),
-                    Foo::ls(r##"<div style="display:block;text-align:left">筆順：丶ノ一一</div>"##),
-                    Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--1"></a>字源</h3>"##),
-                    Foo::c1("ul", 
-                    Foo::ls(r##"<li>象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。
-          </li>"##)),
-                    Foo::c("div", vec![
-                        Foo::C("div", S(r#" style="font-size:13.3333px">"#), vec![
-                            Foo::ls(r##"<h3><a name="TOC--2"></a>キャスカ・ファルザーの字源</h3>"##),
-                            Foo::C("div", S(r#" style="font-size:13.3333px">"#), vec![Foo::ls(r##"<ul></ul>"##)])
-                        ]),
-                        Foo::C("div", S(r##" style="font-size:13.3333px">"##), vec![
-                            Foo::c1("ul", 
-                                Foo::c1("li", 
-                                    Foo::ls("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")
-                                )
-                            )
-                        ])
-                    ]),
-                    Foo::c1("div", 
-                        Foo::bl("div", vec![
-                            Foo::ls(r##"<div style="display:block;text-align:left"></div>"##),
-                            Foo::ls(r##"<div style="display:block;text-align:left"><img
+        Foo::ls(r##"<div style="display:block;text-align:left">総画：4</div>"##),
+        Foo::ls(r##"<div style="display:block;text-align:left">筆順：丶ノ一一</div>"##),
+        Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--1"></a>字源</h3>"##),
+        Foo::c1("ul", 
+            Foo::ls(r##"<li>象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。
+          </li>"##)
+        ),
+        Foo::c("div", vec![
+            Foo::C("div", S(r#" style="font-size:13.3333px">"#), vec![
+                Foo::ls(r##"<h3><a name="TOC--2"></a>キャスカ・ファルザーの字源</h3>"##),
+                Foo::C("div", S(r#" style="font-size:13.3333px">"#), vec![Foo::ls(r##"<ul></ul>"##)])
+            ]),
+            Foo::C("div", S(r##" style="font-size:13.3333px">"##), vec![
+                Foo::c1("ul", 
+                    Foo::c1("li", 
+                        Foo::ls("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")
+                    )
+                )
+            ])
+        ]),
+        Foo::c1("div", 
+            Foo::bl("div", vec![
+                Foo::ls(r##"<div style="display:block;text-align:left"></div>"##),
+                Foo::ls(r##"<div style="display:block;text-align:left"><img
                 src="grau_prua_yr/在.png" width="200" height="91" border="0">
             </div>"##)
-                        ])
-                    ),
-                    Foo::ls(r##"<div></div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--3"></a>意義</h3>"##),
-                    Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))),
-                    Foo::ls(r##"<div><br></div>"##),
-                    ]
+            ])
+        ),
+        Foo::ls(r##"<div></div>"##),
+        Foo::ls(r##"<h3><a name="TOC--3"></a>意義</h3>"##),
+        Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))),
+        Foo::ls(r##"<div><br></div>"##),
+    ]
 }
 
 fn proto() -> Vec<Foo> {
