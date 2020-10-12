@@ -43,11 +43,11 @@ impl std::fmt::Display for Foo {
 
 fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
     let mut global_ind = 0;
-    let mut sec_num = 1;
     Foo::C(
         S(r##"<ol class="goog-toc">"##),
         toc.into_iter()
-            .map(|t| {
+            .enumerate()
+            .map(|(sec_num_minus_1, t)| {
                 Foo::C(
                     format!(
                         r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
@@ -56,7 +56,7 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
                         } else {
                             format!("{}", global_ind)
                         },
-                        sec_num,
+                        sec_num_minus_1 + 1,
                         t.0
                     ),
                     vec![Foo::C(
@@ -69,13 +69,14 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
                                 v.push(Foo::L(format!(
                                     r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
           </strong>{}</a></li>"##,
-                                    global_ind, sec_num, subsec_num, a
+                                    global_ind,
+                                    sec_num_minus_1 + 1,
+                                    subsec_num,
+                                    a
                                 )));
                                 global_ind += 1;
                                 subsec_num += 1;
                             }
-
-                            sec_num += 1;
 
                             v
                         },
