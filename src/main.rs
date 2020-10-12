@@ -109,18 +109,9 @@ fn content() -> String {
             Foo::c("section", linmarn()),
             Foo::c("section", proto()),
             Foo::c("section", pekzep()),
-            Foo::c(
-                "section",
-                [&takang_former()[..], &takang_latter()[..]].concat(),
-            ),
-            Foo::c(
-                "section",
-                [&ezzia_former()[..], &ezzia_latter()[..]].concat(),
-            ),
-            Foo::c(
-                "section",
-                [&vec![bhat_former()][..], &bhat_latter()[..]].concat(),
-            ),
+            Foo::c("section", takang()),
+            Foo::c("section", ezzia()),
+            Foo::c("section", bhat()),
             Foo::c("section", lip_zep()),
         ],
     )
@@ -250,18 +241,13 @@ fn pekzep() -> Vec<Foo> {
         Foo::ls(r##"<div><br></div>"##),
     ]
 }
-fn takang_former() -> Vec<Foo> {
+fn takang() -> Vec<Foo> {
     vec![
         Foo::ls(
             r##"<h2><a name="TOC--17"></a><a
           href="https://sites.google.com/site/syxobo/takan">タカン語</a></h2>"##,
         ),
         Foo::c1("div", Foo::ls(r##"<hr>"##)),
-    ]
-}
-
-fn takang_latter() -> Vec<Foo> {
-    vec![
         Foo::ls(
             r##"<div style="font-size:13.3333px">
         <h3><a name="TOC--18"></a>発音</h3>
@@ -307,9 +293,10 @@ fn takang_latter() -> Vec<Foo> {
     ]
 }
 
-fn ezzia_former() -> Vec<Foo> {
-    vec![Foo::ls(
-        r##"<div style="font-size:13.3333px">
+fn ezzia() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
           <h2><a name="TOC--21"></a><a
               href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz">エッツィア語</a>
           </h2>
@@ -342,11 +329,7 @@ fn ezzia_former() -> Vec<Foo> {
           </div>
           <div>存在、あること</div>
         </div>"##,
-    )]
-}
-
-fn ezzia_latter() -> Vec<Foo> {
-    vec![
+        ),
         Foo::ls(
             r##"<div>
         <h3><a name="TOC--24"></a>動詞</h3>
@@ -356,9 +339,10 @@ fn ezzia_latter() -> Vec<Foo> {
     ]
 }
 
-fn bhat_former() -> Foo {
-    Foo::ls(
-        r##"<div style="font-size:13.3333px">
+fn bhat() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
         <h2><a name="TOC--25"></a><a
             href="http://jurliyuuri.github.io/bhaataan/grammar.html">バート語</a>
         </h2>
@@ -366,11 +350,7 @@ fn bhat_former() -> Foo {
           <hr>
         </div>
       </div>"##,
-    )
-}
-
-fn bhat_latter() -> Vec<Foo> {
-    vec![
+        ),
         Foo::c(
             "div",
             vec![
