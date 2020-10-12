@@ -104,23 +104,25 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
 
 fn content() -> String {
     Foo::c(
-        "div",
-        vec![Foo::bl(
-            "div",
-            [
-                &linmarn()[..],
-                &proto()[..],
-                &pekzep()[..],
-                &takang_former()[..],
-                &takang_latter()[..],
-                &ezzia_former()[..],
-                &ezzia_latter()[..],
-                &vec![bhat_former()][..],
-                &bhat_latter()[..],
-                &lip_zep()[..],
-            ]
-            .concat(),
-        )],
+        "article",
+        vec![
+            Foo::c("section", linmarn()),
+            Foo::c("section", proto()),
+            Foo::c("section", pekzep()),
+            Foo::c(
+                "section",
+                [&takang_former()[..], &takang_latter()[..]].concat(),
+            ),
+            Foo::c(
+                "section",
+                [&ezzia_former()[..], &ezzia_latter()[..]].concat(),
+            ),
+            Foo::c(
+                "section",
+                [&vec![bhat_former()][..], &bhat_latter()[..]].concat(),
+            ),
+            Foo::c("section", lip_zep()),
+        ],
     )
     .to_string()
 }
