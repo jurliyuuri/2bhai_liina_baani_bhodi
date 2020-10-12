@@ -26,7 +26,7 @@ impl Foo {
     pub fn c(s: &'static str, v: Vec<Foo>) -> Foo {
         Foo::C(s, S(">"), v)
     }
-    
+
     pub fn c1(s: &'static str, v: Foo) -> Foo {
         Foo::C(s, S(">"), vec![v])
     }

@@ -231,15 +231,17 @@ pub fn ezzia() -> Vec<Foo> {
 
 pub fn bhat() -> Vec<Foo> {
     vec![
-        Foo::ls(
-            r##"<div style="font-size:13.3333px">
-        <h2><a name="TOC--25"></a><a
+        Foo::C(
+            "div",
+            S(r##" style="font-size:13.3333px">"##),
+            vec![
+                Foo::ls(
+                    r##"<h2><a name="TOC--25"></a><a
             href="http://jurliyuuri.github.io/bhaataan/grammar.html">バート語</a>
-        </h2>
-        <div>
-          <hr>
-        </div>
-      </div>"##,
+        </h2>"##,
+                ),
+                Foo::c("div", vec![Foo::ls("<hr>")]),
+            ],
         ),
         Foo::c(
             "div",
