@@ -137,6 +137,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             content: &content(vec![
                 linmarn(),
                 proto(),
+                air(),
                 pekzep(),
                 takang(),
                 ezzia(),

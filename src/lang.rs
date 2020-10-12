@@ -60,6 +60,11 @@ pub fn proto() -> Vec<Foo> {
         Foo::ls(r##"<div>存在。</div>"##),
         Foo::ls(r##"<h3><a name="TOC--7"></a>述詞</h3>"##),
         Foo::ls(r##"<div>在る。～している。</div>"##),
+    ]
+}
+
+pub fn air() -> Vec<Foo> {
+    vec![
         Foo::ls(
             r##"<h2><a name="TOC--8"></a><a
           href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air">アイル語</a>
