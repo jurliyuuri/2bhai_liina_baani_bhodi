@@ -92,10 +92,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 
 [[package]]
+name = "big_s"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "199edb7b90631283b10c2422e6a0bc8b7d987bf732995ba1de53b576c97e51a8"
+
+[[package]]
 name = "humansize"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6cab2627acfc432780848602f3f558f7e9dd427352224b0d9324025796d2a5e"
+
+[[package]]
+name = "indexed"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64d9ca77b99ee70a9251b23d3a5167336665b91addfdd52381cf13d3693427e6"
 
 [[package]]
 name = "lazy_static"
@@ -109,6 +121,8 @@ version = "0.1.0"
 dependencies = [
  "askama",
  "askama-filters",
+ "big_s",
+ "trees",
 ]
 
 [[package]]
@@ -225,6 +239,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75cf45bb0bef80604d001caaec0d09da99611b3c0fd39d3080468875cdb65645"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "trees"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fcd12c7f693050b0724c2b7d678c62ae8370554b33267702d5adf4b4fa116fb"
+dependencies = [
+ "indexed",
 ]
 
 [[package]]

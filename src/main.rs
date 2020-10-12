@@ -11,94 +11,63 @@ struct LinzklarTemplate<'a> {
     content: &'a str,
 }
 
-const TOC: &str = r##"<ol class="goog-toc">
-  <li class="goog-toc"><a href="#TOC--"><strong>1 </strong>燐字</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--1"><strong>1.1
-          </strong>字源</a></li>
-      <li class="goog-toc"><a href="#TOC--2"><strong>1.2
-          </strong>キャスカ・ファルザーの字源</a></li>
-      <li class="goog-toc"><a href="#TOC--3"><strong>1.3
-          </strong>意義</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--4"><strong>2 </strong>ラネーメ祖語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--5"><strong>2.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--6"><strong>2.2
-          </strong>名詞</a></li>
-      <li class="goog-toc"><a href="#TOC--7"><strong>2.3
-          </strong>述詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--8"><strong>3 </strong>アイル語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--9"><strong>3.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--10"><strong>3.2
-          </strong>動詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--11"><strong>4 </strong>パイグ語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--12"><strong>4.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--13"><strong>4.2
-          </strong>名詞</a></li>
-      <li class="goog-toc"><a href="#TOC--14"><strong>4.3
-          </strong>動詞</a></li>
-      <li class="goog-toc"><a href="#TOC--15"><strong>4.4
-          </strong>定詞</a></li>
-      <li class="goog-toc"><a href="#TOC--16"><strong>4.5
-          </strong>叫詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--17"><strong>5 </strong>タカン語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--18"><strong>5.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--19"><strong>5.2
-          </strong>名詞</a></li>
-      <li class="goog-toc"><a href="#TOC--20"><strong>5.3
-          </strong>動詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--21"><strong>6
-      </strong>エッツィア語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--22"><strong>6.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--23"><strong>6.2
-          </strong>名詞</a></li>
-      <li class="goog-toc"><a href="#TOC--24"><strong>6.3
-          </strong>動詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--25"><strong>7 </strong>バート語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--26"><strong>7.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--27"><strong>7.2
-          </strong>動詞</a></li>
-      <li class="goog-toc"><a href="#TOC--28"><strong>7.3
-          </strong>無変化動詞</a></li>
-    </ol>
-  </li>
-  <li class="goog-toc"><a href="#TOC--29"><strong>8
-      </strong>リパライン語</a>
-    <ol class="goog-toc">
-      <li class="goog-toc"><a href="#TOC--30"><strong>8.1
-          </strong>発音</a></li>
-      <li class="goog-toc"><a href="#TOC--31"><strong>8.2
-          </strong>名詞</a></li>
-      <li class="goog-toc"><a href="#TOC--32"><strong>8.3
-          </strong>動詞</a></li>
-      <li class="goog-toc"><a href="#TOC--33"><strong>8.4
-          </strong>熟語</a></li>
-    </ol>
-  </li>
-</ol>"##;
+use big_s::S;
+
+fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
+    let mut ans = String::new();
+    ans.push_str(r##"<ol class="goog-toc">"##);
+
+    let mut global_ind = 0;
+    let mut sec_num = 1;
+
+    for t in toc {
+        ans.push_str(&format!(
+            r##"
+  <li class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
+            if global_ind == 0 {
+                S("")
+            } else {
+                format!("{}", global_ind)
+            },
+            sec_num,
+            t.0
+        ));
+        global_ind += 1;
+        ans.push_str(
+            r##"
+    <ol class="goog-toc">"##,
+        );
+
+        let mut subsec_num = 1;
+        for a in t.1 {
+            ans.push_str(&format!(
+                r##"
+      <li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}"##,
+                global_ind, sec_num, subsec_num
+            ));
+            global_ind += 1;
+            subsec_num += 1;
+            ans.push_str(&format!(
+                r##"
+          </strong>{}</a></li>"##,
+                a
+            ));
+        }
+        ans.push_str(
+            r##"
+    </ol>"##,
+        );
+        ans.push_str(
+            r##"
+  </li>"##,
+        );
+
+        sec_num += 1;
+    }
+
+    ans.push_str("\n</ol>");
+    ans
+}
 
 const CONTENT: &str = r##"<div>
   <div style="display:block;text-align:left">
@@ -345,7 +314,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     write!(
         file,
         "{}",
-        LinzklarTemplate { linzi: "在", toc: TOC, content: CONTENT }.render().unwrap()
+        LinzklarTemplate {
+            linzi: "在",
+            toc: &generate_toc(vec![
+                ("燐字", vec!["字源", "キャスカ・ファルザーの字源", "意義"]),
+                ("ラネーメ祖語", vec!["発音", "名詞", "述詞"]),
+                ("アイル語", vec!["発音", "動詞"]),
+                ("パイグ語", vec!["発音", "名詞", "動詞", "定詞", "叫詞"]),
+                ("タカン語", vec!["発音", "名詞", "動詞"]),
+                ("エッツィア語", vec!["発音", "名詞", "動詞"]),
+                ("バート語", vec!["発音", "動詞", "無変化動詞"]),
+                ("リパライン語", vec!["発音", "名詞", "動詞", "熟語"])
+            ]),
+            content: CONTENT
+        }
+        .render()
+        .unwrap()
     )?;
 
     Ok(())
