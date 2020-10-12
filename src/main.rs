@@ -91,7 +91,8 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
     .to_string()
 }
 
-const CONTENT: &str = r##"<div>
+fn content() -> String {
+    r##"<div>
   <div style="display:block;text-align:left">
     <div style="display:block;text-align:left">
       <div style="display:block;text-align:left">
@@ -319,17 +320,15 @@ const CONTENT: &str = r##"<div>
     <div>
       <h3><a name="TOC--32"></a>動詞</h3>
     </div>
-  </div>行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）
-</div>
-<div>
-  <div>
+    行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）
     <h3><a name="TOC--33"></a>熟語</h3>
+    <ol>
+      <li><a href="真%20-%20燐字海.html">真</a>在　xinien
+        la deliume　＜本分、本来の義務＞</li>
+    </ol>
   </div>
-  <ol>
-    <li><a href="真%20-%20燐字海.html">真</a>在　xinien
-      la deliume　＜本分、本来の義務＞</li>
-  </ol>
-</div><br>"##;
+</div>"##.to_string()
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut file = File::create(format!("docs/{} - 燐字海.html", "在"))?;
@@ -348,7 +347,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ("バート語", vec!["発音", "動詞", "無変化動詞"]),
                 ("リパライン語", vec!["発音", "名詞", "動詞", "熟語"])
             ]),
-            content: CONTENT
+            content: &content()
         }
         .render()
         .unwrap()
