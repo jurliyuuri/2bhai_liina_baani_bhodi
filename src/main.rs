@@ -103,10 +103,9 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
 }
 
 fn content() -> String {
-    Foo::c(
-        "div", 
-        vec![
-            Foo::bl("div", [&vec![
+    Foo::c("div", vec![
+        Foo::bl("div", [
+            &vec![
                 Foo::bl("div", vec![
                     Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
           border="0"></div>"##),
@@ -260,32 +259,51 @@ fn content() -> String {
         <h3><a name="TOC--24"></a>動詞</h3>
       </div>"##),
                 Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##),
-                Foo::ls(r##"<div style="font-size:13.3333px">
+                bhat_former()
+                ]
+            ),
+        ][..],
+        &bhat_latter()[..],
+        &lip_zep()[..]
+    ].concat()),
+]).to_string()
+}
+
+fn bhat_former() -> Foo {
+    Foo::ls(
+        r##"<div style="font-size:13.3333px">
         <h2><a name="TOC--25"></a><a
             href="http://jurliyuuri.github.io/bhaataan/grammar.html">バート語</a>
         </h2>
         <div>
           <hr>
         </div>
-      </div>"##
-                )
-            ]
-        ),
-      Foo::c("div", vec![
-      Foo::ls(r##"<h3><a name="TOC--26"></a>
-        <font size="3">発音</font>
-      </h3>"##),
-      Foo::ls(r##"<div>hemúl, hem</div>"##)
-    ]),
-    Foo::ls(r##"<h3><a name="TOC--27"></a>動詞</h3>"##),
-    Foo::ls(r##"<div>(hemúl) ある。</div>"##),
-    Foo::c("div", vec![Foo::ls(r##"<h3><a name="TOC--28"></a>無変化動詞</h3>"##)]),
-    Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
-    Foo::ls(r##"<div><br></div>"##)][..],
-    &lip_zep()[..]
-].concat()),
+      </div>"##,
+    )
+}
 
-    ]).to_string()
+fn bhat_latter() -> Vec<Foo> {
+    vec![
+        Foo::c(
+            "div",
+            vec![
+                Foo::ls(
+                    r##"<h3><a name="TOC--26"></a>
+        <font size="3">発音</font>
+      </h3>"##,
+                ),
+                Foo::ls(r##"<div>hemúl, hem</div>"##),
+            ],
+        ),
+        Foo::ls(r##"<h3><a name="TOC--27"></a>動詞</h3>"##),
+        Foo::ls(r##"<div>(hemúl) ある。</div>"##),
+        Foo::c(
+            "div",
+            vec![Foo::ls(r##"<h3><a name="TOC--28"></a>無変化動詞</h3>"##)],
+        ),
+        Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
+        Foo::ls(r##"<div><br></div>"##),
+    ]
 }
 
 fn lip_zep() -> Vec<Foo> {
