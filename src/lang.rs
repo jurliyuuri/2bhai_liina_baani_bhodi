@@ -193,12 +193,18 @@ pub fn ezzia() -> Vec<Foo> {
           <div>
             <hr>
           </div>
-        </div>
-        <div>
-          <div style="font-size:13.3333px">
+        </div>"##,
+        ),
+        Foo::c(
+            "div",
+            vec![
+                Foo::ls(
+                    r##"<div style="font-size:13.3333px">
             <h3><a name="TOC--22"></a>発音</h3>
-          </div>
-          <div>
+          </div>"##,
+                ),
+                Foo::ls(
+                    r##"<div>
             <ul>
               <li><span style="background-color:transparent">
                   <font size="2">光音：あいま</font>
@@ -213,12 +219,15 @@ pub fn ezzia() -> Vec<Foo> {
                     style="background-color:transparent">現音：アン</span></font>
               </li>
             </ul>
-          </div>
-          <div style="font-size:13.3333px">
+          </div>"##,
+                ),
+                Foo::ls(
+                    r##"<div style="font-size:13.3333px">
             <h3><a name="TOC--23"></a>名詞</h3>
-          </div>
-          <div>存在、あること</div>
-        </div>"##,
+          </div>"##,
+                ),
+                Foo::ls(r##"<div>存在、あること</div>"##),
+            ],
         ),
         Foo::ls(
             r##"<div>
