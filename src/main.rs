@@ -19,6 +19,10 @@ pub enum Foo {
     C(&'static str, String, Vec<Foo>),
 }
 
+pub fn h3(ind: usize, t: &str) -> Foo {
+    Foo::L(format!(r##"<h3><a name="TOC--{}"></a>{}</h3>"##, ind, t))
+}
+
 impl Foo {
     pub fn ls(s: &'static str) -> Foo {
         Foo::L(S(s))
