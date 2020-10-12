@@ -103,10 +103,43 @@ fn generate_toc(toc: Vec<(&str, Vec<&str>)>) -> String {
 }
 
 fn content() -> String {
-    Foo::c("div", vec![
-        Foo::bl("div", [
-            &vec![
-                Foo::bl("div", vec![
+    Foo::c(
+        "div",
+        vec![Foo::bl(
+            "div",
+            [
+                &vec![
+                    Foo::bl(
+                        "div",
+                        [
+                            &linmarn()[..],
+                            &proto()[..],
+                            &pekzep()[..],
+                            &takang_former()[..],
+                        ]
+                        .concat(),
+                    ),
+                    Foo::bl(
+                        "div",
+                        [
+                            &takang_latter()[..],
+                            &vec![Foo::c("div", ezzia_former())][..],
+                            &ezzia_latter()[..],
+                            &vec![bhat_former()][..],
+                        ]
+                        .concat(),
+                    ),
+                ][..],
+                &bhat_latter()[..],
+                &lip_zep()[..],
+            ]
+            .concat(),
+        )],
+    )
+    .to_string()
+}
+fn linmarn() -> Vec<Foo> {
+    vec![
                     Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
           border="0"></div>"##),
                     Foo::ls(r##"<div style="display:block;text-align:left">総画：4</div>"##),
@@ -140,67 +173,101 @@ fn content() -> String {
                     Foo::ls(r##"<h3><a name="TOC--3"></a>意義</h3>"##),
                     Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))),
                     Foo::ls(r##"<div><br></div>"##),
-                    Foo::ls(r##"<h2><a name="TOC--4"></a><a
+                    ]
+}
+
+fn proto() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<h2><a name="TOC--4"></a><a
           href="https://sites.google.com/site/syxobo/raneme-zu-yu">ラネーメ祖語</a>
-      </h2>"##),
-                    Foo::c1("div", Foo::ls(r##"<h3><a name="TOC--5"></a>
-          <hr>発音</h3>"##)),
-                    Foo::ls(r##"<div>aimq</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--6"></a>名詞</h3>"##),
-                    Foo::ls(r##"<div>存在。</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--7"></a>述詞</h3>"##),
-                    Foo::ls(r##"<div>在る。～している。</div>"##),
-                    Foo::ls(r##"<h2><a name="TOC--8"></a><a
-          href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air">アイル語</a>
-      </h2>"##),
-                    Foo::c1("div", Foo::ls(r##"<hr>"##)),
-                    Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--9"></a>発音</h3>"##),
-                    Foo::ls(r##"<div>aima</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--10"></a>動詞</h3>"##),
-                    Foo::ls(r##"<div>在る。</div>"##),
-                    Foo::ls(r##"<h2><a name="TOC--11"></a><a
-          href="https://sites.google.com/site/syxobo/paigu-yu">パイグ語</a></h2>"##),
-                    Foo::c("div", vec![Foo::ls("<hr>"), Foo::ls(r#"<h3><a name="TOC--12"></a>発音</h3>"#)]),
-                    Foo::c1("div", Foo::c("ul", vec![
-                        Foo::ls(r##"<li><span
-              style="font-size:10pt;background-color:transparent">標準パイグ語：aim2</span>
-          </li>"##), 
-                        Foo::ls(r##"<li><span
-              style="font-size:10pt;background-color:transparent">アイツォ語：aim2</span>
-          </li>"##), 
-                        Foo::ls(r##"<li><span
-              style="font-size:10pt;background-color:transparent">古音：raim</span>
-          </li>"##), 
-                        Foo::ls(r##"<li><span
-              style="font-size:10pt;background-color:transparent">韻図音：冠在素</span>
-          </li>"##)
-                    ])),
-                    Foo::c1("div", Foo::ls(r##"<h3><a name="TOC--13"></a>名詞</h3>"##)),
-                    Foo::ls(r##"<div>存在。</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--14"></a>動詞</h3>"##),
-                    Foo::ls(r##"<div>在る。</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--15"></a>定詞</h3>"##),
-                    Foo::ls(r##"<div>～している。</div>"##),
-                    Foo::ls(r##"<h3><a name="TOC--16"></a>叫詞</h3>"##),
-                    Foo::ls(r##"<div>はい。</div>"##),
-                    Foo::ls(r##"<div><br></div>"##),
-                    Foo::ls(r##"<h2><a name="TOC--17"></a><a
-          href="https://sites.google.com/site/syxobo/takan">タカン語</a></h2>"##),
-                    Foo::c1("div", Foo::ls(r##"<hr>"##))
-                ]
-            ),
-            Foo::bl("div", [
-                &takang_latter()[..],
-                &vec![Foo::c("div", ezzia_former())][..],
-                &ezzia_latter()[..],
-                &vec![bhat_former()][..],
-            ].concat()
+      </h2>"##,
         ),
-    ][..],
-    &bhat_latter()[..],
-    &lip_zep()[..]
-].concat()),
-]).to_string()
+        Foo::c1(
+            "div",
+            Foo::ls(
+                r##"<h3><a name="TOC--5"></a>
+          <hr>発音</h3>"##,
+            ),
+        ),
+        Foo::ls(r##"<div>aimq</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--6"></a>名詞</h3>"##),
+        Foo::ls(r##"<div>存在。</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--7"></a>述詞</h3>"##),
+        Foo::ls(r##"<div>在る。～している。</div>"##),
+        Foo::ls(
+            r##"<h2><a name="TOC--8"></a><a
+          href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air">アイル語</a>
+      </h2>"##,
+        ),
+        Foo::c1("div", Foo::ls(r##"<hr>"##)),
+        Foo::ls(r##"<h3 style="display:block;text-align:left"><a name="TOC--9"></a>発音</h3>"##),
+        Foo::ls(r##"<div>aima</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--10"></a>動詞</h3>"##),
+        Foo::ls(r##"<div>在る。</div>"##),
+    ]
+}
+
+fn pekzep() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<h2><a name="TOC--11"></a><a
+          href="https://sites.google.com/site/syxobo/paigu-yu">パイグ語</a></h2>"##,
+        ),
+        Foo::c(
+            "div",
+            vec![
+                Foo::ls("<hr>"),
+                Foo::ls(r#"<h3><a name="TOC--12"></a>発音</h3>"#),
+            ],
+        ),
+        Foo::c1(
+            "div",
+            Foo::c(
+                "ul",
+                vec![
+                    Foo::ls(
+                        r##"<li><span
+              style="font-size:10pt;background-color:transparent">標準パイグ語：aim2</span>
+          </li>"##,
+                    ),
+                    Foo::ls(
+                        r##"<li><span
+              style="font-size:10pt;background-color:transparent">アイツォ語：aim2</span>
+          </li>"##,
+                    ),
+                    Foo::ls(
+                        r##"<li><span
+              style="font-size:10pt;background-color:transparent">古音：raim</span>
+          </li>"##,
+                    ),
+                    Foo::ls(
+                        r##"<li><span
+              style="font-size:10pt;background-color:transparent">韻図音：冠在素</span>
+          </li>"##,
+                    ),
+                ],
+            ),
+        ),
+        Foo::c1("div", Foo::ls(r##"<h3><a name="TOC--13"></a>名詞</h3>"##)),
+        Foo::ls(r##"<div>存在。</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--14"></a>動詞</h3>"##),
+        Foo::ls(r##"<div>在る。</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--15"></a>定詞</h3>"##),
+        Foo::ls(r##"<div>～している。</div>"##),
+        Foo::ls(r##"<h3><a name="TOC--16"></a>叫詞</h3>"##),
+        Foo::ls(r##"<div>はい。</div>"##),
+        Foo::ls(r##"<div><br></div>"##),
+    ]
+}
+fn takang_former() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<h2><a name="TOC--17"></a><a
+          href="https://sites.google.com/site/syxobo/takan">タカン語</a></h2>"##,
+        ),
+        Foo::c1("div", Foo::ls(r##"<hr>"##)),
+    ]
 }
 
 fn takang_latter() -> Vec<Foo> {
