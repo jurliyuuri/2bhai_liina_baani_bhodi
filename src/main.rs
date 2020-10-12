@@ -189,11 +189,29 @@ fn content() -> String {
                     Foo::c1("div", Foo::ls(r##"<hr>"##))
                 ]
             ),
-            Foo::bl("div", vec![
-                Foo::ls(r##"<div style="font-size:13.3333px">
+            Foo::bl("div", [
+                &takang_latter()[..],
+                &vec![Foo::c("div", ezzia_former())][..],
+                &ezzia_latter()[..],
+                &vec![bhat_former()][..],
+            ].concat()
+        ),
+    ][..],
+    &bhat_latter()[..],
+    &lip_zep()[..]
+].concat()),
+]).to_string()
+}
+
+fn takang_latter() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
         <h3><a name="TOC--18"></a>発音</h3>
-      </div>"##),
-                Foo::ls(r##"<div>
+      </div>"##,
+        ),
+        Foo::ls(
+            r##"<div>
         <ul>
           <li><span style="background-color:transparent">
               <font size="2">皇音：えま、え-む</font>
@@ -205,23 +223,36 @@ fn content() -> String {
                 style="background-color:transparent">新音：エン</span></font>
           </li>
         </ul>
-      </div>"##),
-                Foo::ls(r##"<div style="font-size:13.3333px">
+      </div>"##,
+        ),
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
         <h3><a name="TOC--19"></a>名詞</h3>
-      </div>"##),
-                Foo::ls(r##"<div style="font-size:13.3333px">（えま<span
+      </div>"##,
+        ),
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">（えま<span
           style="font-size:small;background-color:transparent">）</span><span
           style="font-size:13.3333px;background-color:transparent">存在。</span>
-      </div>"##),
-                Foo::ls(r##"<h3><a name="TOC--20"></a>
+      </div>"##,
+        ),
+        Foo::ls(
+            r##"<h3><a name="TOC--20"></a>
         <font size="3">動詞</font>
-      </h3>"##),
-                Foo::ls(r##"<div>
+      </h3>"##,
+        ),
+        Foo::ls(
+            r##"<div>
         <font size="2">（え-む）ある。</font><span
           style="font-size:13.3333px;background-color:transparent">～している。</span>
-      </div>"##),
-                Foo::c("div", vec![
-                    Foo::ls(r##"<div style="font-size:13.3333px">
+      </div>"##,
+        ),
+    ]
+}
+
+fn ezzia_former() -> Vec<Foo> {
+    vec![Foo::ls(
+        r##"<div style="font-size:13.3333px">
           <h2><a name="TOC--21"></a><a
               href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz">エッツィア語</a>
           </h2>
@@ -253,20 +284,19 @@ fn content() -> String {
             <h3><a name="TOC--23"></a>名詞</h3>
           </div>
           <div>存在、あること</div>
-        </div>"##)
-                ]),
-                Foo::ls(r##"<div>
+        </div>"##,
+    )]
+}
+
+fn ezzia_latter() -> Vec<Foo> {
+    vec![
+        Foo::ls(
+            r##"<div>
         <h3><a name="TOC--24"></a>動詞</h3>
-      </div>"##),
-                Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##),
-                bhat_former()
-                ]
-            ),
-        ][..],
-        &bhat_latter()[..],
-        &lip_zep()[..]
-    ].concat()),
-]).to_string()
+      </div>"##,
+        ),
+        Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##),
+    ]
 }
 
 fn bhat_former() -> Foo {
