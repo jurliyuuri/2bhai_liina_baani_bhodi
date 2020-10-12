@@ -27,7 +27,7 @@ pub fn linmarn() -> Vec<Foo> {
             ])
         ]),
         Foo::c1("div",
-            Foo::bl("div", vec![
+            Foo::c("div", vec![
                 Foo::ls(r##"<div></div>"##),
                 Foo::ls(r##"<div><img
                 src="grau_prua_yr/在.png" width="200" height="91" border="0">
