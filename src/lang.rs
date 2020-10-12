@@ -48,13 +48,8 @@ pub fn proto() -> Vec<Foo> {
           href="https://sites.google.com/site/syxobo/raneme-zu-yu">ラネーメ祖語</a>
       </h2>"##,
         ),
-        Foo::c1(
-            "div",
-            Foo::ls(
-                r##"<h3><a name="TOC--5"></a>
-          <hr>発音</h3>"##,
-            ),
-        ),
+        Foo::c1("div", Foo::ls(r##"<hr>"##)),
+        Foo::ls(r##"<h3><a name="TOC--5"></a>発音</h3>"##),
         Foo::ls(r##"<div>aimq</div>"##),
         Foo::ls(r##"<h3><a name="TOC--6"></a>名詞</h3>"##),
         Foo::ls(r##"<div>存在。</div>"##),
@@ -84,42 +79,34 @@ pub fn pekzep() -> Vec<Foo> {
             r##"<h2><a name="TOC--11"></a><a
           href="https://sites.google.com/site/syxobo/paigu-yu">パイグ語</a></h2>"##,
         ),
+        Foo::c("div", vec![Foo::ls("<hr>")]),
+        Foo::ls(r#"<h3><a name="TOC--12"></a>発音</h3>"#),
         Foo::c(
-            "div",
+            "ul",
             vec![
-                Foo::ls("<hr>"),
-                Foo::ls(r#"<h3><a name="TOC--12"></a>発音</h3>"#),
-            ],
-        ),
-        Foo::c1(
-            "div",
-            Foo::c(
-                "ul",
-                vec![
-                    Foo::ls(
-                        r##"<li><span
+                Foo::ls(
+                    r##"<li><span
               style="font-size:10pt;background-color:transparent">標準パイグ語：aim2</span>
           </li>"##,
-                    ),
-                    Foo::ls(
-                        r##"<li><span
+                ),
+                Foo::ls(
+                    r##"<li><span
               style="font-size:10pt;background-color:transparent">アイツォ語：aim2</span>
           </li>"##,
-                    ),
-                    Foo::ls(
-                        r##"<li><span
+                ),
+                Foo::ls(
+                    r##"<li><span
               style="font-size:10pt;background-color:transparent">古音：raim</span>
           </li>"##,
-                    ),
-                    Foo::ls(
-                        r##"<li><span
+                ),
+                Foo::ls(
+                    r##"<li><span
               style="font-size:10pt;background-color:transparent">韻図音：冠在素</span>
           </li>"##,
-                    ),
-                ],
-            ),
+                ),
+            ],
         ),
-        Foo::c1("div", Foo::ls(r##"<h3><a name="TOC--13"></a>名詞</h3>"##)),
+        Foo::ls(r##"<h3><a name="TOC--13"></a>名詞</h3>"##),
         Foo::ls(r##"<div>存在。</div>"##),
         Foo::ls(r##"<h3><a name="TOC--14"></a>動詞</h3>"##),
         Foo::ls(r##"<div>在る。</div>"##),
@@ -144,8 +131,7 @@ pub fn takang() -> Vec<Foo> {
       </div>"##,
         ),
         Foo::ls(
-            r##"<div>
-        <ul>
+            r##"<ul>
           <li><span style="background-color:transparent">
               <font size="2">皇音：えま、え-む</font>
             </span></li>
@@ -155,14 +141,9 @@ pub fn takang() -> Vec<Foo> {
                 style="background-color:transparent">　古音：アイ　</span><span
                 style="background-color:transparent">新音：エン</span></font>
           </li>
-        </ul>
-      </div>"##,
+        </ul>"##,
         ),
-        Foo::ls(
-            r##"<div style="font-size:13.3333px">
-        <h3><a name="TOC--19"></a>名詞</h3>
-      </div>"##,
-        ),
+        Foo::ls(r##"<h3><a name="TOC--19"></a>名詞</h3>"##),
         Foo::ls(
             r##"<div style="font-size:13.3333px">（えま<span
           style="font-size:small;background-color:transparent">）</span><span
@@ -186,26 +167,18 @@ pub fn takang() -> Vec<Foo> {
 pub fn ezzia() -> Vec<Foo> {
     vec![
         Foo::ls(
-            r##"<div style="font-size:13.3333px">
-          <h2><a name="TOC--21"></a><a
+            r##"<h2><a name="TOC--21"></a><a
               href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz">エッツィア語</a>
-          </h2>
-          <div>
-            <hr>
-          </div>
-        </div>"##,
+          </h2>"##,
         ),
-        Foo::c(
-            "div",
-            vec![
-                Foo::ls(
-                    r##"<div style="font-size:13.3333px">
+        Foo::c("div", vec![Foo::ls("<hr>")]),
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
             <h3><a name="TOC--22"></a>発音</h3>
           </div>"##,
-                ),
-                Foo::ls(
-                    r##"<div>
-            <ul>
+        ),
+        Foo::ls(
+            r##"<ul>
               <li><span style="background-color:transparent">
                   <font size="2">光音：あいま</font>
                 </span></li>
@@ -218,17 +191,14 @@ pub fn ezzia() -> Vec<Foo> {
                     style="background-color:transparent">古音：ラン　</span><span
                     style="background-color:transparent">現音：アン</span></font>
               </li>
-            </ul>
-          </div>"##,
-                ),
-                Foo::ls(
-                    r##"<div style="font-size:13.3333px">
+            </ul>"##,
+        ),
+        Foo::ls(
+            r##"<div style="font-size:13.3333px">
             <h3><a name="TOC--23"></a>名詞</h3>
           </div>"##,
-                ),
-                Foo::ls(r##"<div>存在、あること</div>"##),
-            ],
         ),
+        Foo::ls(r##"<div>存在、あること</div>"##),
         Foo::ls(
             r##"<div>
         <h3><a name="TOC--24"></a>動詞</h3>
@@ -240,35 +210,21 @@ pub fn ezzia() -> Vec<Foo> {
 
 pub fn bhat() -> Vec<Foo> {
     vec![
-        Foo::C(
-            "div",
-            S(r##" style="font-size:13.3333px">"##),
-            vec![
-                Foo::ls(
-                    r##"<h2><a name="TOC--25"></a><a
+        Foo::ls(
+            r##"<h2><a name="TOC--25"></a><a
             href="http://jurliyuuri.github.io/bhaataan/grammar.html">バート語</a>
         </h2>"##,
-                ),
-                Foo::c("div", vec![Foo::ls("<hr>")]),
-            ],
         ),
-        Foo::c(
-            "div",
-            vec![
-                Foo::ls(
-                    r##"<h3><a name="TOC--26"></a>
+        Foo::c("div", vec![Foo::ls("<hr>")]),
+        Foo::ls(
+            r##"<h3><a name="TOC--26"></a>
         <font size="3">発音</font>
       </h3>"##,
-                ),
-                Foo::ls(r##"<div>hemúl, hem</div>"##),
-            ],
         ),
+        Foo::ls(r##"<div>hemúl, hem</div>"##),
         Foo::ls(r##"<h3><a name="TOC--27"></a>動詞</h3>"##),
         Foo::ls(r##"<div>(hemúl) ある。</div>"##),
-        Foo::c(
-            "div",
-            vec![Foo::ls(r##"<h3><a name="TOC--28"></a>無変化動詞</h3>"##)],
-        ),
+        Foo::ls(r##"<h3><a name="TOC--28"></a>無変化動詞</h3>"##),
         Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
         Foo::ls(r##"<div><br></div>"##),
     ]
@@ -276,37 +232,25 @@ pub fn bhat() -> Vec<Foo> {
 
 pub fn lip_zep() -> Vec<Foo> {
     vec![
-        Foo::C(
-            "div",
-            S(r##" style="font-size:13.3333px">"##),
-            vec![
-                Foo::ls(
-                    r##"<h2><a name="TOC--29"></a><a
+        Foo::ls(
+            r##"<h2><a name="TOC--29"></a><a
           href="https://sites.google.com/site/3tvalineparine/home">リパライン語</a></h2>"##,
-                ),
-                Foo::c("div", vec![Foo::ls("<hr>")]),
-            ],
         ),
+        Foo::c("div", vec![Foo::ls("<hr>")]),
         Foo::ls(r##"<h3><a name="TOC--30"></a>発音</h3>"##),
         Foo::c(
-            "div",
-            vec![Foo::c(
-                "ol",
-                vec![
-                    Foo::ls("<li>es e\'i</li>"),
-                    Foo::ls("<li>teles</li>"),
-                    Foo::ls("<li>mol</li>"),
-                    Foo::ls("<li>molo</li>"),
-                    Foo::ls("<li>molerl</li>"),
-                ],
-            )],
+            "ol",
+            vec![
+                Foo::ls("<li>es e\'i</li>"),
+                Foo::ls("<li>teles</li>"),
+                Foo::ls("<li>mol</li>"),
+                Foo::ls("<li>molo</li>"),
+                Foo::ls("<li>molerl</li>"),
+            ],
         ),
         Foo::ls(r##"<h3><a name="TOC--31"></a>名詞</h3>"##),
         Foo::ls("<div>在ること、存在</div>"),
-        Foo::c(
-            "div",
-            vec![Foo::ls(r##"<h3><a name="TOC--32"></a>動詞</h3>"##)],
-        ),
+        Foo::ls(r##"<h3><a name="TOC--32"></a>動詞</h3>"##),
         Foo::ls(
             r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
         ),
