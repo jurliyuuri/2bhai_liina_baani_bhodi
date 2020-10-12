@@ -120,10 +120,7 @@ pub fn pekzep() -> Vec<Foo> {
 
 pub fn takang() -> Vec<Foo> {
     vec![
-        Foo::ls(
-            r##"<h2><a name="TOC--17"></a><a
-          href="https://sites.google.com/site/syxobo/takan">タカン語</a></h2>"##,
-        ),
+        Lang::Takang.h2(17),
         Foo::c1("div", Foo::ls(r##"<hr>"##)),
         Foo::ls(
             r##"<div style="font-size:13.3333px">
@@ -166,11 +163,7 @@ pub fn takang() -> Vec<Foo> {
 
 pub fn ezzia() -> Vec<Foo> {
     vec![
-        Foo::ls(
-            r##"<h2><a name="TOC--21"></a><a
-              href="https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz">エッツィア語</a>
-          </h2>"##,
-        ),
+        Lang::Ezzia.h2(21),
         Foo::c("div", vec![Foo::ls("<hr>")]),
         Foo::ls(
             r##"<div style="font-size:13.3333px">
@@ -208,14 +201,48 @@ pub fn ezzia() -> Vec<Foo> {
     ]
 }
 
+enum Lang {
+    Bhat,
+    Lineparine,
+    Takang,
+    Ezzia,
+}
+
+impl Lang {
+    pub fn url(&self) -> String {
+        match self {
+            Lang::Bhat => S("http://jurliyuuri.github.io/bhaataan/grammar.html"),
+            Lang::Lineparine => S("https://sites.google.com/site/3tvalineparine/home"),
+            Lang::Takang => S("https://sites.google.com/site/syxobo/takan"),
+            Lang::Ezzia => S("https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz")
+        }
+    }
+
+    pub fn ja(&self) -> String {
+        match self {
+            Lang::Bhat => S("バート語"),
+            Lang::Lineparine => S("リパライン語"),
+            Lang::Takang => S("タカン語"),
+            Lang::Ezzia => S("エッツィア語"),
+        }
+    }
+
+    pub fn h2(&self, toc_num: usize) -> Foo {
+        Foo::L(format!(
+            r##"<h2><a name="TOC--{}"></a><a
+            href="{}">{}</a>
+        </h2>"##,
+            toc_num,
+            &self.url(),
+            &self.ja()
+        ))
+    }
+}
+
 pub fn bhat() -> Vec<Foo> {
     vec![
-        Foo::ls(
-            r##"<h2><a name="TOC--25"></a><a
-            href="http://jurliyuuri.github.io/bhaataan/grammar.html">バート語</a>
-        </h2>"##,
-        ),
-        Foo::c("div", vec![Foo::ls("<hr>")]),
+        Lang::Bhat.h2(25),
+        Foo::c1("div", Foo::ls("<hr>")),
         Foo::ls(
             r##"<h3><a name="TOC--26"></a>
         <font size="3">発音</font>
@@ -232,11 +259,8 @@ pub fn bhat() -> Vec<Foo> {
 
 pub fn lip_zep() -> Vec<Foo> {
     vec![
-        Foo::ls(
-            r##"<h2><a name="TOC--29"></a><a
-          href="https://sites.google.com/site/3tvalineparine/home">リパライン語</a></h2>"##,
-        ),
-        Foo::c("div", vec![Foo::ls("<hr>")]),
+        Lang::Lineparine.h2(29),
+        Foo::c1("div", Foo::ls("<hr>")),
         Foo::ls(r##"<h3><a name="TOC--30"></a>発音</h3>"##),
         Foo::c(
             "ol",
