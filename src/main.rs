@@ -13,6 +13,7 @@ struct LinzklarTemplate<'a> {
 
 use big_s::S;
 
+#[derive(Clone, Debug)]
 enum Foo {
     L(String),
     C(&'static str, String, Vec<Foo>),
@@ -105,7 +106,7 @@ fn content() -> String {
     Foo::c(
         "div", 
         vec![
-            Foo::bl("div", vec![
+            Foo::bl("div", [&vec![
                 Foo::bl("div", vec![
                     Foo::ls(r##"<div style="display:block;text-align:left"><img src="linzi/在.png"
           border="0"></div>"##),
@@ -280,36 +281,58 @@ fn content() -> String {
     Foo::ls(r##"<div>(hemúl) ある。</div>"##),
     Foo::c("div", vec![Foo::ls(r##"<h3><a name="TOC--28"></a>無変化動詞</h3>"##)]),
     Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
-    Foo::ls(r##"<div><br></div>"##),
-    Foo::C(
-        "div", 
-        S(r##" style="font-size:13.3333px">"##),
-        vec![
-          Foo::ls(r##"<h2><a name="TOC--29"></a><a
-          href="https://sites.google.com/site/3tvalineparine/home">リパライン語</a></h2>"##), 
-          Foo::c("div", vec![Foo::ls("<hr>")])
-        ]
-      ),
-      Foo::ls(r##"<h3><a name="TOC--30"></a>発音</h3>"##),
-            Foo::c("div", vec![Foo::c("ol", vec![
-            Foo::ls("<li>es e\'i</li>"),
-                Foo::ls("<li>teles</li>"),
-                Foo::ls("<li>mol</li>"),
-                Foo::ls("<li>molo</li>"),
-                Foo::ls("<li>molerl</li>"),
-            ])]),
-            Foo::ls(r##"<h3><a name="TOC--31"></a>名詞</h3>"##),
-            Foo::ls("<div>在ること、存在</div>"),
-            Foo::c("div", vec![Foo::ls(r##"<h3><a name="TOC--32"></a>動詞</h3>"##)]),
-            Foo::ls(r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##),
-            Foo::ls(r##"<h3><a name="TOC--33"></a>熟語</h3>"##),
-            Foo::c1("ol", 
-                Foo::ls(r##"<li><a href="真%20-%20燐字海.html">真</a>在　xinien
-        la deliume　＜本分、本来の義務＞</li>"##)
-            )
-        ]),
+    Foo::ls(r##"<div><br></div>"##)][..],
+    &lip_zep()[..]
+].concat()),
 
     ]).to_string()
+}
+
+fn lip_zep() -> Vec<Foo> {
+    vec![
+        Foo::C(
+            "div",
+            S(r##" style="font-size:13.3333px">"##),
+            vec![
+                Foo::ls(
+                    r##"<h2><a name="TOC--29"></a><a
+          href="https://sites.google.com/site/3tvalineparine/home">リパライン語</a></h2>"##,
+                ),
+                Foo::c("div", vec![Foo::ls("<hr>")]),
+            ],
+        ),
+        Foo::ls(r##"<h3><a name="TOC--30"></a>発音</h3>"##),
+        Foo::c(
+            "div",
+            vec![Foo::c(
+                "ol",
+                vec![
+                    Foo::ls("<li>es e\'i</li>"),
+                    Foo::ls("<li>teles</li>"),
+                    Foo::ls("<li>mol</li>"),
+                    Foo::ls("<li>molo</li>"),
+                    Foo::ls("<li>molerl</li>"),
+                ],
+            )],
+        ),
+        Foo::ls(r##"<h3><a name="TOC--31"></a>名詞</h3>"##),
+        Foo::ls("<div>在ること、存在</div>"),
+        Foo::c(
+            "div",
+            vec![Foo::ls(r##"<h3><a name="TOC--32"></a>動詞</h3>"##)],
+        ),
+        Foo::ls(
+            r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+        ),
+        Foo::ls(r##"<h3><a name="TOC--33"></a>熟語</h3>"##),
+        Foo::c1(
+            "ol",
+            Foo::ls(
+                r##"<li><a href="真%20-%20燐字海.html">真</a>在　xinien
+        la deliume　＜本分、本来の義務＞</li>"##,
+            ),
+        ),
+    ]
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
