@@ -35,6 +35,15 @@ impl Foo {
         Foo::C(s, S(">"), vec![v])
     }
 
+    pub fn ol(k: &[String]) -> Foo {
+        Foo::c(
+            "ol",
+            k.iter()
+                .map(|a| Foo::L(format!("<li>{}</li>", a)))
+                .collect(),
+        )
+    }
+
     pub fn strs(&self) -> Vec<String> {
         match self {
             Foo::L(s) => vec![s.clone()],
@@ -137,13 +146,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ]),
             content: &content(vec![
                 linmarn(),
-                proto(),
-                air(),
+                vec![
+                    lang::Lang::Proto.h2(4),
+                    Foo::c1("div", Foo::ls("<hr>")),
+                    h3(5, "発音"),
+                    Foo::ls(r##"<div>aimq</div>"##),
+                    h3(6, "名詞"),
+                    Foo::ls(r##"<div>存在。</div>"##),
+                    h3(7, "述詞"),
+                    Foo::ls(r##"<div>在る。～している。</div>"##),
+                ],
+                vec![
+                    Lang::Air.h2(8),
+                    Foo::c1("div", Foo::ls("<hr>")),
+                    h3(9, "発音"),
+                    Foo::ls(r##"<div>aima</div>"##),
+                    h3(10, "動詞"),
+                    Foo::ls(r##"<div>在る。</div>"##),
+                ],
                 pekzep(),
                 takang(),
                 ezzia(),
-                bhat(),
-                lip_zep(),
+                vec![
+                    Lang::Bhat.h2(25),
+                    Foo::c1("div", Foo::ls("<hr>")),
+                    h3(26, "発音"),
+                    Foo::ls(r##"<div>hemúl, hem</div>"##),
+                    h3(27, "動詞"),
+                    Foo::ls(r##"<div>(hemúl) ある。</div>"##),
+                    h3(28, "無変化動詞"),
+                    Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
+                    Foo::ls(r##"<div><br></div>"##),
+                ],
+                vec![
+                    Lang::Lineparine.h2(29),
+                    Foo::c1("div", Foo::ls("<hr>")),
+                    h3(30, "発音"),
+                    Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
+                    h3(31, "名詞"),
+                    Foo::ls("<div>在ること、存在</div>"),
+                    h3(32, "動詞"),
+                    Foo::ls(
+                        r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+                    ),
+                    h3(33, "熟語"),
+                    Foo::ol(&[S(
+                        r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
+                    )]),
+                ],
             ])
         }
         .render()

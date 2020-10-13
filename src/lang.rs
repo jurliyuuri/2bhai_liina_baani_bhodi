@@ -41,30 +41,6 @@ pub fn linmarn() -> Vec<Foo> {
     ]
 }
 
-pub fn proto() -> Vec<Foo> {
-    vec![
-        Lang::Proto.h2(4),
-        Foo::c1("div", Foo::ls("<hr>")),
-        h3(5, "発音"),
-        Foo::ls(r##"<div>aimq</div>"##),
-        h3(6, "名詞"),
-        Foo::ls(r##"<div>存在。</div>"##),
-        h3(7, "述詞"),
-        Foo::ls(r##"<div>在る。～している。</div>"##),
-    ]
-}
-
-pub fn air() -> Vec<Foo> {
-    vec![
-        Lang::Air.h2(8),
-        Foo::c1("div", Foo::ls("<hr>")),
-        h3(9, "発音"),
-        Foo::ls(r##"<div>aima</div>"##),
-        h3(10, "動詞"),
-        Foo::ls(r##"<div>在る。</div>"##),
-    ]
-}
-
 pub fn pekzep() -> Vec<Foo> {
     vec![
         Lang::Paige.h2(11),
@@ -170,7 +146,7 @@ pub fn ezzia() -> Vec<Foo> {
     ]
 }
 
-enum Lang {
+pub enum Lang {
     Bhat,
     Lineparine,
     Takang,
@@ -213,50 +189,4 @@ impl Lang {
             &self.ja()
         ))
     }
-}
-
-pub fn bhat() -> Vec<Foo> {
-    vec![
-        Lang::Bhat.h2(25),
-        Foo::c1("div", Foo::ls("<hr>")),
-        h3(26, "発音"),
-        Foo::ls(r##"<div>hemúl, hem</div>"##),
-        h3(27, "動詞"),
-        Foo::ls(r##"<div>(hemúl) ある。</div>"##),
-        h3(28, "無変化動詞"),
-        Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
-        Foo::ls(r##"<div><br></div>"##),
-    ]
-}
-
-pub fn lip_zep() -> Vec<Foo> {
-    vec![
-        Lang::Lineparine.h2(29),
-        Foo::c1("div", Foo::ls("<hr>")),
-        h3(30, "発音"),
-        Foo::c(
-            "ol",
-            vec![
-                Foo::ls("<li>es e\'i</li>"),
-                Foo::ls("<li>teles</li>"),
-                Foo::ls("<li>mol</li>"),
-                Foo::ls("<li>molo</li>"),
-                Foo::ls("<li>molerl</li>"),
-            ],
-        ),
-        h3(31, "名詞"),
-        Foo::ls("<div>在ること、存在</div>"),
-        h3(32, "動詞"),
-        Foo::ls(
-            r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
-        ),
-        h3(33, "熟語"),
-        Foo::c1(
-            "ol",
-            Foo::ls(
-                r##"<li><a href="真%20-%20燐字海.html">真</a>在　xinien
-        la deliume　＜本分、本来の義務＞</li>"##,
-            ),
-        ),
-    ]
 }
