@@ -137,6 +137,40 @@ fn bar(lang: lang::Lang, v: Vec<(&'static str, Foo)>, ind: &mut usize) -> Vec<Fo
     ans
 }
 
+fn baz(
+    init: Vec<Foo>,
+    v1: Vec<(&'static str, Foo)>,
+    grau_prua_yr: &'static str,
+    v2: Vec<(&'static str, Foo)>,
+    ind: &mut usize,
+) -> Vec<Foo> {
+    let mut ans = vec![
+        Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
+        Foo::c1("div", Foo::ls("<hr>")),
+    ];
+    ans.append(&mut init.clone());
+    for (a, b) in v1 {
+        *ind += 1;
+        ans.push(h3(*ind, a));
+        ans.push(b);
+    }
+
+    ans.push(Foo::ls(r##"<div></div>"##));
+    ans.push(Foo::L(format!(
+        r##"<div><img src="{}" width="200" height="91" border="0"></div>"##,
+        grau_prua_yr
+    )));
+    ans.push(Foo::ls(r##"<div></div>"##));
+
+    for (a, b) in v2 {
+        *ind += 1;
+        ans.push(h3(*ind, a));
+        ans.push(b);
+    }
+    ans.push(Foo::ls("<div><br></div>"));
+    ans
+}
+
 fn hoge() -> (String, Foo) {
     let toc = generate_toc(vec![
         ("燐字", vec!["字源", "キャスカ・ファルザーの字源", "意義"]),
@@ -153,23 +187,17 @@ fn hoge() -> (String, Foo) {
     let cont = Foo::c(
      "article",
      vec![
-            vec![
-                Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
-                Foo::c1("div", Foo::ls("<hr>")),
+            baz(vec![
                 Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
                 Foo::ls(r##"<div>総画：4</div>"##),
                 Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
-                h3({ind += 1; ind}, "字源"),
-                Foo::ul(&[S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]),
-                h3({ind += 1; ind}, "キャスカ・ファルザーの字源"),
-                Foo::ul(&[S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]),
-                Foo::ls(r##"<div></div>"##),
-                Foo::ls(r##"<div><img src="grau_prua_yr/在.png" width="200" height="91" border="0"></div>"##),
-                Foo::ls(r##"<div></div>"##),
-                h3({ind += 1; ind}, "意義"),
-                Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))),
-                Foo::ls(r##"<div><br></div>"##),
+            ], vec![
+                ("字源", Foo::ul(&[S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
+                ("キャスカ・ファルザーの字源", Foo::ul(&[S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]),),
+            ], "grau_prua_yr/在.png", vec![
+                ("意義", Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))))
             ],
+            &mut ind),
             bar(Lang::Proto, vec![
                 ("発音", Foo::ls(r##"<div>aimq</div>"##)),
                 ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
