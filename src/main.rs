@@ -184,76 +184,84 @@ fn hoge() -> (String, Foo) {
     ]);
 
     let mut ind = 0;
+
+    let mut v = vec![
+        baz(vec![
+            Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
+            Foo::ls(r##"<div>総画：4</div>"##),
+            Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
+        ], vec![
+            ("字源", Foo::ul(&[S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
+            ("キャスカ・ファルザーの字源", Foo::ul(&[S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]),),
+        ], "grau_prua_yr/在.png", vec![
+            ("意義", Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))))
+        ],
+        &mut ind),
+    ];
+
+    let dat = vec![
+        (Lang::Proto, vec![
+            ("発音", Foo::ls(r##"<div>aimq</div>"##)),
+            ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
+            ("述詞", Foo::ls(r##"<div>在る。～している。</div>"##))
+        ]),
+        (Lang::Air, vec![
+            ("発音", Foo::ls(r##"<div>aima</div>"##)),
+            ("動詞",  Foo::ls(r##"<div>在る。</div>"##),)
+        ]),
+        (Lang::Paige, vec![
+            ("発音", Foo::ul(&[
+                S(r##"標準パイグ語：aim2"##),
+                S(r##"アイツォ語：aim2"##),
+                S(r##"古音：raim"##),
+                S(r##"韻図音：冠在素"##),
+            ])),
+            ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
+            ("動詞", Foo::ls(r##"<div>在る。</div>"##),),
+            ("定詞", Foo::ls(r##"<div>～している。</div>"##)),
+            ("叫詞", Foo::ls("<div>はい。</div>")),
+        ]),
+        (Lang::Takang, vec![
+            ("発音", Foo::ul(&[
+                S(r##"皇音：えま、え-む"##),
+                S(r##"牌音　古音：アイ　新音：エン"##),
+            ])),
+            ("名詞", Foo::ls(r##"（えま）存在。"##),),
+            ("動詞", Foo::ls(r##"（え-む）ある。～している。"##),),
+        ]),
+        (Lang::Ezzia, vec![
+            ("発音", Foo::ul(&[
+                S(r##"光音：あいま"##),
+                S(r##"皇音：え、えむ"##),
+                S(r##"牌音　古音：ラン　現音：アン"##),
+            ])),
+            ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
+            ("動詞", Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##))
+        ]),
+        (Lang::Bhat, vec![
+            ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
+            ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
+            ("無変化動詞",  Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),)
+        ]),
+        (Lang::Lineparine, vec![
+            ("発音", Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")])),
+            ("名詞", Foo::ls("<div>在ること、存在</div>")),
+            ("動詞", Foo::ls(
+                r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+            )),
+            ("熟語", Foo::ol(&[S(
+                r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
+            )])),
+        ])
+    ];
+    for (lang, k) in dat {
+        v.push(
+            bar(lang, k, &mut ind)
+        )
+    }
     let cont = Foo::c(
-     "article",
-     vec![
-            baz(vec![
-                Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
-                Foo::ls(r##"<div>総画：4</div>"##),
-                Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
-            ], vec![
-                ("字源", Foo::ul(&[S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
-                ("キャスカ・ファルザーの字源", Foo::ul(&[S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]),),
-            ], "grau_prua_yr/在.png", vec![
-                ("意義", Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))))
-            ],
-            &mut ind),
-            bar(Lang::Proto, vec![
-                ("発音", Foo::ls(r##"<div>aimq</div>"##)),
-                ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                ("述詞", Foo::ls(r##"<div>在る。～している。</div>"##))
-            ], &mut ind),
-            bar(Lang::Air, vec![
-                ("発音", Foo::ls(r##"<div>aima</div>"##)),
-                ("動詞",  Foo::ls(r##"<div>在る。</div>"##),)
-            ], &mut ind),
-            bar(Lang::Paige, vec![
-                ("発音", Foo::ul(&[
-                    S(r##"標準パイグ語：aim2"##),
-                    S(r##"アイツォ語：aim2"##),
-                    S(r##"古音：raim"##),
-                    S(r##"韻図音：冠在素"##),
-                ])),
-                ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                ("動詞", Foo::ls(r##"<div>在る。</div>"##),),
-                ("定詞", Foo::ls(r##"<div>～している。</div>"##)),
-                ("叫詞", Foo::ls("<div>はい。</div>")),
-            ], &mut ind),
-            bar(Lang::Takang, vec![
-                ("発音", Foo::ul(&[
-                    S(r##"皇音：えま、え-む"##),
-                    S(r##"牌音　古音：アイ　新音：エン"##),
-                ])),
-                ("名詞", Foo::ls(r##"（えま）存在。"##),),
-                ("動詞", Foo::ls(r##"（え-む）ある。～している。"##),),
-            ], &mut ind),
-            bar(Lang::Ezzia, vec![
-                ("発音", Foo::ul(&[
-                    S(r##"光音：あいま"##),
-                    S(r##"皇音：え、えむ"##),
-                    S(r##"牌音　古音：ラン　現音：アン"##),
-                ])),
-                ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
-                ("動詞", Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##))
-            ], &mut ind),
-            bar(Lang::Bhat, vec![
-                ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
-                ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
-                ("無変化動詞",  Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),)
-            ], &mut ind),
-            bar(Lang::Lineparine, vec![
-                ("発音", Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")])),
-                ("名詞", Foo::ls("<div>在ること、存在</div>")),
-                ("動詞", Foo::ls(
-                    r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
-                )),
-                ("熟語", Foo::ol(&[S(
-                    r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                )])),
-            ], &mut ind)
-        ].into_iter()
-            .map(|lang| Foo::c("section", lang))
-            .collect(),
+        "article",
+        v.into_iter().map(|lang| Foo::c("section", lang)).collect(),
     );
 
     (toc, cont)
