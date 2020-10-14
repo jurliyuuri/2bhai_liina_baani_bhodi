@@ -75,7 +75,10 @@ impl std::fmt::Display for Foo {
     }
 }
 
-fn generate_toc(toc: Vec<(String, Vec<&str>)>) -> String {
+fn generate_toc<S>(toc: Vec<(S, Vec<&str>)>) -> String
+where
+    S: Into<String>,
+{
     let mut global_ind = 0;
     Foo::C(
         "ol",
@@ -93,7 +96,7 @@ fn generate_toc(toc: Vec<(String, Vec<&str>)>) -> String {
                             format!("{}", global_ind)
                         },
                         sec_num_minus_1 + 1,
-                        t.0
+                        t.0.into()
                     ),
                     vec![Foo::C("ol", S(r##" class="goog-toc">"##), {
                         let mut v = vec![];
@@ -216,15 +219,74 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    for linzi in vec![
-        "一", "七", "万", "三", "上", "下", "与", "中", "之", "乎", "九", "二", "互", "五", "亦",
-        "人", "位", "低", "何", "使", "倉", "値", "光", "党", "入", "八", "六", "兵", "内", "再",
-        "冠", "処", "出", "刀", "別", "力", "加", "勿", "北", "南", "友", "受", "口", "古", "右",
-        "同", "名", "味", "哩", "唯", "四", "字", "心", "手", "水", "火", "無", "皇", "神", "筆",
-        "行", "言", "足", "闇",
+    for (linzi, toc) in vec![
+        ("一", include!("toc/一_toc.rs")),
+        ("七", include!("toc/七_toc.rs")),
+        ("万", include!("toc/万_toc.rs")),
+        ("三", include!("toc/三_toc.rs")),
+        ("上", include!("toc/上_toc.rs")),
+        ("下", include!("toc/下_toc.rs")),
+        ("与", include!("toc/与_toc.rs")),
+        ("中", include!("toc/中_toc.rs")),
+        ("之", include!("toc/之_toc.rs")),
+        ("乎", include!("toc/乎_toc.rs")),
+        ("九", include!("toc/九_toc.rs")),
+        ("二", include!("toc/二_toc.rs")),
+        ("互", include!("toc/互_toc.rs")),
+        ("五", include!("toc/五_toc.rs")),
+        ("亦", include!("toc/亦_toc.rs")),
+        ("人", include!("toc/人_toc.rs")),
+        ("位", include!("toc/位_toc.rs")),
+        ("低", include!("toc/低_toc.rs")),
+        ("何", include!("toc/何_toc.rs")),
+        ("使", include!("toc/使_toc.rs")),
+        ("倉", include!("toc/倉_toc.rs")),
+        ("値", include!("toc/値_toc.rs")),
+        ("光", include!("toc/光_toc.rs")),
+        ("党", include!("toc/党_toc.rs")),
+        ("入", include!("toc/入_toc.rs")),
+        ("八", include!("toc/八_toc.rs")),
+        ("六", include!("toc/六_toc.rs")),
+        ("兵", include!("toc/兵_toc.rs")),
+        ("内", include!("toc/内_toc.rs")),
+        ("再", include!("toc/再_toc.rs")),
+        ("冠", include!("toc/冠_toc.rs")),
+        ("処", include!("toc/処_toc.rs")),
+        ("出", include!("toc/出_toc.rs")),
+        ("刀", include!("toc/刀_toc.rs")),
+        ("別", include!("toc/別_toc.rs")),
+        ("力", include!("toc/力_toc.rs")),
+        ("加", include!("toc/加_toc.rs")),
+        ("勿", include!("toc/勿_toc.rs")),
+        ("北", include!("toc/北_toc.rs")),
+        ("南", include!("toc/南_toc.rs")),
+        ("友", include!("toc/友_toc.rs")),
+        ("受", include!("toc/受_toc.rs")),
+        ("口", include!("toc/口_toc.rs")),
+        ("古", include!("toc/古_toc.rs")),
+        ("右", include!("toc/右_toc.rs")),
+        ("同", include!("toc/同_toc.rs")),
+        ("名", include!("toc/名_toc.rs")),
+        ("味", include!("toc/味_toc.rs")),
+        ("哩", include!("toc/哩_toc.rs")),
+        ("唯", include!("toc/唯_toc.rs")),
+        ("四", include!("toc/四_toc.rs")),
+        ("字", include!("toc/字_toc.rs")),
+        ("心", include!("toc/心_toc.rs")),
+        ("手", include!("toc/手_toc.rs")),
+        ("水", include!("toc/水_toc.rs")),
+        ("火", include!("toc/火_toc.rs")),
+        ("無", include!("toc/無_toc.rs")),
+        ("皇", include!("toc/皇_toc.rs")),
+        ("神", include!("toc/神_toc.rs")),
+        ("筆", include!("toc/筆_toc.rs")),
+        ("行", include!("toc/行_toc.rs")),
+        ("言", include!("toc/言_toc.rs")),
+        ("足", include!("toc/足_toc.rs")),
+        ("闇", include!("toc/闇_toc.rs")),
     ] {
         let cont = std::fs::read_to_string(format!("src/contents/{}_contents.html", linzi))?;
-        let toc = std::fs::read_to_string(format!("src/toc/{}_toc.html", linzi))?;
+        let toc = generate_toc(toc);
         write_page_raw(linzi, toc, cont)?;
     }
 
