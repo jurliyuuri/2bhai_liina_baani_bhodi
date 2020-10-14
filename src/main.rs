@@ -157,8 +157,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 vec![
                     Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
                     Foo::c1("div", Foo::ls("<hr>")),
-                    Foo::ls(r##"<div><img src="linzi/在.png"
-                      border="0"></div>"##),
+                    Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
                     Foo::ls(r##"<div>総画：4</div>"##),
                     Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
                     h3(1, "字源"),
