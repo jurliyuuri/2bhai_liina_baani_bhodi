@@ -199,47 +199,30 @@ fn hoge() -> (String, Foo) {
                 ("名詞", Foo::ls(r##"（えま）存在。"##),),
                 ("動詞", Foo::ls(r##"（え-む）ある。～している。"##),),
             ], &mut ind),
-            vec![
-                Lang::Ezzia.h2({ind += 1; ind}),
-                Foo::c1("div", Foo::ls("<hr>")),
-                h3({ind += 1; ind}, "発音"),
-                Foo::ul(&[
+            bar(Lang::Ezzia, vec![
+                ("発音", Foo::ul(&[
                     S(r##"光音：あいま"##),
                     S(r##"皇音：え、えむ"##),
                     S(r##"牌音　古音：ラン　現音：アン"##),
-                ]),
-                h3({ind += 1; ind}, "名詞"),
-                Foo::ls(r##"<div>存在、あること</div>"##),
-                h3({ind += 1; ind}, "動詞"),
-                Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##),
-            ],
-            vec![
-                Lang::Bhat.h2({ind += 1; ind}),
-                Foo::c1("div", Foo::ls("<hr>")),
-                h3({ind += 1; ind}, "発音"),
-                Foo::ls(r##"<div>hemúl, hem</div>"##),
-                h3({ind += 1; ind}, "動詞"),
-                Foo::ls(r##"<div>(hemúl) ある。</div>"##),
-                h3({ind += 1; ind}, "無変化動詞"),
-                Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
-                Foo::ls(r##"<div><br></div>"##),
-            ],
-            vec![
-                Lang::Lineparine.h2({ind += 1; ind}),
-                Foo::c1("div", Foo::ls("<hr>")),
-                h3({ind += 1; ind}, "発音"),
-                Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
-                h3({ind += 1; ind}, "名詞"),
-                Foo::ls("<div>在ること、存在</div>"),
-                h3({ind += 1; ind}, "動詞"),
-                Foo::ls(
+                ])),
+                ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
+                ("動詞", Foo::ls(r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##))
+            ], &mut ind),
+            bar(Lang::Bhat, vec![
+                ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
+                ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
+                ("無変化動詞",  Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),)
+            ], &mut ind),
+            bar(Lang::Lineparine, vec![
+                ("発音", Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")])),
+                ("名詞", Foo::ls("<div>在ること、存在</div>")),
+                ("動詞", Foo::ls(
                     r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
-                ),
-                h3({ind += 1; ind}, "熟語"),
-                Foo::ol(&[S(
+                )),
+                ("熟語", Foo::ol(&[S(
                     r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                )]),
-            ]
+                )])),
+            ], &mut ind)
         ].into_iter()
             .map(|lang| Foo::c("section", lang))
             .collect(),
