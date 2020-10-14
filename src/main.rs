@@ -179,11 +179,12 @@ struct LangHoge {
 }
 
 fn hoge(dat: Hoge) -> (String, Foo) {
-    let mut toc = vec![
-        (S("燐字"), vec!["字源", "キャスカ・ファルザーの字源", "意義"]),
-    ];
+    let mut toc = vec![(
+        S("燐字"),
+        vec!["字源", "キャスカ・ファルザーの字源", "意義"],
+    )];
 
-    for LangHoge{ lang, contents} in &dat.0 {
+    for LangHoge { lang, contents } in &dat.0 {
         toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
     }
 
@@ -215,116 +216,142 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut file = File::create(format!("docs/{} - 燐字海.html", "在"))?;
-    let (toc, cont) = hoge(Hoge(vec![
-        LangHoge {
-            lang: Lang::Proto,
-            contents: vec![
-                ("発音", Foo::ls(r##"<div>aimq</div>"##)),
-                ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                ("述詞", Foo::ls(r##"<div>在る。～している。</div>"##)),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Air,
-            contents: vec![
-                ("発音", Foo::ls(r##"<div>aima</div>"##)),
-                ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Paige,
-            contents: vec![
-                (
-                    "発音",
-                    Foo::ul(&[
-                        S(r##"標準パイグ語：aim2"##),
-                        S(r##"アイツォ語：aim2"##),
-                        S(r##"古音：raim"##),
-                        S(r##"韻図音：冠在素"##),
-                    ]),
-                ),
-                ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
-                ("定詞", Foo::ls(r##"<div>～している。</div>"##)),
-                ("叫詞", Foo::ls("<div>はい。</div>")),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Takang,
-            contents: vec![
-                (
-                    "発音",
-                    Foo::ul(&[
-                        S(r##"皇音：えま、え-む"##),
-                        S(r##"牌音　古音：アイ　新音：エン"##),
-                    ]),
-                ),
-                ("名詞", Foo::ls(r##"（えま）存在。"##)),
-                ("動詞", Foo::ls(r##"（え-む）ある。～している。"##)),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Ezzia,
-            contents: vec![
-                (
-                    "発音",
-                    Foo::ul(&[
-                        S(r##"光音：あいま"##),
-                        S(r##"皇音：え、えむ"##),
-                        S(r##"牌音　古音：ラン　現音：アン"##),
-                    ]),
-                ),
-                ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
-                (
-                    "動詞",
-                    Foo::ls(
-                        r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##,
+    for linzi in vec![
+        "一", "七", "万", "三", "上", "下", "与", "中", "之", "乎", "九", "二", "互", "五", "亦",
+        "人", "位", "低", "何", "使", "倉", "値", "光", "党", "入", "八", "六", "兵", "内", "再",
+        "冠", "処", "出", "刀", "別", "力", "加", "勿", "北", "南", "友", "受", "口", "古", "右",
+        "同", "名", "味", "哩", "唯", "四", "字", "心", "手", "水", "火", "無", "皇", "神", "筆",
+        "行", "言", "足", "闇",
+    ] {
+        let cont = std::fs::read_to_string(format!("src/contents/{}_contents.html", linzi))?;
+        let toc = std::fs::read_to_string(format!("src/toc/{}_toc.html", linzi))?;
+        write_page_raw(linzi, toc, cont)?;
+    }
+
+    write_page(
+        "在",
+        Hoge(vec![
+            LangHoge {
+                lang: Lang::Proto,
+                contents: vec![
+                    ("発音", Foo::ls(r##"<div>aimq</div>"##)),
+                    ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
+                    ("述詞", Foo::ls(r##"<div>在る。～している。</div>"##)),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Air,
+                contents: vec![
+                    ("発音", Foo::ls(r##"<div>aima</div>"##)),
+                    ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Paige,
+                contents: vec![
+                    (
+                        "発音",
+                        Foo::ul(&[
+                            S(r##"標準パイグ語：aim2"##),
+                            S(r##"アイツォ語：aim2"##),
+                            S(r##"古音：raim"##),
+                            S(r##"韻図音：冠在素"##),
+                        ]),
                     ),
-                ),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Bhat,
-            contents: vec![
-                ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
-                ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
-                (
-                    "無変化動詞",
-                    Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
-                ),
-            ],
-        },
-        LangHoge {
-            lang: Lang::Lineparine,
-            contents: vec![
-                (
-                    "発音",
-                    Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
-                ),
-                ("名詞", Foo::ls("<div>在ること、存在</div>")),
-                (
-                    "動詞",
-                    Foo::ls(
-                        r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+                    ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
+                    ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
+                    ("定詞", Foo::ls(r##"<div>～している。</div>"##)),
+                    ("叫詞", Foo::ls("<div>はい。</div>")),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Takang,
+                contents: vec![
+                    (
+                        "発音",
+                        Foo::ul(&[
+                            S(r##"皇音：えま、え-む"##),
+                            S(r##"牌音　古音：アイ　新音：エン"##),
+                        ]),
                     ),
-                ),
-                (
-                    "熟語",
-                    Foo::ol(&[S(
-                        r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                    )]),
-                ),
-            ],
-        },
-    ]));
+                    ("名詞", Foo::ls(r##"（えま）存在。"##)),
+                    ("動詞", Foo::ls(r##"（え-む）ある。～している。"##)),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Ezzia,
+                contents: vec![
+                    (
+                        "発音",
+                        Foo::ul(&[
+                            S(r##"光音：あいま"##),
+                            S(r##"皇音：え、えむ"##),
+                            S(r##"牌音　古音：ラン　現音：アン"##),
+                        ]),
+                    ),
+                    ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
+                    (
+                        "動詞",
+                        Foo::ls(
+                            r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##,
+                        ),
+                    ),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Bhat,
+                contents: vec![
+                    ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
+                    ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
+                    (
+                        "無変化動詞",
+                        Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
+                    ),
+                ],
+            },
+            LangHoge {
+                lang: Lang::Lineparine,
+                contents: vec![
+                    (
+                        "発音",
+                        Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
+                    ),
+                    ("名詞", Foo::ls("<div>在ること、存在</div>")),
+                    (
+                        "動詞",
+                        Foo::ls(
+                            r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+                        ),
+                    ),
+                    (
+                        "熟語",
+                        Foo::ol(&[S(
+                            r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
+                        )]),
+                    ),
+                ],
+            },
+        ]),
+    )
+}
+
+fn write_page(linzi: &str, h: Hoge) -> Result<(), Box<dyn std::error::Error>> {
+    let (toc, cont) = hoge(h);
+    write_page_raw(linzi, toc, cont.to_string())
+}
+fn write_page_raw(
+    linzi: &str,
+    toc: String,
+    cont: String,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let mut file = File::create(format!("docs/{} - 燐字海.html", linzi))?;
     write!(
         file,
         "{}",
         LinzklarTemplate {
-            linzi: "在",
+            linzi,
             toc: &toc,
-            content: &cont.to_string()
+            content: &cont
         }
         .render()
         .unwrap()
