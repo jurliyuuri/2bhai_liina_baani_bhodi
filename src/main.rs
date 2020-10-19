@@ -136,41 +136,39 @@ struct LinziPortion {
 }
 
 impl LinziPortion {
+    pub fn render(self, ind: &mut usize) -> Vec<Foo> {
+        let LinziPortion {
+            init,
+            v1,
+            grau_prua_yr,
+            v2,
+        } = self;
+        let mut ans = vec![
+            Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
+            Foo::c1("div", Foo::ls("<hr>")),
+        ];
+        ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
+        for (a, b) in v1 {
+            *ind += 1;
+            ans.push(h3(*ind, a));
+            ans.push(b.into());
+        }
 
-pub fn render(self, ind: &mut usize) -> Vec<Foo> {
-    let LinziPortion {
-        init,
-        v1,
-        grau_prua_yr,
-        v2,
-    } = self;
-    let mut ans = vec![
-        Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
-        Foo::c1("div", Foo::ls("<hr>")),
-    ];
-    ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
-    for (a, b) in v1 {
-        *ind += 1;
-        ans.push(h3(*ind, a));
-        ans.push(b.into());
+        ans.push(Foo::ls(r##"<div></div>"##));
+        ans.push(Foo::L(format!(
+            r##"<div><img src="{}" width="200" height="91" border="0"></div>"##,
+            grau_prua_yr
+        )));
+        ans.push(Foo::ls(r##"<div></div>"##));
+
+        for (a, b) in v2 {
+            *ind += 1;
+            ans.push(h3(*ind, a));
+            ans.push(b.into());
+        }
+        ans.push(Bar::DivText(S("<br>")).into());
+        ans
     }
-
-    ans.push(Foo::ls(r##"<div></div>"##));
-    ans.push(Foo::L(format!(
-        r##"<div><img src="{}" width="200" height="91" border="0"></div>"##,
-        grau_prua_yr
-    )));
-    ans.push(Foo::ls(r##"<div></div>"##));
-
-    for (a, b) in v2 {
-        *ind += 1;
-        ans.push(h3(*ind, a));
-        ans.push(b.into());
-    }
-    ans.push(Bar::DivText(S("<br>")).into());
-    ans
-}
-
 }
 struct Hoge(Vec<LangHoge>);
 
@@ -180,10 +178,10 @@ struct LangHoge {
 }
 
 fn hoge(l: LinziPortion, dat: Hoge) -> (String, Foo) {
-    let mut toc = vec![(
-        S("燐字"),
-        vec!["字源", "キャスカ・ファルザーの字源", "意義"],
-    )]; // FIXME
+    let v1_entries: Vec<&'static str> = l.v1.iter().map(|(k, _)| *k).collect();
+    let v2_entries: Vec<&'static str> = l.v2.iter().map(|(k, _)| *k).collect();
+
+    let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
 
     for LangHoge { lang, contents } in &dat.0 {
         toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
@@ -432,7 +430,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn write_page(linzi: &str, l: LinziPortion, h: Hoge) -> Result<(), Box<dyn std::error::Error>> {
-    let (toc, cont) = hoge(l,h);
+    let (toc, cont) = hoge(l, h);
     write_page_raw(linzi, toc, cont.to_string())
 }
 fn write_page_raw(
