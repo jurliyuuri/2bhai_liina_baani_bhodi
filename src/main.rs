@@ -128,22 +128,31 @@ use lang::*;
 
 mod lang;
 
-fn baz(
-    init: Vec<Foo>,
-    v1: Vec<(&'static str, Foo)>,
+struct LinziPortion {
+    init: Vec<Bar>,
+    v1: Vec<(&'static str, Bar)>,
     grau_prua_yr: &'static str,
-    v2: Vec<(&'static str, Foo)>,
-    ind: &mut usize,
-) -> Vec<Foo> {
+    v2: Vec<(&'static str, Bar)>,
+}
+
+impl LinziPortion {
+
+pub fn render(self, ind: &mut usize) -> Vec<Foo> {
+    let LinziPortion {
+        init,
+        v1,
+        grau_prua_yr,
+        v2,
+    } = self;
     let mut ans = vec![
         Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
         Foo::c1("div", Foo::ls("<hr>")),
     ];
-    ans.append(&mut init.clone());
+    ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
     for (a, b) in v1 {
         *ind += 1;
         ans.push(h3(*ind, a));
-        ans.push(b);
+        ans.push(b.into());
     }
 
     ans.push(Foo::ls(r##"<div></div>"##));
@@ -156,12 +165,13 @@ fn baz(
     for (a, b) in v2 {
         *ind += 1;
         ans.push(h3(*ind, a));
-        ans.push(b);
+        ans.push(b.into());
     }
     ans.push(Bar::DivText(S("<br>")).into());
     ans
 }
 
+}
 struct Hoge(Vec<LangHoge>);
 
 struct LangHoge {
@@ -169,11 +179,11 @@ struct LangHoge {
     contents: Vec<(&'static str, Bar)>,
 }
 
-fn hoge(dat: Hoge) -> (String, Foo) {
+fn hoge(l: LinziPortion, dat: Hoge) -> (String, Foo) {
     let mut toc = vec![(
         S("燐字"),
         vec!["字源", "キャスカ・ファルザーの字源", "意義"],
-    )];
+    )]; // FIXME
 
     for LangHoge { lang, contents } in &dat.0 {
         toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
@@ -181,20 +191,9 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 
     let mut ind = 0;
 
-    let mut v = vec![
-        baz(vec![
-            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)).into(),
-            Bar::DivText(S("総画：4")).into(),
-            Bar::DivText(S("筆順：丶ノ一一")).into(),
-        ], vec![
-            ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]).into()),
-            ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]).into()),
-        ], "grau_prua_yr/在.png", vec![
-            ("意義", Bar::Ol(vec![S(r##"在る。"##)]).into()),
-        ],
-        &mut ind),
-    ];
+    let linzi_portion = l.render(&mut ind);
 
+    let mut v = vec![linzi_portion];
     for LangHoge { lang, contents: k } in dat.0 {
         v.push(bar(lang, k, &mut ind))
     }
@@ -208,7 +207,8 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 
 mod bar {
     use super::*;
-    
+
+    #[derive(Debug, Clone)]
     pub enum Bar {
         DivText(String),
         Ul(Vec<String>),
@@ -224,7 +224,7 @@ mod bar {
             }
         }
     }
-    
+
     pub fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
         *ind += 1;
         let mut ans = vec![lang.h2(*ind), Foo::c1("div", Foo::ls("<hr>"))];
@@ -314,6 +314,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
+        LinziPortion{init: vec![
+            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)).into(),
+            Bar::DivText(S("総画：4")).into(),
+            Bar::DivText(S("筆順：丶ノ一一")).into(),
+        ], v1: vec![
+            ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]).into()),
+            ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]).into()),
+        ], grau_prua_yr: "grau_prua_yr/在.png", v2: vec![
+            ("意義", Bar::Ol(vec![S(r##"在る。"##)]).into()),
+        ]},
         Hoge(vec![
             LangHoge {
                 lang: Lang::Proto,
@@ -421,8 +431,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )
 }
 
-fn write_page(linzi: &str, h: Hoge) -> Result<(), Box<dyn std::error::Error>> {
-    let (toc, cont) = hoge(h);
+fn write_page(linzi: &str, l: LinziPortion, h: Hoge) -> Result<(), Box<dyn std::error::Error>> {
+    let (toc, cont) = hoge(l,h);
     write_page_raw(linzi, toc, cont.to_string())
 }
 fn write_page_raw(
