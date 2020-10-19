@@ -221,6 +221,7 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 enum Bar {
     DivText(String),
     Ul(Vec<String>),
+    Ol(Vec<String>),
 }
 
 impl Into<Foo> for Bar {
@@ -228,6 +229,7 @@ impl Into<Foo> for Bar {
         match self {
             Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
             Bar::Ul(v) => Foo::ul(&v),
+            Bar::Ol(v) => Foo::ol(&v),
         }
     }
 }
@@ -371,9 +373,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ("名詞", Bar::DivText(S("存在、あること")).into()),
                     (
                         "動詞",
-                        Foo::ls(
-                            r##"<div>（えま、アン）在る、存在する　（あいま）行う、実行する</div>"##,
-                        ),
+                        Bar::DivText(S("（えま、アン）在る、存在する　（あいま）行う、実行する"))
+                            .into(),
                     ),
                 ],
             },
@@ -393,7 +394,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 contents: vec![
                     (
                         "発音",
-                        Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
+                        Bar::Ol(vec![S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]).into(),
                     ),
                     ("名詞", Bar::DivText(S("在ること、存在")).into()),
                     (
@@ -404,9 +405,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ),
                     (
                         "熟語",
-                        Foo::ol(&[S(
+                        Bar::Ol(vec![S(
                             r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                        )]),
+                        )]).into(),
                     ),
                 ],
             },
