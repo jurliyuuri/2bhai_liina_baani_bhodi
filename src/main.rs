@@ -97,7 +97,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("足", include!("toc/足_toc.rs")),
         ("闇", include!("toc/闇_toc.rs")),
     ] {
-        let cont = std::fs::read_to_string(format!("src/contents/{}_contents.html", linzi))?;
+        let cont = {
+            let mut ans = String::new();
+            for i in 1..100 {
+                match std::fs::read_to_string(format!("src/contents/a/{}_{}.html", linzi, i)) {
+                    Ok(s) => ans += &s,
+                    Err(_) => break
+                }
+            }
+            ans
+        };
         let toc = generate_toc(toc);
         write_page_raw(linzi, toc, cont)?;
     }
