@@ -35,12 +35,5 @@ impl Lang {
         }
     }
 
-    pub fn h2(&self, toc_num: usize) -> Foo {
-        Foo::L(format!(
-            r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
-            toc_num,
-            &self.url(),
-            &self.ja()
-        ))
-    }
+    
 }

@@ -17,9 +17,19 @@ impl Into<Foo> for Bar {
     }
 }
 
-pub fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
+fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
+
+    fn h2(l: lang::Lang, toc_num: usize) -> Foo {
+        Foo::L(format!(
+            r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
+            toc_num,
+            &l.url(),
+            &l.ja()
+        ))
+    }
+
     *ind += 1;
-    let mut ans = vec![lang.h2(*ind), Foo::c1("div", Foo::ls("<hr>"))];
+    let mut ans = vec![h2(lang, *ind), Foo::c1("div", Foo::ls("<hr>"))];
     for (a, b) in v {
         *ind += 1;
         ans.push(h3(*ind, a));
@@ -35,12 +45,12 @@ pub fn write_page(linzi: &str, l: LinziPortion, h: Hoge) -> Result<(), Box<dyn s
 }
 
 #[derive(Clone, Debug)]
-pub enum Foo {
+enum Foo {
     L(String),
     C(&'static str, String, Vec<Foo>),
 }
 
-pub fn h3(ind: usize, t: &str) -> Foo {
+fn h3(ind: usize, t: &str) -> Foo {
     Foo::L(format!(r##"<h3><a name="TOC--{}"></a>{}</h3>"##, ind, t))
 }
 
@@ -153,7 +163,7 @@ pub struct LinziPortion {
 }
 
 impl LinziPortion {
-    pub fn render(self, ind: &mut usize) -> Vec<Foo> {
+    fn render(self, ind: &mut usize) -> Vec<Foo> {
         let LinziPortion {
             init,
             v1,
