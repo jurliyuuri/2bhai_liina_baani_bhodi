@@ -128,18 +128,6 @@ use lang::*;
 
 mod lang;
 
-fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
-    *ind += 1;
-    let mut ans = vec![lang.h2(*ind), Foo::c1("div", Foo::ls("<hr>"))];
-    for (a, b) in v {
-        *ind += 1;
-        ans.push(h3(*ind, a));
-        ans.push(b.into());
-    }
-    ans.push(Bar::DivText(S("<br>")).into());
-    ans
-}
-
 fn baz(
     init: Vec<Foo>,
     v1: Vec<(&'static str, Foo)>,
@@ -195,14 +183,14 @@ fn hoge(dat: Hoge) -> (String, Foo) {
 
     let mut v = vec![
         baz(vec![
-            Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
+            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)).into(),
             Bar::DivText(S("総画：4")).into(),
             Bar::DivText(S("筆順：丶ノ一一")).into(),
         ], vec![
             ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]).into()),
             ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]).into()),
         ], "grau_prua_yr/在.png", vec![
-            ("意義", Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))))
+            ("意義", Bar::Ol(vec![S(r##"在る。"##)]).into()),
         ],
         &mut ind),
     ];
@@ -218,21 +206,39 @@ fn hoge(dat: Hoge) -> (String, Foo) {
     (generate_toc(toc), cont)
 }
 
-enum Bar {
-    DivText(String),
-    Ul(Vec<String>),
-    Ol(Vec<String>),
-}
+mod bar {
+    use super::*;
+    
+    pub enum Bar {
+        DivText(String),
+        Ul(Vec<String>),
+        Ol(Vec<String>),
+    }
 
-impl Into<Foo> for Bar {
-    fn into(self) -> Foo {
-        match self {
-            Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
-            Bar::Ul(v) => Foo::ul(&v),
-            Bar::Ol(v) => Foo::ol(&v),
+    impl Into<Foo> for Bar {
+        fn into(self) -> Foo {
+            match self {
+                Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
+                Bar::Ul(v) => Foo::ul(&v),
+                Bar::Ol(v) => Foo::ol(&v),
+            }
         }
     }
+    
+    pub fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
+        *ind += 1;
+        let mut ans = vec![lang.h2(*ind), Foo::c1("div", Foo::ls("<hr>"))];
+        for (a, b) in v {
+            *ind += 1;
+            ans.push(h3(*ind, a));
+            ans.push(b.into());
+        }
+        ans.push(Bar::DivText(S("<br>")).into());
+        ans
+    }
 }
+
+use bar::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (linzi, toc) in vec![
