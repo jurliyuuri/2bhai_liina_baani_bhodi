@@ -1,39 +1,27 @@
-use super::*;
+pub struct Lang(pub String);
 
-pub enum Lang {
-    Bhat,
-    Lineparine,
-    Takang,
-    Ezzia,
-    Paige,
-    Air,
-    Proto,
+use std::collections::HashMap;
+lazy_static! {
+    static ref HASHMAP: HashMap<String, String> = include_str!("../config/links.tsv")
+        .lines()
+        .collect::<Vec<_>>()
+        .iter()
+        .map(|line| {
+            let v: Vec<&'static str> = line.splitn(2, "\t").collect();
+            (v[0].to_owned(), v[1].to_owned())
+        })
+        .collect::<HashMap<_, _>>();
 }
 
 impl Lang {
     pub fn url(&self) -> String {
-        match self {
-            Lang::Bhat => S("http://jurliyuuri.github.io/bhaataan/grammar.html"),
-            Lang::Lineparine => S("https://sites.google.com/site/3tvalineparine/home"),
-            Lang::Takang => S("https://sites.google.com/site/syxobo/takan"),
-            Lang::Ezzia => S("https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air/etz"),
-            Lang::Paige => S("https://sites.google.com/site/syxobo/paigu-yu"),
-            Lang::Air => S("https://sites.google.com/site/riparaincangku/yuesureone-ren-gong-shi-jie-she-ding/pai-sheng-yu-fang-yan/lkurftlessd-air"),
-            Lang::Proto => S("https://sites.google.com/site/syxobo/raneme-zu-yu")
-        }
+        match HASHMAP.get(&self.0) {
+            Some(u) => u.to_owned(),
+            None => panic!("Unknown language name {}", self.0)
+        }      
     }
 
     pub fn ja(&self) -> String {
-        match self {
-            Lang::Bhat => S("バート語"),
-            Lang::Lineparine => S("リパライン語"),
-            Lang::Takang => S("タカン語"),
-            Lang::Ezzia => S("エッツィア語"),
-            Lang::Paige => S("パイグ語"),
-            Lang::Air => S("アイル語"),
-            Lang::Proto => S("ラネーメ祖語"),
-        }
+        self.0.to_owned()
     }
-
-    
 }

@@ -1,3 +1,5 @@
+#[macro_use] extern crate lazy_static;
+
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -111,7 +113,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         },
         Hoge(vec![
             LangHoge {
-                lang: Lang::Proto,
+                lang: Lang(S("ラネーメ祖語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("aimq"))),
                     ("名詞", Bar::DivText(S("存在。"))),
@@ -119,14 +121,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             },
             LangHoge {
-                lang: Lang::Air,
+                lang: Lang(S("アイル語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("aima"))),
                     ("動詞", Bar::DivText(S("在る。"))),
                 ],
             },
             LangHoge {
-                lang: Lang::Paige,
+                lang: Lang(S("パイグ語")),
                 contents: vec![
                     (
                         "発音",
@@ -144,7 +146,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             },
             LangHoge {
-                lang: Lang::Takang,
+                lang: Lang(S("タカン語")),
                 contents: vec![
                     (
                         "発音",
@@ -159,7 +161,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             },
             LangHoge {
-                lang: Lang::Ezzia,
+                lang: Lang(S("エッツィア語")),
                 contents: vec![
                     (
                         "発音",
@@ -177,7 +179,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             },
             LangHoge {
-                lang: Lang::Bhat,
+                lang: Lang(S("バート語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("hemúl, hem"))),
                     ("動詞", Bar::DivText(S("(hemúl) ある。"))),
@@ -188,7 +190,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ],
             },
             LangHoge {
-                lang: Lang::Lineparine,
+                lang: Lang(S("リパライン語")),
                 contents: vec![
                     (
                         "発音",
