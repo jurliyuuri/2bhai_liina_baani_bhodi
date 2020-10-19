@@ -1,5 +1,9 @@
 #[macro_use] extern crate lazy_static;
 
+use env_logger;
+
+use std::env;
+
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -23,6 +27,9 @@ mod markup;
 use markup::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env::set_var("RUST_LOG", "warn");
+    env_logger::init();
+
     for (linzi, toc) in vec![
         ("一", include!("toc/一_toc.rs")),
         ("七", include!("toc/七_toc.rs")),
