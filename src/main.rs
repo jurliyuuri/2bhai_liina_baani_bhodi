@@ -102,8 +102,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             for i in 1..100 {
                 match std::fs::read_to_string(format!("src/contents/a/{}_{}.html", linzi, i)) {
                     Ok(s) => {
+                        ans += "<section>\n";
                         ans += &s;
-                        ans += "\n"
+                        ans += "\n</section>\n"
                     }
                     Err(_) => break,
                 }
