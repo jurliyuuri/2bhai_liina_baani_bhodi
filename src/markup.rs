@@ -11,14 +11,23 @@ impl Into<Foo> for Bar {
     fn into(self) -> Foo {
         match self {
             Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
-            Bar::Ul(v) => Foo::ul(&v),
-            Bar::Ol(v) => Foo::ol(&v),
+            Bar::Ul(v) => Foo::c(
+                "ul",
+                v.iter()
+                    .map(|a| Foo::L(format!("<li>{}</li>", a)))
+                    .collect(),
+            ),
+            Bar::Ol(v) => Foo::c(
+                "ol",
+                v.iter()
+                    .map(|a| Foo::L(format!("<li>{}</li>", a)))
+                    .collect(),
+            ),
         }
     }
 }
 
 fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
-
     fn h2(l: lang::Lang, toc_num: usize) -> Foo {
         Foo::L(format!(
             r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
@@ -64,24 +73,6 @@ impl Foo {
 
     pub fn c1(s: &'static str, v: Foo) -> Foo {
         Foo::C(s, S(">"), vec![v])
-    }
-
-    pub fn ol(k: &[String]) -> Foo {
-        Foo::c(
-            "ol",
-            k.iter()
-                .map(|a| Foo::L(format!("<li>{}</li>", a)))
-                .collect(),
-        )
-    }
-
-    pub fn ul(k: &[String]) -> Foo {
-        Foo::c(
-            "ul",
-            k.iter()
-                .map(|a| Foo::L(format!("<li>{}</li>", a)))
-                .collect(),
-        )
     }
 
     pub fn strs(&self) -> Vec<String> {

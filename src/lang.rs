@@ -1,8 +1,8 @@
 pub struct Lang(pub String);
 
-use std::collections::HashMap;
-use log::warn;
 use big_s::S;
+use log::warn;
+use std::collections::HashMap;
 
 impl Lang {
     pub fn url(&self) -> String {
@@ -23,7 +23,7 @@ impl Lang {
                 warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config/links.tsv", self.0);
                 S("")
             }
-        }      
+        }
     }
 
     pub fn ja(&self) -> String {
