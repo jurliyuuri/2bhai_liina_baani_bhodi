@@ -7,78 +7,98 @@ pub enum Bar {
     Ol(Vec<String>),
 }
 
-impl Into<Foo> for Bar {
-    fn into(self) -> Foo {
+impl Into<IndentedStr> for Bar {
+    fn into(self) -> IndentedStr {
         match self {
-            Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
-            Bar::Ul(v) => Foo::c(
+            Bar::DivText(ref s) => IndentedStr::Line(format!("<div>{}</div>", s)),
+            Bar::Ul(v) => IndentedStr::c(
                 "ul",
                 v.iter()
-                    .map(|a| Foo::L(format!("<li>{}</li>", a)))
+                    .map(|a| IndentedStr::Line(format!("<li>{}</li>", a)))
                     .collect(),
             ),
-            Bar::Ol(v) => Foo::c(
+            Bar::Ol(v) => IndentedStr::c(
                 "ol",
                 v.iter()
-                    .map(|a| Foo::L(format!("<li>{}</li>", a)))
+                    .map(|a| IndentedStr::Line(format!("<li>{}</li>", a)))
                     .collect(),
             ),
         }
     }
 }
 
-fn bar(lang: lang::Lang, v: Vec<(&'static str, Bar)>, ind: &mut usize) -> Vec<Foo> {
-    fn h2(l: lang::Lang, toc_num: usize) -> Foo {
-        Foo::L(format!(
-            r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
-            toc_num,
-            &l.url(),
-            &l.ja()
-        ))
+pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::error::Error>> {
+    let Article { l, dat } = article;
+    let v1_entries: Vec<&'static str> = l.v1.iter().map(|(k, _)| *k).collect();
+    let v2_entries: Vec<&'static str> = l.v2.iter().map(|(k, _)| *k).collect();
+
+    let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
+
+    for LangEntry { lang, contents } in &dat {
+        toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
     }
 
-    *ind += 1;
-    let mut ans = vec![h2(lang, *ind), Foo::c1("div", Foo::ls("<hr>"))];
-    for (a, b) in v {
-        *ind += 1;
-        ans.push(h3(*ind, a));
-        ans.push(b.into());
-    }
-    ans.push(Bar::DivText(S("<br>")).into());
-    ans
-}
+    let mut toc_num = 0;
 
-pub fn write_page(linzi: &str, l: LinziPortion, h: Hoge) -> Result<(), Box<dyn std::error::Error>> {
-    let (toc, cont) = hoge(l, h);
-    write_page_raw(linzi, toc, cont.to_string())
+    let linzi_portion = l.render(&mut toc_num);
+
+    let mut vv = vec![linzi_portion];
+    for LangEntry { lang, contents } in dat {
+        toc_num += 1;
+        let mut ans = vec![
+            IndentedStr::Line(format!(
+                r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
+                toc_num,
+                &lang.url(),
+                &lang.ja()
+            )),
+            IndentedStr::c1("div", IndentedStr::ls("<hr>")),
+        ];
+        for (a, b) in contents {
+            toc_num += 1;
+            ans.push(h3(toc_num, a));
+            ans.push(b.into());
+        }
+        ans.push(Bar::DivText(S("<br>")).into());
+
+        vv.push(ans)
+    }
+    let cont = IndentedStr::c(
+        "article",
+        vv.into_iter()
+            .map(|lang| IndentedStr::c("section", lang))
+            .collect(),
+    );
+
+    write_page_raw(linzi, generate_toc(toc), cont.to_string())
 }
 
 #[derive(Clone, Debug)]
-enum Foo {
-    L(String),
-    C(&'static str, String, Vec<Foo>),
+enum IndentedStr {
+    Line(String),
+    Tag(&'static str, String, Vec<IndentedStr>),
 }
 
-fn h3(ind: usize, t: &str) -> Foo {
-    Foo::L(format!(r##"<h3><a name="TOC--{}"></a>{}</h3>"##, ind, t))
+fn h3(ind: usize, t: &str) -> IndentedStr {
+    IndentedStr::Line(format!(r##"<h3><a name="TOC--{}"></a>{}</h3>"##, ind, t))
 }
 
-impl Foo {
-    pub fn ls(s: &'static str) -> Foo {
-        Foo::L(S(s))
+impl IndentedStr {
+    pub fn ls(s: &'static str) -> IndentedStr {
+        IndentedStr::Line(S(s))
     }
-    pub fn c(s: &'static str, v: Vec<Foo>) -> Foo {
-        Foo::C(s, S(">"), v)
+    pub fn c(s: &'static str, v: Vec<IndentedStr>) -> IndentedStr {
+        IndentedStr::Tag(s, S(">"), v)
     }
 
-    pub fn c1(s: &'static str, v: Foo) -> Foo {
-        Foo::C(s, S(">"), vec![v])
+    pub fn c1(s: &'static str, v: IndentedStr) -> IndentedStr {
+        IndentedStr::Tag(s, S(">"), vec![v])
     }
 
     pub fn strs(&self) -> Vec<String> {
         match self {
-            Foo::L(s) => vec![s.clone()],
-            Foo::C(tagname, tag_remaining, t) => {
+            IndentedStr::Line(s) => vec![s.clone()],
+            IndentedStr::Tag(tagname, tag_remaining, t) => {
                 let mut ans = vec![format!("<{}{}", tagname, tag_remaining)];
                 for a in t {
                     let mut k: Vec<_> = a.strs().into_iter().map(|b| format!("  {}", b)).collect();
@@ -91,7 +111,7 @@ impl Foo {
     }
 }
 
-impl std::fmt::Display for Foo {
+impl std::fmt::Display for IndentedStr {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.strs().join("\n"))
     }
@@ -102,13 +122,13 @@ where
     S: Into<String>,
 {
     let mut global_ind = 0;
-    Foo::C(
+    IndentedStr::Tag(
         "ol",
         S(r##" class="goog-toc">"##),
         toc.into_iter()
             .enumerate()
             .map(|(sec_num_minus_1, t)| {
-                Foo::C(
+                IndentedStr::Tag(
                     "li",
                     format!(
                         r##" class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
@@ -120,12 +140,12 @@ where
                         sec_num_minus_1 + 1,
                         t.0.into()
                     ),
-                    vec![Foo::C("ol", S(r##" class="goog-toc">"##), {
+                    vec![IndentedStr::Tag("ol", S(r##" class="goog-toc">"##), {
                         let mut v = vec![];
                         global_ind += 1;
                         let mut subsec_num = 1;
                         for a in t.1 {
-                            v.push(Foo::L(format!(
+                            v.push(IndentedStr::Line(format!(
                                 r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
           </strong>{}</a></li>"##,
                                 global_ind,
@@ -154,7 +174,7 @@ pub struct LinziPortion {
 }
 
 impl LinziPortion {
-    fn render(self, ind: &mut usize) -> Vec<Foo> {
+    fn render(self, ind: &mut usize) -> Vec<IndentedStr> {
         let LinziPortion {
             init,
             v1,
@@ -162,8 +182,8 @@ impl LinziPortion {
             v2,
         } = self;
         let mut ans = vec![
-            Foo::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
-            Foo::c1("div", Foo::ls("<hr>")),
+            IndentedStr::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
+            IndentedStr::c1("div", IndentedStr::ls("<hr>")),
         ];
         ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
         for (a, b) in v1 {
@@ -172,12 +192,12 @@ impl LinziPortion {
             ans.push(b.into());
         }
 
-        ans.push(Foo::ls(r##"<div></div>"##));
-        ans.push(Foo::L(format!(
+        ans.push(IndentedStr::ls(r##"<div></div>"##));
+        ans.push(IndentedStr::Line(format!(
             r##"<div><img src="{}" width="200" height="91" border="0"></div>"##,
             grau_prua_yr
         )));
-        ans.push(Foo::ls(r##"<div></div>"##));
+        ans.push(IndentedStr::ls(r##"<div></div>"##));
 
         for (a, b) in v2 {
             *ind += 1;
@@ -188,35 +208,13 @@ impl LinziPortion {
         ans
     }
 }
-pub struct Hoge(pub Vec<LangHoge>);
 
-pub struct LangHoge {
-    pub lang: Lang,
-    pub contents: Vec<(&'static str, Bar)>,
+pub struct Article {
+    pub l: LinziPortion,
+    pub dat: Vec<LangEntry>,
 }
 
-fn hoge(l: LinziPortion, dat: Hoge) -> (String, Foo) {
-    let v1_entries: Vec<&'static str> = l.v1.iter().map(|(k, _)| *k).collect();
-    let v2_entries: Vec<&'static str> = l.v2.iter().map(|(k, _)| *k).collect();
-
-    let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
-
-    for LangHoge { lang, contents } in &dat.0 {
-        toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
-    }
-
-    let mut ind = 0;
-
-    let linzi_portion = l.render(&mut ind);
-
-    let mut v = vec![linzi_portion];
-    for LangHoge { lang, contents: k } in dat.0 {
-        v.push(bar(lang, k, &mut ind))
-    }
-    let cont = Foo::c(
-        "article",
-        v.into_iter().map(|lang| Foo::c("section", lang)).collect(),
-    );
-
-    (generate_toc(toc), cont)
+pub struct LangEntry {
+    pub lang: Lang,
+    pub contents: Vec<(&'static str, Bar)>,
 }

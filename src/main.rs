@@ -104,7 +104,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
-        LinziPortion{
+       Article{l: LinziPortion{
             init: vec![
             Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)),
             Bar::DivText(S("総画：4")),
@@ -118,9 +118,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             v2: vec![
                 ("意義", Bar::Ol(vec![S(r##"在る。"##)])),
             ]
-        },
-        Hoge(vec![
-            LangHoge {
+        }, dat: vec![
+            LangEntry {
                 lang: Lang(S("ラネーメ祖語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("aimq"))),
@@ -128,14 +127,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ("述詞", Bar::DivText(S("在る。～している。"))),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("アイル語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("aima"))),
                     ("動詞", Bar::DivText(S("在る。"))),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("パイグ語")),
                 contents: vec![
                     (
@@ -153,7 +152,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ("叫詞", Bar::DivText(S("はい。"))),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("タカン語")),
                 contents: vec![
                     (
@@ -168,7 +167,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ("動詞", Bar::DivText(S("（え-む）ある。～している。"))),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("エッツィア語")),
                 contents: vec![
                     (
@@ -186,7 +185,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("バート語")),
                 contents: vec![
                     ("発音", Bar::DivText(S("hemúl, hem"))),
@@ -197,7 +196,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ),
                 ],
             },
-            LangHoge {
+            LangEntry {
                 lang: Lang(S("リパライン語")),
                 contents: vec![
                     (
@@ -219,7 +218,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ),
                 ],
             },
-        ]),
+        ]}
     )
 }
 
