@@ -136,7 +136,7 @@ fn bar(lang: lang::Lang, v: Vec<(&'static str, Foo)>, ind: &mut usize) -> Vec<Fo
         ans.push(h3(*ind, a));
         ans.push(b);
     }
-    ans.push(Foo::ls("<div><br></div>"));
+    ans.push(Bar::DivText(S("<br>")).into());
     ans
 }
 
@@ -170,7 +170,7 @@ fn baz(
         ans.push(h3(*ind, a));
         ans.push(b);
     }
-    ans.push(Foo::ls("<div><br></div>"));
+    ans.push(Bar::DivText(S("<br>")).into());
     ans
 }
 
@@ -196,11 +196,11 @@ fn hoge(dat: Hoge) -> (String, Foo) {
     let mut v = vec![
         baz(vec![
             Foo::ls(r##"<div><img src="linzi/在.png" border="0"></div>"##),
-            Foo::ls(r##"<div>総画：4</div>"##),
-            Foo::ls(r##"<div>筆順：丶ノ一一</div>"##),
+            Bar::DivText(S("総画：4")).into(),
+            Bar::DivText(S("筆順：丶ノ一一")).into(),
         ], vec![
-            ("字源", Foo::ul(&[S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
-            ("キャスカ・ファルザーの字源", Foo::ul(&[S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]),),
+            ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]).into()),
+            ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]).into()),
         ], "grau_prua_yr/在.png", vec![
             ("意義", Foo::c1("div", Foo::c1("ol", Foo::ls(r##"<li>在る。</li>"##))))
         ],
@@ -216,6 +216,20 @@ fn hoge(dat: Hoge) -> (String, Foo) {
     );
 
     (generate_toc(toc), cont)
+}
+
+enum Bar {
+    DivText(String),
+    Ul(Vec<String>),
+}
+
+impl Into<Foo> for Bar {
+    fn into(self) -> Foo {
+        match self {
+            Bar::DivText(ref s) => Foo::L(format!("<div>{}</div>", s)),
+            Bar::Ul(v) => Foo::ul(&v),
+        }
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -296,16 +310,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             LangHoge {
                 lang: Lang::Proto,
                 contents: vec![
-                    ("発音", Foo::ls(r##"<div>aimq</div>"##)),
-                    ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                    ("述詞", Foo::ls(r##"<div>在る。～している。</div>"##)),
+                    ("発音", Bar::DivText(S("aimq")).into()),
+                    ("名詞", Bar::DivText(S("存在。")).into()),
+                    ("述詞", Bar::DivText(S("在る。～している。")).into()),
                 ],
             },
             LangHoge {
                 lang: Lang::Air,
                 contents: vec![
-                    ("発音", Foo::ls(r##"<div>aima</div>"##)),
-                    ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
+                    ("発音", Bar::DivText(S("aima")).into()),
+                    ("動詞", Bar::DivText(S("在る。")).into()),
                 ],
             },
             LangHoge {
@@ -313,17 +327,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 contents: vec![
                     (
                         "発音",
-                        Foo::ul(&[
-                            S(r##"標準パイグ語：aim2"##),
-                            S(r##"アイツォ語：aim2"##),
-                            S(r##"古音：raim"##),
-                            S(r##"韻図音：冠在素"##),
-                        ]),
+                        Bar::Ul(vec![
+                            S("標準パイグ語：aim2"),
+                            S("アイツォ語：aim2"),
+                            S("古音：raim"),
+                            S("韻図音：冠在素"),
+                        ])
+                        .into(),
                     ),
-                    ("名詞", Foo::ls(r##"<div>存在。</div>"##)),
-                    ("動詞", Foo::ls(r##"<div>在る。</div>"##)),
-                    ("定詞", Foo::ls(r##"<div>～している。</div>"##)),
-                    ("叫詞", Foo::ls("<div>はい。</div>")),
+                    ("名詞", Bar::DivText(S("存在。")).into()),
+                    ("動詞", Bar::DivText(S("在る。")).into()),
+                    ("定詞", Bar::DivText(S("～している。")).into()),
+                    ("叫詞", Bar::DivText(S("はい。")).into()),
                 ],
             },
             LangHoge {
@@ -331,10 +346,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 contents: vec![
                     (
                         "発音",
-                        Foo::ul(&[
+                        Bar::Ul(vec![
                             S(r##"皇音：えま、え-む"##),
                             S(r##"牌音　古音：アイ　新音：エン"##),
-                        ]),
+                        ])
+                        .into(),
                     ),
                     ("名詞", Foo::ls(r##"（えま）存在。"##)),
                     ("動詞", Foo::ls(r##"（え-む）ある。～している。"##)),
@@ -345,13 +361,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 contents: vec![
                     (
                         "発音",
-                        Foo::ul(&[
+                        Bar::Ul(vec![
                             S(r##"光音：あいま"##),
                             S(r##"皇音：え、えむ"##),
                             S(r##"牌音　古音：ラン　現音：アン"##),
-                        ]),
+                        ])
+                        .into(),
                     ),
-                    ("名詞", Foo::ls(r##"<div>存在、あること</div>"##)),
+                    ("名詞", Bar::DivText(S("存在、あること")).into()),
                     (
                         "動詞",
                         Foo::ls(
@@ -363,11 +380,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             LangHoge {
                 lang: Lang::Bhat,
                 contents: vec![
-                    ("発音", Foo::ls(r##"<div>hemúl, hem</div>"##)),
-                    ("動詞", Foo::ls(r##"<div>(hemúl) ある。</div>"##)),
+                    ("発音", Bar::DivText(S("hemúl, hem")).into()),
+                    ("動詞", Bar::DivText(S("(hemúl) ある。")).into()),
                     (
                         "無変化動詞",
-                        Foo::ls(r##"<div>(hem) 完了の無変化動詞。〜である。</div>"##),
+                        Bar::DivText(S("(hem) 完了の無変化動詞。〜である。")).into(),
                     ),
                 ],
             },
@@ -378,7 +395,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         "発音",
                         Foo::ol(&[S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
                     ),
-                    ("名詞", Foo::ls("<div>在ること、存在</div>")),
+                    ("名詞", Bar::DivText(S("在ること、存在")).into()),
                     (
                         "動詞",
                         Foo::ls(
