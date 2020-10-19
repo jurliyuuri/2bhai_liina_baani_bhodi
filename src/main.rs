@@ -16,9 +16,9 @@ use big_s::S;
 mod lang;
 use lang::*;
 
-mod bar;
+mod markup;
 
-use bar::*;
+use markup::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     for (linzi, toc) in vec![
@@ -94,30 +94,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
-        LinziPortion{init: vec![
-            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)).into(),
-            Bar::DivText(S("総画：4")).into(),
-            Bar::DivText(S("筆順：丶ノ一一")).into(),
-        ], v1: vec![
-            ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)]).into()),
-            ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")]).into()),
-        ], grau_prua_yr: "grau_prua_yr/在.png", v2: vec![
-            ("意義", Bar::Ol(vec![S(r##"在る。"##)]).into()),
-        ]},
+        LinziPortion{
+            init: vec![
+            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)),
+            Bar::DivText(S("総画：4")),
+            Bar::DivText(S("筆順：丶ノ一一")),
+            ],
+            v1: vec![
+                ("字源", Bar::Ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
+                ("キャスカ・ファルザーの字源", Bar::Ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")])),
+            ],
+            grau_prua_yr: "grau_prua_yr/在.png", 
+            v2: vec![
+                ("意義", Bar::Ol(vec![S(r##"在る。"##)])),
+            ]
+        },
         Hoge(vec![
             LangHoge {
                 lang: Lang::Proto,
                 contents: vec![
-                    ("発音", Bar::DivText(S("aimq")).into()),
-                    ("名詞", Bar::DivText(S("存在。")).into()),
-                    ("述詞", Bar::DivText(S("在る。～している。")).into()),
+                    ("発音", Bar::DivText(S("aimq"))),
+                    ("名詞", Bar::DivText(S("存在。"))),
+                    ("述詞", Bar::DivText(S("在る。～している。"))),
                 ],
             },
             LangHoge {
                 lang: Lang::Air,
                 contents: vec![
-                    ("発音", Bar::DivText(S("aima")).into()),
-                    ("動詞", Bar::DivText(S("在る。")).into()),
+                    ("発音", Bar::DivText(S("aima"))),
+                    ("動詞", Bar::DivText(S("在る。"))),
                 ],
             },
             LangHoge {
@@ -131,12 +136,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             S("古音：raim"),
                             S("韻図音：冠在素"),
                         ])
-                        .into(),
                     ),
-                    ("名詞", Bar::DivText(S("存在。")).into()),
-                    ("動詞", Bar::DivText(S("在る。")).into()),
-                    ("定詞", Bar::DivText(S("～している。")).into()),
-                    ("叫詞", Bar::DivText(S("はい。")).into()),
+                    ("名詞", Bar::DivText(S("存在。"))),
+                    ("動詞", Bar::DivText(S("在る。"))),
+                    ("定詞", Bar::DivText(S("～している。"))),
+                    ("叫詞", Bar::DivText(S("はい。"))),
                 ],
             },
             LangHoge {
@@ -148,10 +152,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             S("皇音：えま、え-む"),
                             S("牌音　古音：アイ　新音：エン"),
                         ])
-                        .into(),
+                        ,
                     ),
-                    ("名詞", Bar::DivText(S("（えま）存在。")).into()),
-                    ("動詞", Bar::DivText(S("（え-む）ある。～している。")).into()),
+                    ("名詞", Bar::DivText(S("（えま）存在。"))),
+                    ("動詞", Bar::DivText(S("（え-む）ある。～している。"))),
                 ],
             },
             LangHoge {
@@ -164,24 +168,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             S(r##"皇音：え、えむ"##),
                             S(r##"牌音　古音：ラン　現音：アン"##),
                         ])
-                        .into(),
                     ),
-                    ("名詞", Bar::DivText(S("存在、あること")).into()),
+                    ("名詞", Bar::DivText(S("存在、あること"))),
                     (
                         "動詞",
                         Bar::DivText(S("（えま、アン）在る、存在する　（あいま）行う、実行する"))
-                            .into(),
                     ),
                 ],
             },
             LangHoge {
                 lang: Lang::Bhat,
                 contents: vec![
-                    ("発音", Bar::DivText(S("hemúl, hem")).into()),
-                    ("動詞", Bar::DivText(S("(hemúl) ある。")).into()),
+                    ("発音", Bar::DivText(S("hemúl, hem"))),
+                    ("動詞", Bar::DivText(S("(hemúl) ある。"))),
                     (
                         "無変化動詞",
-                        Bar::DivText(S("(hem) 完了の無変化動詞。〜である。")).into(),
+                        Bar::DivText(S("(hem) 完了の無変化動詞。〜である。")),
                     ),
                 ],
             },
@@ -190,20 +192,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 contents: vec![
                     (
                         "発音",
-                        Bar::Ol(vec![S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]).into(),
+                        Bar::Ol(vec![S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
                     ),
-                    ("名詞", Bar::DivText(S("在ること、存在")).into()),
+                    ("名詞", Bar::DivText(S("在ること、存在"))),
                     (
                         "動詞",
                         Bar::DivText(S(
                             r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
-                        )).into(),
+                        )),
                     ),
                     (
                         "熟語",
                         Bar::Ol(vec![S(
                             r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                        )]).into(),
+                        )]),
                     ),
                 ],
             },
