@@ -349,13 +349,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     (
                         "発音",
                         Bar::Ul(vec![
-                            S(r##"皇音：えま、え-む"##),
-                            S(r##"牌音　古音：アイ　新音：エン"##),
+                            S("皇音：えま、え-む"),
+                            S("牌音　古音：アイ　新音：エン"),
                         ])
                         .into(),
                     ),
-                    ("名詞", Foo::ls(r##"（えま）存在。"##)),
-                    ("動詞", Foo::ls(r##"（え-む）ある。～している。"##)),
+                    ("名詞", Bar::DivText(S("（えま）存在。")).into()),
+                    ("動詞", Bar::DivText(S("（え-む）ある。～している。")).into()),
                 ],
             },
             LangHoge {
@@ -399,9 +399,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ("名詞", Bar::DivText(S("在ること、存在")).into()),
                     (
                         "動詞",
-                        Foo::ls(
+                        Bar::DivText(S(
                             r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
-                        ),
+                        )).into(),
                     ),
                     (
                         "熟語",
