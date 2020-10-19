@@ -106,7 +106,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "在",
        Article{l: LinziPortion{
             init: vec![
-            Bar::DivText(S(r##"<img src="linzi/在.png" border="0">"##)),
+            Bar::DivText(S("<img src=\"linzi/在.png\" border=\"0\">")),
             Bar::DivText(S("総画：4")),
             Bar::DivText(S("筆順：丶ノ一一")),
             ],
@@ -116,7 +116,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             ],
             grau_prua_yr: "grau_prua_yr/在.png", 
             v2: vec![
-                ("意義", Bar::Ol(vec![S(r##"在る。"##)])),
+                ("意義", Bar::Ol(vec![S("在る。")])),
             ]
         }, dat: vec![
             LangEntry {
@@ -173,9 +173,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     (
                         "発音",
                         Bar::Ul(vec![
-                            S(r##"光音：あいま"##),
-                            S(r##"皇音：え、えむ"##),
-                            S(r##"牌音　古音：ラン　現音：アン"##),
+                            S("光音：あいま"),
+                            S("皇音：え、えむ"),
+                            S("牌音　古音：ラン　現音：アン"),
                         ])
                     ),
                     ("名詞", Bar::DivText(S("存在、あること"))),
@@ -207,7 +207,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     (
                         "動詞",
                         Bar::DivText(S(
-                            r##"行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"##,
+                            "行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）",
                         )),
                     ),
                     (

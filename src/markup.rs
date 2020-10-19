@@ -46,17 +46,16 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
     for LangEntry { lang, contents } in dat {
         toc_num += 1;
         let mut ans = vec![
-            IndentedStr::Line(format!(
-                r##"<h2><a name="TOC--{}"></a><a href="{}">{}</a></h2>"##,
+            IndentedStr::with_toc(
+                "h2",
                 toc_num,
-                &lang.url(),
-                &lang.ja()
-            )),
+                &format!("<a href=\"{}\">{}</a>", &lang.url(), &lang.ja()),
+            ),
             IndentedStr::c1("div", IndentedStr::ls("<hr>")),
         ];
         for (a, b) in contents {
             toc_num += 1;
-            ans.push(h3(toc_num, a));
+            ans.push(IndentedStr::with_toc("h3", toc_num, a));
             ans.push(b.into());
         }
         ans.push(Bar::DivText(S("<br>")).into());
@@ -79,20 +78,25 @@ enum IndentedStr {
     Tag(&'static str, String, Vec<IndentedStr>),
 }
 
-fn h3(ind: usize, t: &str) -> IndentedStr {
-    IndentedStr::Line(format!(r##"<h3><a name="TOC--{}"></a>{}</h3>"##, ind, t))
-}
-
 impl IndentedStr {
+    pub fn with_toc(tagname: &'static str, ind: usize, t: &str) -> IndentedStr {
+        IndentedStr::Line(format!(
+            "<{tagname}><a name=\"TOC--{index}\"></a>{content}</{tagname}>",
+            index = ind,
+            content = t,
+            tagname = tagname
+        ))
+    }
+
     pub fn ls(s: &'static str) -> IndentedStr {
         IndentedStr::Line(S(s))
     }
-    pub fn c(s: &'static str, v: Vec<IndentedStr>) -> IndentedStr {
-        IndentedStr::Tag(s, S(">"), v)
+    pub fn c(tagname: &'static str, v: Vec<IndentedStr>) -> IndentedStr {
+        IndentedStr::Tag(tagname, S(">"), v)
     }
 
-    pub fn c1(s: &'static str, v: IndentedStr) -> IndentedStr {
-        IndentedStr::Tag(s, S(">"), vec![v])
+    pub fn c1(tagname: &'static str, v: IndentedStr) -> IndentedStr {
+        IndentedStr::Tag(tagname, S(">"), vec![v])
     }
 
     pub fn strs(&self) -> Vec<String> {
@@ -124,14 +128,14 @@ where
     let mut global_ind = 0;
     IndentedStr::Tag(
         "ol",
-        S(r##" class="goog-toc">"##),
+        S(" class=\"goog-toc\">"),
         toc.into_iter()
             .enumerate()
             .map(|(sec_num_minus_1, t)| {
                 IndentedStr::Tag(
                     "li",
                     format!(
-                        r##" class="goog-toc"><a href="#TOC--{}"><strong>{} </strong>{}</a>"##,
+                        " class=\"goog-toc\"><a href=\"#TOC--{}\"><strong>{} </strong>{}</a>",
                         if global_ind == 0 {
                             S("")
                         } else {
@@ -140,14 +144,13 @@ where
                         sec_num_minus_1 + 1,
                         t.0.into()
                     ),
-                    vec![IndentedStr::Tag("ol", S(r##" class="goog-toc">"##), {
+                    vec![IndentedStr::Tag("ol", S(" class=\"goog-toc\">"), {
                         let mut v = vec![];
                         global_ind += 1;
                         let mut subsec_num = 1;
                         for a in t.1 {
                             v.push(IndentedStr::Line(format!(
-                                r##"<li class="goog-toc"><a href="#TOC--{}"><strong>{}.{}
-          </strong>{}</a></li>"##,
+                                "<li class=\"goog-toc\"><a href=\"#TOC--{}\"><strong>{}.{}\n          </strong>{}</a></li>",
                                 global_ind,
                                 sec_num_minus_1 + 1,
                                 subsec_num,
@@ -182,26 +185,26 @@ impl LinziPortion {
             v2,
         } = self;
         let mut ans = vec![
-            IndentedStr::ls(r##"<h2><a name="TOC--"></a>燐字</h2>"##),
+            IndentedStr::ls("<h2><a name=\"TOC--\"></a>燐字</h2>"),
             IndentedStr::c1("div", IndentedStr::ls("<hr>")),
         ];
         ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
         for (a, b) in v1 {
             *ind += 1;
-            ans.push(h3(*ind, a));
+            ans.push(IndentedStr::with_toc("h3", *ind, a));
             ans.push(b.into());
         }
 
-        ans.push(IndentedStr::ls(r##"<div></div>"##));
+        ans.push(IndentedStr::ls("<div></div>"));
         ans.push(IndentedStr::Line(format!(
-            r##"<div><img src="{}" width="200" height="91" border="0"></div>"##,
+            "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
             grau_prua_yr
         )));
-        ans.push(IndentedStr::ls(r##"<div></div>"##));
+        ans.push(IndentedStr::ls("<div></div>"));
 
         for (a, b) in v2 {
             *ind += 1;
-            ans.push(h3(*ind, a));
+            ans.push(IndentedStr::with_toc("h3", *ind, a));
             ans.push(b.into());
         }
         ans.push(Bar::DivText(S("<br>")).into());
