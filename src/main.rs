@@ -101,8 +101,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let mut ans = String::new();
             for i in 1..100 {
                 match std::fs::read_to_string(format!("src/contents/a/{}_{}.html", linzi, i)) {
-                    Ok(s) => ans += &s,
-                    Err(_) => break
+                    Ok(s) => {
+                        ans += &s;
+                        ans += "\n"
+                    }
+                    Err(_) => break,
                 }
             }
             ans
