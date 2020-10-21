@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Lang(pub String);
 
 use big_s::S;

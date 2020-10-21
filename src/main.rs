@@ -135,23 +135,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             LangEntry {
                 lang: Lang(S("ラネーメ祖語")),
                 contents: vec![
-                    ("発音", Bar::DivText(S("aimq"))),
-                    ("名詞", Bar::DivText(S("存在。"))),
-                    ("述詞", Bar::DivText(S("在る。～している。"))),
+                    (S("発音"), Bar::DivText(S("aimq"))),
+                    (S("名詞"), Bar::DivText(S("存在。"))),
+                    (S("述詞"), Bar::DivText(S("在る。～している。"))),
                 ],
             },
             LangEntry {
                 lang: Lang(S("アイル語")),
                 contents: vec![
-                    ("発音", Bar::DivText(S("aima"))),
-                    ("動詞", Bar::DivText(S("在る。"))),
+                    (S("発音"), Bar::DivText(S("aima"))),
+                    (S("動詞"), Bar::DivText(S("在る。"))),
                 ],
             },
             LangEntry {
                 lang: Lang(S("パイグ語")),
                 contents: vec![
                     (
-                        "発音", serde_json::from_str(r##"
+                        S("発音"), serde_json::from_str(r##"
                         {
                             "ordered": false,
                             "content": [
@@ -163,41 +163,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                         "##).unwrap()
                     ),
-                    ("名詞", Bar::DivText(S("存在。"))),
-                    ("動詞", Bar::DivText(S("在る。"))),
-                    ("定詞", Bar::DivText(S("～している。"))),
-                    ("叫詞", Bar::DivText(S("はい。"))),
+                    (S("名詞"), serde_json::from_str(r##""存在。""##).unwrap()),
+                    (S("動詞"), serde_json::from_str(r##""在る。""##).unwrap()),
+                    (S("定詞"), serde_json::from_str(r##""～している。""##).unwrap()),
+                    (S("叫詞"), serde_json::from_str(r##""はい。""##).unwrap()),
                 ],
             },
             LangEntry {
                 lang: Lang(S("タカン語")),
                 contents: vec![
                     (
-                        "発音",
+                        S("発音"),
                         Bar::ul(vec![
                             S("皇音：えま、え-む"),
                             S("牌音　古音：アイ　新音：エン"),
                         ])
                         ,
                     ),
-                    ("名詞", Bar::DivText(S("（えま）存在。"))),
-                    ("動詞", Bar::DivText(S("（え-む）ある。～している。"))),
+                    (S("名詞"), Bar::DivText(S("（えま）存在。"))),
+                    (S("動詞"), Bar::DivText(S("（え-む）ある。～している。"))),
                 ],
             },
             LangEntry {
                 lang: Lang(S("エッツィア語")),
                 contents: vec![
                     (
-                        "発音",
+                        S("発音"),
                         Bar::ul(vec![
                             S("光音：あいま"),
                             S("皇音：え、えむ"),
                             S("牌音　古音：ラン　現音：アン"),
                         ])
                     ),
-                    ("名詞", Bar::DivText(S("存在、あること"))),
+                    (S("名詞"), Bar::DivText(S("存在、あること"))),
                     (
-                        "動詞",
+                        S("動詞"),
                         Bar::DivText(S("（えま、アン）在る、存在する　（あいま）行う、実行する"))
                     ),
                 ],
@@ -205,10 +205,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             LangEntry {
                 lang: Lang(S("バート語")),
                 contents: vec![
-                    ("発音", Bar::DivText(S("hemúl, hem"))),
-                    ("動詞", Bar::DivText(S("(hemúl) ある。"))),
+                    (S("発音"), Bar::DivText(S("hemúl, hem"))),
+                    (S("動詞"), Bar::DivText(S("(hemúl) ある。"))),
                     (
-                        "無変化動詞",
+                        S("無変化動詞"),
                         Bar::DivText(S("(hem) 完了の無変化動詞。〜である。")),
                     ),
                 ],
@@ -217,18 +217,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 lang: Lang(S("リパライン語")),
                 contents: vec![
                     (
-                        "発音",
+                        S("発音"),
                         Bar::ol(vec![S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
                     ),
-                    ("名詞", Bar::DivText(S("在ること、存在"))),
+                    (S("名詞"), Bar::DivText(S("在ること、存在"))),
                     (
-                        "動詞",
+                        S("動詞"),
                         Bar::DivText(S(
                             "行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）",
                         )),
                     ),
                     (
-                        "熟語",
+                        S("熟語"),
                         Bar::ol(vec![S(
                             r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
                         )]),

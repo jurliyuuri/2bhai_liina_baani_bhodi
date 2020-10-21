@@ -42,13 +42,13 @@ impl Into<IndentedStr> for Bar {
 
 pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::error::Error>> {
     let Article { l, dat } = article;
-    let v1_entries: Vec<&'static str> = l.v1.iter().map(|(k, _)| *k).collect();
-    let v2_entries: Vec<&'static str> = l.v2.iter().map(|(k, _)| *k).collect();
+    let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| S(k)).collect();
+    let v2_entries: Vec<String> = l.v2.iter().map(|(k, _)| S(k)).collect();
 
     let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
 
     for LangEntry { lang, contents } in &dat {
-        toc.push((lang.ja(), contents.iter().map(|a| a.0).collect()));
+        toc.push((lang.ja(), contents.iter().map(|a| a.0.clone()).collect()));
     }
 
     let mut toc_num = 0;
@@ -68,7 +68,7 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
         ];
         for (a, b) in contents {
             toc_num += 1;
-            ans.push(IndentedStr::with_toc("h3", toc_num, a));
+            ans.push(IndentedStr::with_toc("h3", toc_num, &a));
             ans.push(b.into());
         }
         ans.push(Bar::DivText(S("<br>")).into());
@@ -134,9 +134,10 @@ impl std::fmt::Display for IndentedStr {
     }
 }
 
-pub fn generate_toc<S>(toc: Vec<(S, Vec<&str>)>) -> String
+pub fn generate_toc<S, T>(toc: Vec<(S, Vec<T>)>) -> String
 where
     S: Into<String>,
+    T: Into<String>,
 {
     let mut global_ind = 0;
     IndentedStr::Tag(
@@ -167,7 +168,7 @@ where
                                 global_ind,
                                 sec_num_minus_1 + 1,
                                 subsec_num,
-                                a
+                                a.into()
                             )));
                             global_ind += 1;
                             subsec_num += 1;
@@ -230,7 +231,8 @@ pub struct Article {
     pub dat: Vec<LangEntry>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LangEntry {
     pub lang: Lang,
-    pub contents: Vec<(&'static str, Bar)>,
+    pub contents: Vec<(String, Bar)>,
 }
