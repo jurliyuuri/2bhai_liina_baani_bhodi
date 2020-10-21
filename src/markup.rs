@@ -1,24 +1,37 @@
 use super::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum Bar {
     DivText(String),
-    Ul(Vec<String>),
-    Ol(Vec<String>),
+    List { ordered: bool, content: Vec<String> },
+}
+
+impl Bar {
+    pub fn ul(v: Vec<String>) -> Bar {
+        Bar::List {
+            ordered: false,
+            content: v,
+        }
+    }
+    pub fn ol(v: Vec<String>) -> Bar {
+        Bar::List {
+            ordered: true,
+            content: v,
+        }
+    }
 }
 
 impl Into<IndentedStr> for Bar {
     fn into(self) -> IndentedStr {
         match self {
             Bar::DivText(ref s) => IndentedStr::Line(format!("<div>{}</div>", s)),
-            Bar::Ul(v) => IndentedStr::c(
-                "ul",
-                v.iter()
-                    .map(|a| IndentedStr::Line(format!("<li>{}</li>", a)))
-                    .collect(),
-            ),
-            Bar::Ol(v) => IndentedStr::c(
-                "ol",
+            Bar::List {
+                ordered,
+                content: v,
+            } => IndentedStr::c(
+                if ordered { "ol" } else { "ul" },
                 v.iter()
                     .map(|a| IndentedStr::Line(format!("<li>{}</li>", a)))
                     .collect(),
