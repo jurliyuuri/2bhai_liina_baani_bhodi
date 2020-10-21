@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
-       Article{l: serde_json::from_str(r###"{
+        serde_json::from_str(r#"{"l": {
             "init": [
                 "<img src=\"linzi/在.png\" border=\"0\">",
                 "総画：4",
@@ -153,23 +153,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 ]
             ]
-        }"###).unwrap(), dat: vec![
-            serde_json::from_str(r#"{
+        }, "dat": [
+            {
                 "lang": "ラネーメ祖語",
                 "contents": [
                     ["発音", "aimq"],
                     ["名詞", "存在。"],
                     ["述詞", "在る。～している。"]
                 ]
-            }"#).unwrap(),
-            serde_json::from_str(r#"{
+            }, {
                 "lang": "アイル語",
                 "contents": [
                     ["発音", "aima"],
                     ["動詞", "在る。"]
                 ]
-            }"#).unwrap(),
-            serde_json::from_str(r###"{
+            }, {
                 "lang": "パイグ語",
                 "contents": [
                     [
@@ -189,8 +187,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ["定詞", "～している。"],
                     ["叫詞", "はい。"]
                 ]
-            }"###).unwrap(),
-            serde_json::from_str(r#"{
+            }, {
                 "lang": "タカン語",
                 "contents":[
                     [
@@ -206,8 +203,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ["名詞", "（えま）存在。"],
                     ["動詞", "（え-む）ある。～している。"]
                 ]
-            }"#).unwrap(),
-            serde_json::from_str(r#"{
+            }, {
                 "lang": "エッツィア語",
                 "contents": [
                     [
@@ -229,16 +225,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         "（えま、アン）在る、存在する　（あいま）行う、実行する"
                     ]
                 ]
-            }"#).unwrap(),
-            serde_json::from_str(r#"{
+            }, {
                 "lang": "バート語",
                 "contents": [
                     ["発音", "hemúl, hem"],
                     ["動詞", "(hemúl) ある。"],
                     ["無変化動詞", "(hem) 完了の無変化動詞。〜である。"]
                 ]
-            }"#).unwrap(),
-            serde_json::from_str(r#"{
+            }, {
                 "lang": "リパライン語",
                 "contents": [
                     [
@@ -267,8 +261,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                     ]
                 ]
-            }"#).unwrap(),
-        ]}
+            }
+        ]}"#).unwrap(),
     )
 }
 
