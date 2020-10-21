@@ -132,26 +132,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ("意義", Bar::ol(vec![S("在る。")])),
             ]
         }, dat: vec![
-            LangEntry {
-                lang: Lang(S("ラネーメ祖語")),
-                contents: vec![
-                    (S("発音"), Bar::DivText(S("aimq"))),
-                    (S("名詞"), Bar::DivText(S("存在。"))),
-                    (S("述詞"), Bar::DivText(S("在る。～している。"))),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("アイル語")),
-                contents: vec![
-                    (S("発音"), Bar::DivText(S("aima"))),
-                    (S("動詞"), Bar::DivText(S("在る。"))),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("パイグ語")),
-                contents: vec![
-                    (
-                        S("発音"), serde_json::from_str(r##"
+            serde_json::from_str(r#"{
+                "lang": "ラネーメ祖語",
+                "contents": [
+                    ["発音", "aimq"],
+                    ["名詞", "存在。"],
+                    ["述詞", "在る。～している。"]
+                ]
+            }"#).unwrap(),
+            serde_json::from_str(r#"{
+                "lang": "アイル語",
+                "contents": [
+                    ["発音", "aima"],
+                    ["動詞", "在る。"]
+                ]
+            }"#).unwrap(),
+            serde_json::from_str(r###"{
+                "lang": "パイグ語",
+                "contents": [
+                    [
+                        "発音",
                         {
                             "ordered": false,
                             "content": [
@@ -161,80 +161,91 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 "韻図音：冠在素"
                             ]
                         }
-                        "##).unwrap()
-                    ),
-                    (S("名詞"), serde_json::from_str(r##""存在。""##).unwrap()),
-                    (S("動詞"), serde_json::from_str(r##""在る。""##).unwrap()),
-                    (S("定詞"), serde_json::from_str(r##""～している。""##).unwrap()),
-                    (S("叫詞"), serde_json::from_str(r##""はい。""##).unwrap()),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("タカン語")),
-                contents: vec![
-                    (
-                        S("発音"),
-                        Bar::ul(vec![
-                            S("皇音：えま、え-む"),
-                            S("牌音　古音：アイ　新音：エン"),
-                        ])
-                        ,
-                    ),
-                    (S("名詞"), Bar::DivText(S("（えま）存在。"))),
-                    (S("動詞"), Bar::DivText(S("（え-む）ある。～している。"))),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("エッツィア語")),
-                contents: vec![
-                    (
-                        S("発音"),
-                        Bar::ul(vec![
-                            S("光音：あいま"),
-                            S("皇音：え、えむ"),
-                            S("牌音　古音：ラン　現音：アン"),
-                        ])
-                    ),
-                    (S("名詞"), Bar::DivText(S("存在、あること"))),
-                    (
-                        S("動詞"),
-                        Bar::DivText(S("（えま、アン）在る、存在する　（あいま）行う、実行する"))
-                    ),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("バート語")),
-                contents: vec![
-                    (S("発音"), Bar::DivText(S("hemúl, hem"))),
-                    (S("動詞"), Bar::DivText(S("(hemúl) ある。"))),
-                    (
-                        S("無変化動詞"),
-                        Bar::DivText(S("(hem) 完了の無変化動詞。〜である。")),
-                    ),
-                ],
-            },
-            LangEntry {
-                lang: Lang(S("リパライン語")),
-                contents: vec![
-                    (
-                        S("発音"),
-                        Bar::ol(vec![S("es e\'i"), S("teles"), S("mol"), S("molo"), S("molerl")]),
-                    ),
-                    (S("名詞"), Bar::DivText(S("在ること、存在"))),
-                    (
-                        S("動詞"),
-                        Bar::DivText(S(
-                            "行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）",
-                        )),
-                    ),
-                    (
-                        S("熟語"),
-                        Bar::ol(vec![S(
-                            r##"<a href="真%20-%20燐字海.html">真</a>在　xinien la deliume　＜本分、本来の義務＞"##,
-                        )]),
-                    ),
-                ],
-            },
+                    ],
+                    ["名詞", "存在。"],
+                    ["動詞", "在る。"],
+                    ["定詞", "～している。"],
+                    ["叫詞", "はい。"]
+                ]
+            }"###).unwrap(),
+            serde_json::from_str(r#"{
+                "lang": "タカン語",
+                "contents":[
+                    [
+                        "発音", 
+                        {
+                            "ordered": false,
+                            "content": [
+                                "皇音：えま、え-む",
+                                "牌音　古音：アイ　新音：エン"
+                            ]
+                        }
+                    ],
+                    ["名詞", "（えま）存在。"],
+                    ["動詞", "（え-む）ある。～している。"]
+                ]
+            }"#).unwrap(),
+            serde_json::from_str(r#"{
+                "lang": "エッツィア語",
+                "contents": [
+                    [
+                        "発音",
+                        {
+                            "ordered": false,
+                            "content": [
+                                "光音：あいま",
+                                "皇音：え、えむ",
+                                "牌音　古音：ラン　現音：アン"
+                            ]
+                        }
+                    ],
+                    [
+                        "名詞", "存在、あること"
+                    ],
+                    [
+                        "動詞",
+                        "（えま、アン）在る、存在する　（あいま）行う、実行する"
+                    ]
+                ]
+            }"#).unwrap(),
+            serde_json::from_str(r#"{
+                "lang": "バート語",
+                "contents": [
+                    ["発音", "hemúl, hem"],
+                    ["動詞", "(hemúl) ある。"],
+                    ["無変化動詞", "(hem) 完了の無変化動詞。〜である。"]
+                ]
+            }"#).unwrap(),
+            serde_json::from_str(r#"{
+                "lang": "リパライン語",
+                "contents": [
+                    [
+                        "発音",
+                        {
+                            "ordered": true,
+                            "content": [
+                                "es e'i", "teles", "mol", "molo", "molerl"
+                            ]
+                        }
+                    ],
+                    ["名詞", "在ること、存在"],
+                    [
+                        "動詞",
+                        
+                            "行う、存在する（行うの文脈の場合、目的語があるならtelesで、無い場合はes e'iで訓読する。）"
+                        
+                    ],
+                    [
+                        "熟語",
+                        {
+                            "ordered": true,
+                            "content": [
+                                "<a href=\"真%20-%20燐字海.html\">真</a>在　xinien la deliume　＜本分、本来の義務＞"
+                            ]
+                        }
+                    ]
+                ]
+            }"#).unwrap(),
         ]}
     )
 }
