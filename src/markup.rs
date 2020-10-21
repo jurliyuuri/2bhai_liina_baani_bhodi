@@ -42,8 +42,8 @@ impl Into<IndentedStr> for Bar {
 
 pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::error::Error>> {
     let Article { l, dat } = article;
-    let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| S(k)).collect();
-    let v2_entries: Vec<String> = l.v2.iter().map(|(k, _)| S(k)).collect();
+    let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| k.to_owned()).collect();
+    let v2_entries: Vec<String> = l.v2.iter().map(|(k, _)| k.to_owned()).collect();
 
     let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
 
@@ -183,11 +183,12 @@ where
     .to_string()
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinziPortion {
     pub init: Vec<Bar>,
-    pub v1: Vec<(&'static str, Bar)>,
-    pub grau_prua_yr: &'static str,
-    pub v2: Vec<(&'static str, Bar)>,
+    pub v1: Vec<(String, Bar)>,
+    pub grau_prua_yr: String,
+    pub v2: Vec<(String, Bar)>,
 }
 
 impl LinziPortion {
@@ -205,7 +206,7 @@ impl LinziPortion {
         ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
         for (a, b) in v1 {
             *ind += 1;
-            ans.push(IndentedStr::with_toc("h3", *ind, a));
+            ans.push(IndentedStr::with_toc("h3", *ind, &a));
             ans.push(b.into());
         }
 
@@ -218,7 +219,7 @@ impl LinziPortion {
 
         for (a, b) in v2 {
             *ind += 1;
-            ans.push(IndentedStr::with_toc("h3", *ind, a));
+            ans.push(IndentedStr::with_toc("h3", *ind, &a));
             ans.push(b.into());
         }
         ans.push(Bar::DivText(S("<br>")).into());
@@ -226,6 +227,7 @@ impl LinziPortion {
     }
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Article {
     pub l: LinziPortion,
     pub dat: Vec<LangEntry>,

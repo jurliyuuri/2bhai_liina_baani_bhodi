@@ -117,21 +117,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
-       Article{l: LinziPortion{
-            init: vec![
-            Bar::DivText(S("<img src=\"linzi/在.png\" border=\"0\">")),
-            Bar::DivText(S("総画：4")),
-            Bar::DivText(S("筆順：丶ノ一一")),
+       Article{l: serde_json::from_str(r###"{
+            "init": [
+                "<img src=\"linzi/在.png\" border=\"0\">",
+                "総画：4",
+                "筆順：丶ノ一一"
             ],
-            v1: vec![
-                ("字源", Bar::ul(vec![S(r##"象形指事。「<a href="処%20-%20燐字海.html">処</a>」を強調したもの。"##)])),
-                ("キャスカ・ファルザーの字源", Bar::ul(vec![S("呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。")])),
+            "v1": [
+                [
+                    "字源", 
+                    {
+                        "ordered": false,
+                        "content": [
+                            "象形指事。「<a href=\"処%20-%20燐字海.html\">処</a>」を強調したもの。"
+                        ]
+                    }
+                ],
+                [
+                    "キャスカ・ファルザーの字源", 
+                    {
+                        "ordered": false,
+                        "content": [
+                            "呪術において使われる祭壇に乗せられる器を表す。器に供え物を置くという行為が、文化的な観点で強く「存在」を表したために、一般的な存在の意に転義した。"
+                        ]
+                    }
+                ]
             ],
-            grau_prua_yr: "grau_prua_yr/在.png", 
-            v2: vec![
-                ("意義", Bar::ol(vec![S("在る。")])),
+            "grau_prua_yr": "grau_prua_yr/在.png", 
+            "v2": [
+                [
+                    "意義", 
+                    {
+                        "ordered": true,
+                        "content": ["在る。"]
+                    }
+                ]
             ]
-        }, dat: vec![
+        }"###).unwrap(), dat: vec![
             serde_json::from_str(r#"{
                 "lang": "ラネーメ祖語",
                 "contents": [
