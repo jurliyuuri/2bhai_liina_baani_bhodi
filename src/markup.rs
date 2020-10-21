@@ -8,21 +8,6 @@ pub enum Bar {
     List { ordered: bool, content: Vec<String> },
 }
 
-impl Bar {
-    pub fn ul(v: Vec<String>) -> Bar {
-        Bar::List {
-            ordered: false,
-            content: v,
-        }
-    }
-    pub fn ol(v: Vec<String>) -> Bar {
-        Bar::List {
-            ordered: true,
-            content: v,
-        }
-    }
-}
-
 impl Into<IndentedStr> for Bar {
     fn into(self) -> IndentedStr {
         match self {
