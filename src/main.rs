@@ -111,7 +111,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 } else {
                     2
                 }; // TODO
-            for i in 1..=8 {
+            {
+                let i = 1;
                 let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = i);
                 let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
                 match std::fs::read_to_string(html_path.clone()) {
@@ -134,6 +135,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         Err(_) => panic!("Cannot find either {} or {}", html_path, json_path),
                     },
                 }
+            }
+            for i in 2..=8 {
+                let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
+                let s = std::fs::read_to_string(json_path).unwrap();
+                let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
+                ans += &textwrap::indent(
+                    &render_lang_entry_(&lang_entry.lenticular_to_link().unwrap(), &mut toc_num),
+                    "  ",
+                );
             }
             ans += "</article>";
             ans
