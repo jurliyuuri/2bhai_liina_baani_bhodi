@@ -102,7 +102,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ] {
         let cont = {
             let mut ans = String::from("<article>\n");
-            let mut toc_num = 2; // TODO
+            let mut toc_num =
+                if std::fs::read_to_string(format!("{i}/{linzi}_{i}.html", linzi = linzi, i = 1))
+                    .unwrap()
+                    .contains("キャスカ")
+                {
+                    3
+                } else {
+                    2
+                }; // TODO
             for i in 1..=8 {
                 let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = i);
                 let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
