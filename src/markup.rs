@@ -25,6 +25,109 @@ impl Into<IndentedStr> for Bar {
     }
 }
 
+pub trait Lenticular
+where
+    Self: std::marker::Sized,
+{
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>>;
+}
+
+#[derive(Debug, Clone)]
+pub enum LenticularError {
+    MismatchedRightLenticular(String),
+    MismatchedLeftLenticular(String),
+    LenticularInsideLenticular(String),
+}
+
+impl<T, U> Lenticular for (T, U)
+where
+    T: Lenticular + Clone,
+    U: Lenticular + Clone,
+{
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let (a, b) = self;
+        match (a.lenticular_to_link(), b.lenticular_to_link()) {
+            (Ok(a), Ok(b)) => Ok((a, b)),
+            (Ok(_), Err(b)) => Err(b),
+            (Err(b), Ok(_)) => Err(b),
+            (Err(mut a), Err(mut b)) => {
+                a.append(&mut b);
+                Err(a)
+            }
+        }
+    }
+}
+
+impl<T> Lenticular for Vec<T>
+where
+    T: Lenticular + Clone,
+{
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let mut ans = Vec::new();
+        let mut errors = Vec::new();
+        for i in self.iter() {
+            match i.clone().lenticular_to_link() {
+                Ok(l) => ans.push(l),
+                Err(mut e) => errors.append(&mut e),
+            }
+        }
+
+        if errors.len() > 0 {
+            Err(errors)
+        } else {
+            Ok(ans)
+        }
+    }
+}
+
+impl Lenticular for String {
+    /// Convert lenticular bracket into a link
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let mut inside_lenticular = false;
+        let mut ans = String::new();
+        for c in self.chars() {
+            if inside_lenticular {
+                match c {
+                    '【' => {
+                        return Err(vec![LenticularError::LenticularInsideLenticular(
+                            self.clone(),
+                        )])
+                    }
+                    '】' => {
+                        inside_lenticular = false;
+                    }
+                    linzi => {
+                        ans += &format!(
+                            "<a href=\"{linzi}%20-%20燐字海.html\">{linzi}</a>",
+                            linzi = linzi
+                        );
+                    }
+                }
+            } else {
+                match c {
+                    '【' => {
+                        inside_lenticular = true;
+                    }
+                    '】' => {
+                        return Err(vec![LenticularError::MismatchedRightLenticular(
+                            self.clone(),
+                        )])
+                    }
+                    linzi => ans.push(linzi),
+                }
+            }
+        }
+
+        if inside_lenticular {
+            return Err(vec![LenticularError::MismatchedLeftLenticular(
+                self.clone(),
+            )]);
+        }
+
+        Ok(ans)
+    }
+}
+
 pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::error::Error>> {
     let Article { l, dat } = article;
     let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| k.to_owned()).collect();
@@ -216,6 +319,59 @@ impl LinziPortion {
 pub struct Article {
     pub l: LinziPortion,
     pub dat: Vec<LangEntry>,
+}
+
+impl Lenticular for Article {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let Article { l, dat } = self.clone();
+        let (l, dat) = (l, dat).lenticular_to_link()?;
+        Ok(Article { l, dat })
+    }
+}
+
+impl Lenticular for LangEntry {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let LangEntry { lang, contents } = self.clone();
+        let (lang, contents) = (lang, contents).lenticular_to_link()?;
+        Ok(LangEntry { lang, contents })
+    }
+}
+
+impl Lenticular for Lang {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        Ok(self.clone())
+    }
+}
+
+impl Lenticular for Bar {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        match self.clone() {
+            Bar::DivText(s) => Ok(Bar::DivText(s.lenticular_to_link()?)),
+            Bar::List { ordered, content } => Ok(Bar::List {
+                ordered,
+                content: content.lenticular_to_link()?,
+            }),
+        }
+    }
+}
+
+impl Lenticular for LinziPortion {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+        let LinziPortion {
+            init,
+            v1,
+            grau_prua_yr,
+            v2,
+        } = self.clone();
+        let ((init, v1), (grau_prua_yr, v2)) =
+            ((init, v1), (grau_prua_yr, v2)).lenticular_to_link()?;
+        Ok(LinziPortion {
+            init,
+            v1,
+            grau_prua_yr,
+            v2,
+        })
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

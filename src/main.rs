@@ -117,7 +117,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     write_page(
         "在",
-        serde_json::from_str(&std::fs::read_to_string(format!("{}.json", "在")).unwrap()).unwrap(),
+        serde_json::from_str::<Article>(
+            &std::fs::read_to_string(format!("{}.json", "在")).unwrap(),
+        )
+        .unwrap()
+        .lenticular_to_link()
+        .unwrap(),
     )
 }
 
