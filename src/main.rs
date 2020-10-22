@@ -124,7 +124,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         Ok(s) => {
                             let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
                             ans += &textwrap::indent(
-                                &render_lang_entry_(&lang_entry, &mut toc_num),
+                                &render_lang_entry_(
+                                    &lang_entry.lenticular_to_link().unwrap(),
+                                    &mut toc_num,
+                                ),
                                 "  ",
                             );
                         }
