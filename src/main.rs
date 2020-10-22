@@ -102,6 +102,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ] {
         let cont = {
             let mut ans = String::from("<article>\n");
+            let mut toc_num = 2; // TODO
             for i in 1..=8 {
                 let html_path = format!("src/contents/{i}/{linzi}_{i}.html", linzi = linzi, i = i);
                 let json_path = format!("src/contents/{i}/{linzi}_{i}.json", linzi = linzi, i = i);
@@ -114,7 +115,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     Err(_) => match std::fs::read_to_string(json_path.clone()) {
                         Ok(s) => {
                             let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
-                            let mut toc_num = 0; // TODO
                             ans += &textwrap::indent(
                                 &render_lang_entry_(&lang_entry, &mut toc_num),
                                 "  ",
