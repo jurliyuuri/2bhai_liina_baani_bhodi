@@ -45,9 +45,14 @@ fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr
         ),
         IndentedStr::c1("div", IndentedStr::ls("<hr>")),
     ];
-    for (a, b) in contents {
-        *toc_num += 1;
-        ans.push(IndentedStr::with_toc("h3", *toc_num, &a));
+    for (title, b) in contents {
+        // if the title is empty, the h3 tag should not be listed in the table of contents
+        if title == "" {
+            ans.push(IndentedStr::Line(S("<h3></h3>")));
+        } else {
+            *toc_num += 1;
+            ans.push(IndentedStr::with_toc("h3", *toc_num, &title));
+        }
         ans.append(&mut b.clone().into());
     }
     ans.append(&mut Bar::DivText(S("<br>")).into());
@@ -56,8 +61,16 @@ fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr
 
 pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::error::Error>> {
     let Article { l, dat } = article;
-    let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| k.to_owned()).collect();
-    let v2_entries: Vec<String> = l.v2.iter().map(|(k, _)| k.to_owned()).collect();
+
+    // if the title is empty, the h3 tag should not be listed in the table of contents
+    let v1_entries: Vec<String> =
+        l.v1.iter()
+            .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+            .collect();
+    let v2_entries: Vec<String> =
+        l.v2.iter()
+            .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+            .collect();
 
     let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
 
