@@ -5,22 +5,27 @@ use serde::{Deserialize, Serialize};
 #[serde(untagged)]
 pub enum Bar {
     DivText(String),
+    DivTexts(Vec<String>),
     List { ordered: bool, content: Vec<String> },
 }
 
-impl Into<IndentedStr> for Bar {
-    fn into(self) -> IndentedStr {
+impl Into<Vec<IndentedStr>> for Bar {
+    fn into(self) -> Vec<IndentedStr> {
         match self {
-            Bar::DivText(ref s) => IndentedStr::Line(format!("<div>{}</div>", s)),
+            Bar::DivText(ref s) => vec![IndentedStr::Line(format!("<div>{}</div>", s))],
+            Bar::DivTexts(ss) => ss
+                .iter()
+                .map(|s| IndentedStr::Line(format!("<div>{}</div>", s)))
+                .collect(),
             Bar::List {
                 ordered,
                 content: v,
-            } => IndentedStr::c(
+            } => vec![IndentedStr::c(
                 if ordered { "ol" } else { "ul" },
                 v.iter()
                     .map(|a| IndentedStr::Line(format!("<li>{}</li>", a)))
                     .collect(),
-            ),
+            )],
         }
     }
 }
@@ -43,9 +48,9 @@ fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr
     for (a, b) in contents {
         *toc_num += 1;
         ans.push(IndentedStr::with_toc("h3", *toc_num, &a));
-        ans.push(b.clone().into());
+        ans.append(&mut b.clone().into());
     }
-    ans.push(Bar::DivText(S("<br>")).into());
+    ans.append(&mut Bar::DivText(S("<br>")).into());
     IndentedStr::c("section", ans)
 }
 
@@ -191,11 +196,13 @@ impl LinziPortion {
             IndentedStr::ls("<h2><a name=\"TOC--\"></a>燐字</h2>"),
             IndentedStr::c1("div", IndentedStr::ls("<hr>")),
         ];
-        ans.append(&mut init.iter().map(|a| (*a).clone().into()).collect());
+        for a in init {
+            ans.append(&mut a.into());
+        }
         for (a, b) in v1 {
             *ind += 1;
             ans.push(IndentedStr::with_toc("h3", *ind, &a));
-            ans.push(b.into());
+            ans.append(&mut b.into());
         }
 
         ans.push(IndentedStr::ls("<div></div>"));
@@ -208,9 +215,9 @@ impl LinziPortion {
         for (a, b) in v2 {
             *ind += 1;
             ans.push(IndentedStr::with_toc("h3", *ind, &a));
-            ans.push(b.into());
+            ans.append(&mut b.into());
         }
-        ans.push(Bar::DivText(S("<br>")).into());
+        ans.append(&mut Bar::DivText(S("<br>")).into());
         ans
     }
 }
@@ -247,6 +254,7 @@ impl Lenticular for Bar {
     fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
         match self.clone() {
             Bar::DivText(s) => Ok(Bar::DivText(s.lenticular_to_link()?)),
+            Bar::DivTexts(ss) => Ok(Bar::DivTexts(ss.lenticular_to_link()?)),
             Bar::List { ordered, content } => Ok(Bar::List {
                 ordered,
                 content: content.lenticular_to_link()?,
