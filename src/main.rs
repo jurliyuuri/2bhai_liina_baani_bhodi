@@ -136,14 +136,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         vv.push(ans)
     }
-    let cont = IndentedStr::c(
-        "article",
-        vv.into_iter()
-            .map(|lang| IndentedStr::c("section", lang))
-            .collect(),
-    );
+    
             */
-            let mut ans = String::new();
+            let mut ans = String::from("<article>\n");
             for i in 1..=8 {
                 match std::fs::read_to_string(format!(
                     "src/contents/{i}/{linzi}_{i}.html",
@@ -151,15 +146,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     i = i
                 )) {
                     Ok(s) => {
-                        ans += "<section>\n";
-                        ans += &s;
-                        ans += "\n</section>\n"
+                        ans += "  <section>\n";
+                        ans += &textwrap::indent(&s, "    ");
+                        ans += "  </section>\n"
                     }
                     Err(_) => panic!("not found"),
                 }
             }
+            ans += "</article>";
             ans
         };
+
         write_page_raw(linzi, generate_toc(toc), cont)?;
     }
 
