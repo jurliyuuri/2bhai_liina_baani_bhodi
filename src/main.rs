@@ -101,8 +101,50 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("闇", include!("toc/闇_toc.rs")),
     ] {
         let cont = {
+            /*
+                let Article { l, dat } = article;
+    let v1_entries: Vec<String> = l.v1.iter().map(|(k, _)| k.to_owned()).collect();
+    let v2_entries: Vec<String> = l.v2.iter().map(|(k, _)| k.to_owned()).collect();
+
+    let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
+
+    for LangEntry { lang, contents } in &dat {
+        toc.push((lang.ja(), contents.iter().map(|a| a.0.clone()).collect()));
+    }
+
+    let mut toc_num = 0;
+
+    let linzi_portion = l.render(&mut toc_num);
+
+    let mut vv = vec![linzi_portion];
+    for LangEntry { lang, contents } in dat {
+        toc_num += 1;
+        let mut ans = vec![
+            IndentedStr::with_toc(
+                "h2",
+                toc_num,
+                &format!("<a href=\"{}\">{}</a>", &lang.url(), &lang.ja()),
+            ),
+            IndentedStr::c1("div", IndentedStr::ls("<hr>")),
+        ];
+        for (a, b) in contents {
+            toc_num += 1;
+            ans.push(IndentedStr::with_toc("h3", toc_num, &a));
+            ans.push(b.into());
+        }
+        ans.push(Bar::DivText(S("<br>")).into());
+
+        vv.push(ans)
+    }
+    let cont = IndentedStr::c(
+        "article",
+        vv.into_iter()
+            .map(|lang| IndentedStr::c("section", lang))
+            .collect(),
+    );
+            */
             let mut ans = String::new();
-            for i in 1..100 {
+            for i in 1..=8 {
                 match std::fs::read_to_string(format!(
                     "src/contents/{i}/{linzi}_{i}.html",
                     linzi = linzi,
@@ -113,13 +155,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         ans += &s;
                         ans += "\n</section>\n"
                     }
-                    Err(_) => break,
+                    Err(_) => panic!("not found"),
                 }
             }
             ans
         };
-        let toc = generate_toc(toc);
-        write_page_raw(linzi, toc, cont)?;
+        write_page_raw(linzi, generate_toc(toc), cont)?;
     }
 
     write_page(
