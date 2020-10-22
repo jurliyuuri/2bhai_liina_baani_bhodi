@@ -27,6 +27,9 @@ mod markup;
 
 use markup::*;
 
+mod lenticular;
+use lenticular::*;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env::set_var("RUST_LOG", "warn");
     env_logger::init();
