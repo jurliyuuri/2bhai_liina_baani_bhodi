@@ -198,6 +198,10 @@ pub struct LinziPortion {
 }
 
 impl LinziPortion {
+    pub fn render_(self, toc_num: &mut usize) -> String {
+        let section = IndentedStr::c("section", self.render(toc_num));
+        section.to_string()
+    }
     fn render(self, ind: &mut usize) -> Vec<IndentedStr> {
         let LinziPortion {
             init,

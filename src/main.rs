@@ -112,9 +112,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     2
                 }; // TODO
             {
-                let i = 1;
-                let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = i);
-                let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
+                let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = 1);
+                let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
                 match std::fs::read_to_string(html_path.clone()) {
                     Ok(s) => {
                         ans += "  <section>\n";
@@ -123,12 +122,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                     Err(_) => match std::fs::read_to_string(json_path.clone()) {
                         Ok(s) => {
-                            let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
+                            let linzi_portion = serde_json::from_str::<LinziPortion>(&s).unwrap();
                             ans += &textwrap::indent(
-                                &render_lang_entry_(
-                                    &lang_entry.lenticular_to_link().unwrap(),
-                                    &mut toc_num,
-                                ),
+                                &linzi_portion
+                                    .lenticular_to_link()
+                                    .unwrap()
+                                    .render_(&mut toc_num),
                                 "  ",
                             );
                         }
