@@ -48,8 +48,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let linzi_portion = serde_json::from_str::<LinziPortion>(&linzi_str)
             .expect(&(S("failed to parse LinziPortion JSON in ") + &linzi_json_path));
         let mut dat = Vec::new();
-        for i in 2..=8 {
-            let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
+        for lang_name in vec!["ラネーメ祖語", "アイル語", "パイグ語", "タカン語", "エッツィア語", "バート語", "リパライン語"] {
+            let json_path = format!("{linzi}_{lang_name}.json", linzi = linzi, lang_name = lang_name);
             let s = std::fs::read_to_string(json_path.clone())
                 .expect(&format!("{path} not found", path = json_path.clone()));
             let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
