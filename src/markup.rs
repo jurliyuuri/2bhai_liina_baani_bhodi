@@ -30,10 +30,6 @@ impl Into<Vec<IndentedStr>> for Bar {
     }
 }
 
-pub fn render_lang_entry_(lang_entry: &LangEntry, toc_num: &mut usize) -> String {
-    render_lang_entry(lang_entry, toc_num).to_string()
-}
-
 fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr {
     let LangEntry { lang, contents } = lang_entry;
     *toc_num += 1;
@@ -204,10 +200,6 @@ pub struct LinziPortion {
 }
 
 impl LinziPortion {
-    pub fn render_(self, toc_num: &mut usize) -> String {
-        let section = IndentedStr::c("section", self.render(toc_num));
-        section.to_string()
-    }
     fn render(self, ind: &mut usize) -> Vec<IndentedStr> {
         let LinziPortion {
             init,

@@ -9,7 +9,7 @@ use std::collections::HashMap;
 impl Lang {
     pub fn url(&self) -> String {
         lazy_static! {
-            static ref HASHMAP: HashMap<String, String> = include_str!("../config/links.tsv")
+            static ref HASHMAP: HashMap<String, String> = include_str!("../config_links.tsv")
                 .lines()
                 .collect::<Vec<_>>()
                 .iter()
@@ -22,7 +22,7 @@ impl Lang {
         match HASHMAP.get(&self.0) {
             Some(u) => u.to_owned(),
             None => {
-                warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config/links.tsv", self.0);
+                warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config_links.tsv", self.0);
                 S("")
             }
         }

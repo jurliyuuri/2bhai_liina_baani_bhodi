@@ -41,12 +41,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "同", "名", "味", "哩", "唯", "四", "字", "心", "手", "水", "火", "無", "皇", "神", "筆",
         "行", "言", "足", "闇",
     ] {
-        let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
-        let s = std::fs::read_to_string(json_path.clone())
-            .expect(&format!("{path} not found", path = json_path.clone()));
+        let linzi_json_path = format!("{linzi}_燐字.json", linzi = linzi);
+        let linzi_str = std::fs::read_to_string(linzi_json_path.clone())
+            .expect(&format!("{path} not found", path = linzi_json_path.clone()));
 
-        let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
-            .expect(&(S("failed to parse LinziPortion JSON in ") + &json_path));
+        let linzi_portion = serde_json::from_str::<LinziPortion>(&linzi_str)
+            .expect(&(S("failed to parse LinziPortion JSON in ") + &linzi_json_path));
         let mut dat = Vec::new();
         for i in 2..=8 {
             let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
