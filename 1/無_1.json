@@ -1,0 +1,41 @@
+{
+  "init": [
+    "<img src=\"linzi/%E7%84%A1.png\" border=\"0\">",
+    "総画：1",
+    "筆順：丶"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "指事。小さな点で原初たる無を象徴する。"
+        ]
+      }
+    ],
+    [
+      "キャスカ・ファルザーの字源",
+      {
+        "ordered": false,
+        "content": [
+          "統一を表す点、転じて、原ファイクレオネ信仰における「終着点」(Lesbackastan)＝フィメノーウル信仰の<a href=\"https://sites.google.com/site/jurliyuuri/nian-biao/fimenorl#TOC--2\">アルセウンテンフィーマ</a>を表した。アルセウンテンフィーマでは、人間の意志やすべての物体と意思があってないものであるために、また転じて無を表すようになった。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/無.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": false,
+        "content": [
+          "無い。",
+          "無。",
+          "ゼロ。"
+        ]
+      }
+    ]
+  ]
+}

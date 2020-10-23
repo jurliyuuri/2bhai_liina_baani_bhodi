@@ -1,0 +1,30 @@
+{
+  "init": [
+    "<img src=\"linzi/%E5%85%AD.png\" border=\"0\">",
+    "総画：2",
+    "筆順：丨一"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "「【五】」と「【一】」を組み合わせ。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/六.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": false,
+        "content": [
+          "六。"
+        ]
+      }
+    ]
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "init": [
+    "<img src=\"linzi/%E5%8B%BF.png\" width=\"50\" border=\"0\">",
+    "総画：6",
+    "筆順：ノ丶一フノ"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "会意。「【無】」と「【為】」による。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/template.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": false,
+        "content": [
+          "～するな。"
+        ]
+      }
+    ]
+  ]
+}

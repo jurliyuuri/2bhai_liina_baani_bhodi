@@ -1,0 +1,28 @@
+{
+  "init": [
+    "<img src=\"linzi/%E4%B9%9D.png\" border=\"0\">",
+    "総画：2",
+    "筆順：フ丶"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "「五」と「四」の組み合わせ。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/九.png",
+  "v2": [
+    "意義",
+    {
+      "ordered": false,
+      "content": [
+        "九。"
+      ]
+    }
+  ]
+}
