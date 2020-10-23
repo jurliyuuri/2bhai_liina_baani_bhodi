@@ -100,50 +100,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("足", include!("toc/足_toc.rs")),
         ("闇", include!("toc/闇_toc.rs")),
     ] {
-        let cont = {
-            let mut toc_num = 0;
-            let mut ans = String::from("<article>\n");
-            {
-                let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = 1);
-                let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
-                match std::fs::read_to_string(html_path.clone()) {
-                    Ok(s) => {
-                        ans += "  <section>\n";
-                        ans += &textwrap::indent(&s, "    ");
-                        ans += "  </section>\n"
-                    }
-                    Err(_) => match std::fs::read_to_string(json_path.clone()) {
-                        Ok(s) => {
-                            let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
-                                .expect(&(S("failed to parse LinziPortion JSON in ") + &html_path));
-                            ans += &textwrap::indent(
-                                &linzi_portion
-                                    .lenticular_to_link()
-                                    .unwrap()
-                                    .render_(&mut toc_num),
-                                "  ",
-                            );
-                        }
-                        Err(_) => panic!("Cannot find either {} or {}", html_path, json_path),
-                    },
-                }
-            }
-            for i in 2..=8 {
-                let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
-                let s = std::fs::read_to_string(json_path).expect(&format!(
-                    "{i}/{linzi}_{i}.json not found",
-                    linzi = linzi,
-                    i = i
-                ));
-                let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
-                ans += &textwrap::indent(
-                    &render_lang_entry_(&lang_entry.lenticular_to_link().unwrap(), &mut toc_num),
-                    "  ",
-                );
-            }
-            ans += "</article>";
-            ans
-        };
+        let mut toc_num = 0;
+        let mut cont = String::from("<article>\n");
+        {
+            let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
+            let s = std::fs::read_to_string(json_path.clone())
+                .expect(&format!("{path} not found", path = json_path.clone()));
+
+            let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
+                .expect(&(S("failed to parse LinziPortion JSON in ") + &json_path));
+            cont += &textwrap::indent(
+                &linzi_portion
+                    .lenticular_to_link()
+                    .unwrap()
+                    .render_(&mut toc_num),
+                "  ",
+            );
+        }
+        for i in 2..=8 {
+            let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
+            let s = std::fs::read_to_string(json_path.clone())
+                .expect(&format!("{path} not found", path = json_path.clone()));
+            let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
+            cont += &textwrap::indent(
+                &render_lang_entry_(&lang_entry.lenticular_to_link().unwrap(), &mut toc_num),
+                "  ",
+            );
+        }
+        cont += "</article>";
 
         write_page_raw(linzi, generate_toc(toc), cont)?;
     }
