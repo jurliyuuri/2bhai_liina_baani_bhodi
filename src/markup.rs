@@ -223,10 +223,20 @@ impl LinziPortion {
         }
 
         ans.push(IndentedStr::ls("<div></div>"));
-        ans.push(IndentedStr::Line(format!(
-            "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
-            grau_prua_yr
-        )));
+        if grau_prua_yr == "grau_prua_yr/template.png" {
+            ans.push(IndentedStr::Line(format!(
+                "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
+                grau_prua_yr
+            )));
+            ans.push(IndentedStr::Line(S("<div style=\"display:block;text-align:left\">（inkscapeで534x246、設定「小」。）</div>")));
+        }
+         else {
+            ans.push(IndentedStr::Line(format!(
+                "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
+                grau_prua_yr
+            )));
+         }
+        
         ans.push(IndentedStr::ls("<div></div>"));
 
         for (a, b) in v2 {

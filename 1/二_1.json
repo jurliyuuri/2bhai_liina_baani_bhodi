@@ -1,0 +1,30 @@
+{
+    "init": [
+        "<img src=\"linzi/%E4%BA%8C.png\" border=\"0\">",
+        "総画：2",
+        "筆順：丨丨"
+    ],
+    "v1": [
+        [
+            "字源",
+            {
+                "ordered": false,
+                "content": [
+                    "指事。縦線二本で二を象徴する。"
+                ]
+            }
+        ]
+    ],
+    "grau_prua_yr": "grau_prua_yr/二.png",
+    "v2": [
+        [
+            "意義",
+            {
+                "ordered": true,
+                "content": [
+                    "二。"
+                ]
+            }
+        ]
+    ]
+}

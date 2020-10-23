@@ -101,16 +101,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("闇", include!("toc/闇_toc.rs")),
     ] {
         let cont = {
+            let mut toc_num = 0;
             let mut ans = String::from("<article>\n");
-            let mut toc_num =
-                if std::fs::read_to_string(format!("{i}/{linzi}_{i}.html", linzi = linzi, i = 1))
-                    .unwrap()
-                    .contains("キャスカ")
-                {
-                    3
-                } else {
-                    2
-                }; // TODO
             {
                 let html_path = format!("{i}/{linzi}_{i}.html", linzi = linzi, i = 1);
                 let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
@@ -122,7 +114,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                     Err(_) => match std::fs::read_to_string(json_path.clone()) {
                         Ok(s) => {
-                            let linzi_portion = serde_json::from_str::<LinziPortion>(&s).unwrap();
+                            let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
+                                .expect(&(S("failed to parse LinziPortion JSON in ") + &html_path));
                             ans += &textwrap::indent(
                                 &linzi_portion
                                     .lenticular_to_link()
@@ -137,7 +130,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             for i in 2..=8 {
                 let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
-                let s = std::fs::read_to_string(json_path).unwrap();
+                let s = std::fs::read_to_string(json_path).expect(&format!(
+                    "{i}/{linzi}_{i}.json not found",
+                    linzi = linzi,
+                    i = i
+                ));
                 let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
                 ans += &textwrap::indent(
                     &render_lang_entry_(&lang_entry.lenticular_to_link().unwrap(), &mut toc_num),

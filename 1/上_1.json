@@ -19,7 +19,7 @@
         [
             "意義",
             {
-                "ordered": false,
+                "ordered": true,
                 "content": [
                     ""
                 ]

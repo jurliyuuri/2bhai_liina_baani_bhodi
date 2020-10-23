@@ -1,0 +1,30 @@
+{
+  "init": [
+    "<img src=\"linzi/%E5%85%AB.png\" border=\"0\">",
+    "総画：4",
+    "筆順：一丨丨丨"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "「【五】」と「【三】」の組み合わせ。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/八.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": true,
+        "content": [
+          "八。"
+        ]
+      }
+    ]
+  ]
+}

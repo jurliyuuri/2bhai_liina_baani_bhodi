@@ -1,0 +1,31 @@
+{
+  "init": [
+    "<img src=\"linzi/%E5%93%A9.png\" border=\"0\">",
+    "総画：17",
+    "筆順：[五筆式]"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "リパラオネの音写「二闇閉」と宗教を表す「論」を合わせた字。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/template.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": true,
+        "content": [
+          "リパラオネ教",
+          "淀みなくはっきりともう一度言う"
+        ]
+      }
+    ]
+  ]
+}

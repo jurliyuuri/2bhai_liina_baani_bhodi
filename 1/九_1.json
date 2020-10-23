@@ -17,12 +17,14 @@
   ],
   "grau_prua_yr": "grau_prua_yr/九.png",
   "v2": [
-    "意義",
-    {
-      "ordered": false,
-      "content": [
-        "九。"
-      ]
-    }
+    [
+      "意義",
+      {
+        "ordered": true,
+        "content": [
+          "九。"
+        ]
+      }
+    ]
   ]
 }

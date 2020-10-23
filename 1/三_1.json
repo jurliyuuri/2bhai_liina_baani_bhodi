@@ -1,0 +1,30 @@
+{
+    "init": [
+        "<img src=\"linzi/%E4%B8%89.png\" border=\"0\">",
+        "総画：3",
+        "筆順：丨丨丨"
+    ],
+    "v1": [
+        [
+            "字源",
+            {
+                "ordered": false,
+                "content": [
+                    "指事。縦棒三本で三を象徴する。"
+                ]
+            }
+        ]
+    ],
+    "grau_prua_yr": "grau_prua_yr/三.png",
+    "v2": [
+        [
+            "意義",
+            {
+                "ordered": true,
+                "content": [
+                    "三。"
+                ]
+            }
+        ]
+    ]
+}

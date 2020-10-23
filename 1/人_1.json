@@ -1,0 +1,39 @@
+{
+    "init": [
+        "<img src=\"linzi/%E4%BA%BA.png\" border=\"0\">",
+        "総画：3",
+        "筆順：一ノ丶"
+    ],
+    "v1": [
+        [
+            "字源",
+            {
+                "ordered": false,
+                "content": [
+                    "人の象形。"
+                ]
+            }
+        ],
+        [
+            "キャスカ・ファルザーの字源",
+            {
+                "ordered": false,
+                "content": [
+                    "手を挙げた人の象形。原義は共同体を率いる祭司長を表していた。"
+                ]
+            }
+        ]
+    ],
+    "grau_prua_yr": "grau_prua_yr/人.png",
+    "v2": [
+        [
+            "意義",
+            {
+                "ordered": true,
+                "content": [
+                    "人。"
+                ]
+            }
+        ]
+    ]
+}

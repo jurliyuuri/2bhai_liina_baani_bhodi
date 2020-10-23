@@ -26,13 +26,15 @@
   ],
   "grau_prua_yr": "grau_prua_yr/一.png",
   "v2": [
-    "意義",
-    {
-      "ordered": false,
-      "content": [
-        "一。",
-        "はじまり。"
-      ]
-    }
+    [
+      "意義",
+      {
+        "ordered": true,
+        "content": [
+          "一。",
+          "はじまり。"
+        ]
+      }
+    ]
   ]
 }
