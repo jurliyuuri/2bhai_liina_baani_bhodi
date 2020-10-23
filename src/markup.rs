@@ -75,7 +75,13 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
     let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
 
     for LangEntry { lang, contents } in &dat {
-        toc.push((lang.ja(), contents.iter().map(|a| a.0.clone()).collect()));
+        toc.push((
+            lang.ja(),
+            contents
+                .iter()
+                .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+                .collect(),
+        ));
     }
 
     let mut toc_num = 0;
@@ -229,14 +235,12 @@ impl LinziPortion {
                 grau_prua_yr
             )));
             ans.push(IndentedStr::Line(S("<div style=\"display:block;text-align:left\">（inkscapeで534x246、設定「小」。）</div>")));
-        }
-         else {
+        } else {
             ans.push(IndentedStr::Line(format!(
                 "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
                 grau_prua_yr
             )));
-         }
-        
+        }
         ans.push(IndentedStr::ls("<div></div>"));
 
         for (a, b) in v2 {

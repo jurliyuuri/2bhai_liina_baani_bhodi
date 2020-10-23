@@ -100,36 +100,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ("足", include!("toc/足_toc.rs")),
         ("闇", include!("toc/闇_toc.rs")),
     ] {
-        let mut toc_num = 0;
-        let mut cont = String::from("<article>\n");
-        {
-            let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
-            let s = std::fs::read_to_string(json_path.clone())
-                .expect(&format!("{path} not found", path = json_path.clone()));
+        let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = 1);
+        let s = std::fs::read_to_string(json_path.clone())
+            .expect(&format!("{path} not found", path = json_path.clone()));
 
-            let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
-                .expect(&(S("failed to parse LinziPortion JSON in ") + &json_path));
-            cont += &textwrap::indent(
-                &linzi_portion
-                    .lenticular_to_link()
-                    .unwrap()
-                    .render_(&mut toc_num),
-                "  ",
-            );
-        }
+        let linzi_portion = serde_json::from_str::<LinziPortion>(&s)
+            .expect(&(S("failed to parse LinziPortion JSON in ") + &json_path));
+        let mut dat = Vec::new();
         for i in 2..=8 {
             let json_path = format!("{i}/{linzi}_{i}.json", linzi = linzi, i = i);
             let s = std::fs::read_to_string(json_path.clone())
                 .expect(&format!("{path} not found", path = json_path.clone()));
             let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
-            cont += &textwrap::indent(
-                &render_lang_entry_(&lang_entry.lenticular_to_link().unwrap(), &mut toc_num),
-                "  ",
-            );
+            dat.push(lang_entry);
         }
-        cont += "</article>";
 
-        write_page_raw(linzi, generate_toc(toc), cont)?;
+        write_page(
+            linzi,
+            Article {
+                l: linzi_portion,
+                dat,
+            }
+            .lenticular_to_link()
+            .unwrap(),
+        )?;
     }
 
     write_page(
