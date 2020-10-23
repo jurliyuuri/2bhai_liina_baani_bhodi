@@ -1,0 +1,30 @@
+{
+    "init": [
+        "<img src=\"linzi/万.png\" border=\"0\"></a>（inkscapeで50x50、設定「原寸」。）",
+        "総画：[半角数字]",
+        "筆順：[五筆式]"
+    ],
+    "v1": [
+        [
+            "字源",
+            {
+                "ordered": false,
+                "content": [
+                    "造字法（概ね六書に倣う。）。詳細説明。"
+                ]
+            }
+        ]
+    ],
+    "grau_prua_yr": "grau_prua_yr/template.png",
+    "v2": [
+        [
+            "意義",
+            {
+                "ordered": false,
+                "content": [
+                    ""
+                ]
+            }
+        ]
+    ]
+}
