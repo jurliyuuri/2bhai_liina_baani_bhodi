@@ -1,4 +1,4 @@
-use super::{Lang, Lenticular, LenticularError, S, write_page_raw};
+use super::{Lang, Lenticular, S, write_page_raw, lenticular};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -252,7 +252,7 @@ pub struct Article {
 }
 
 impl Lenticular for Article {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<lenticular::Error>> {
         let Article { l, dat } = self.clone();
         let (l, dat) = (l, dat).lenticular_to_link()?;
         Ok(Article { l, dat })
@@ -260,7 +260,7 @@ impl Lenticular for Article {
 }
 
 impl Lenticular for LangEntry {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<lenticular::Error>> {
         let LangEntry { lang, contents } = self.clone();
         let (lang, contents) = (lang, contents).lenticular_to_link()?;
         Ok(LangEntry { lang, contents })
@@ -268,13 +268,13 @@ impl Lenticular for LangEntry {
 }
 
 impl Lenticular for Lang {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<lenticular::Error>> {
         Ok(self.clone())
     }
 }
 
 impl Lenticular for Bar {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<lenticular::Error>> {
         match self.clone() {
             Bar::DivText(s) => Ok(Bar::DivText(s.lenticular_to_link()?)),
             Bar::DivTexts(ss) => Ok(Bar::DivTexts(ss.lenticular_to_link()?)),
@@ -287,7 +287,7 @@ impl Lenticular for Bar {
 }
 
 impl Lenticular for LinziPortion {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<lenticular::Error>> {
         let LinziPortion {
             init,
             v1,

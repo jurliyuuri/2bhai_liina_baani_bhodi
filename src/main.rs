@@ -30,7 +30,7 @@ mod markup;
 use markup::{Article, LangEntry, LinziPortion, write_page};
 
 mod lenticular;
-use lenticular::{Lenticular, LenticularError};
+use lenticular::{Lenticular};
 
 use glob::glob;
 

@@ -1,5 +1,5 @@
 #[derive(Debug, Clone)]
-pub enum LenticularError {
+pub enum Error {
     MismatchedRightLenticular(String),
     MismatchedLeftLenticular(String),
     LenticularInsideLenticular(String),
@@ -9,7 +9,7 @@ pub trait Lenticular
 where
     Self: std::marker::Sized,
 {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>>;
+    fn lenticular_to_link(&self) -> Result<Self, Vec<Error>>;
 }
 
 impl<T, U> Lenticular for (T, U)
@@ -17,7 +17,7 @@ where
     T: Lenticular + Clone,
     U: Lenticular + Clone,
 {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<Error>> {
         let (a, b) = self;
         match (a.lenticular_to_link(), b.lenticular_to_link()) {
             (Ok(a), Ok(b)) => Ok((a, b)),
@@ -34,7 +34,7 @@ impl<T> Lenticular for Vec<T>
 where
     T: Lenticular + Clone,
 {
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<Error>> {
         let mut ans = Vec::new();
         let mut errors = Vec::new();
         for i in self.iter() {
@@ -54,14 +54,14 @@ where
 
 impl Lenticular for String {
     /// Convert lenticular bracket into a link
-    fn lenticular_to_link(&self) -> Result<Self, Vec<LenticularError>> {
+    fn lenticular_to_link(&self) -> Result<Self, Vec<Error>> {
         let mut inside_lenticular = false;
         let mut ans = String::new();
         for c in self.chars() {
             if inside_lenticular {
                 match c {
                     '【' => {
-                        return Err(vec![LenticularError::LenticularInsideLenticular(
+                        return Err(vec![Error::LenticularInsideLenticular(
                             self.clone(),
                         )])
                     }
@@ -81,7 +81,7 @@ impl Lenticular for String {
                         inside_lenticular = true;
                     }
                     '】' => {
-                        return Err(vec![LenticularError::MismatchedRightLenticular(
+                        return Err(vec![Error::MismatchedRightLenticular(
                             self.clone(),
                         )])
                     }
@@ -91,7 +91,7 @@ impl Lenticular for String {
         }
 
         if inside_lenticular {
-            return Err(vec![LenticularError::MismatchedLeftLenticular(
+            return Err(vec![Error::MismatchedLeftLenticular(
                 self.clone(),
             )]);
         }
