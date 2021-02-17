@@ -21,8 +21,7 @@ where
         let (a, b) = self;
         match (a.lenticular_to_link(), b.lenticular_to_link()) {
             (Ok(a), Ok(b)) => Ok((a, b)),
-            (Ok(_), Err(b)) => Err(b),
-            (Err(b), Ok(_)) => Err(b),
+            (Ok(_), Err(b)) | (Err(b), Ok(_)) => Err(b),
             (Err(mut a), Err(mut b)) => {
                 a.append(&mut b);
                 Err(a)

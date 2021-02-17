@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::non_ascii_literal)]
 #[macro_use]
 extern crate lazy_static;
 
@@ -21,14 +23,14 @@ struct LinzklarTemplate<'a> {
 use big_s::S;
 
 mod lang;
-use lang::*;
+use lang::Lang;
 
 mod markup;
 
-use markup::*;
+use markup::{Article, LangEntry, LinziPortion, write_page};
 
 mod lenticular;
-use lenticular::*;
+use lenticular::{Lenticular, LenticularError};
 
 use glob::glob;
 

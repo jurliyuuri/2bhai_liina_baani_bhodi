@@ -19,12 +19,11 @@ impl Lang {
                 })
                 .collect::<HashMap<_, _>>();
         }
-        match HASHMAP.get(&self.0) {
-            Some(u) => u.to_owned(),
-            None => {
-                warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config_links.tsv", self.0);
-                S("")
-            }
+        if let Some(u) = HASHMAP.get(&self.0) {
+            u.to_owned()
+        } else {
+            warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config_links.tsv", self.0);
+            S("")
         }
     }
 
