@@ -90,7 +90,7 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
     }
     let cont = IndentedStr::c("article", sections);
 
-    write_page_raw(linzi, generate_toc(toc), cont.to_string())
+    write_page_raw(linzi, &generate_toc(toc), &cont.to_string())
 }
 
 #[derive(Clone, Debug)]

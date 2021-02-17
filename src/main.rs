@@ -106,8 +106,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn write_page_raw(
     linzi: &str,
-    toc: String,
-    cont: String,
+    toc: &str,
+    cont: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = File::create(format!("docs/{} - 燐字海.html", linzi))?;
     write!(
