@@ -1,0 +1,30 @@
+{
+  "init": [
+    "<img src=\"linzi/学.png\" width=\"50\" border=\"0\">",
+    "総画：7",
+    "筆順：[五筆式]"
+  ],
+  "v1": [
+    [
+      "字源",
+      {
+        "ordered": false,
+        "content": [
+          "造字法（概ね六書に倣う。）。詳細説明。"
+        ]
+      }
+    ]
+  ],
+  "grau_prua_yr": "grau_prua_yr/template.png",
+  "v2": [
+    [
+      "意義",
+      {
+        "ordered": true,
+        "content": [
+          ""
+        ]
+      }
+    ]
+  ]
+}
