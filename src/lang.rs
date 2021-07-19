@@ -14,13 +14,13 @@ impl Lang {
                 .collect::<Vec<_>>()
                 .iter()
                 .map(|line| {
-                    let v: Vec<&'static str> = line.splitn(2, "\t").collect();
+                    let v: Vec<&'static str> = line.splitn(2, '\t').collect();
                     (v[0].to_owned(), v[1].to_owned())
                 })
                 .collect::<HashMap<_, _>>();
         }
         if let Some(u) = HASHMAP.get(&self.0) {
-            u.to_owned()
+            u.clone()
         } else {
             warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config_links.tsv", self.0);
             S("")
@@ -28,6 +28,6 @@ impl Lang {
     }
 
     pub fn ja(&self) -> String {
-        self.0.to_owned()
+        self.0.clone()
     }
 }

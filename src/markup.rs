@@ -1,4 +1,4 @@
-use super::{Lang, Lenticular, S, write_page_raw, lenticular};
+use super::{lenticular, write_page_raw, Lang, Lenticular, S};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -9,9 +9,9 @@ pub enum Bar {
     List { ordered: bool, content: Vec<String> },
 }
 
-impl Into<Vec<IndentedStr>> for Bar {
-    fn into(self) -> Vec<IndentedStr> {
-        match self {
+impl From<Bar> for Vec<IndentedStr> {
+    fn from(bar: Bar) -> Self {
+        match bar {
             Bar::DivText(ref s) => vec![IndentedStr::Line(format!("<div>{}</div>", s))],
             Bar::DivTexts(ss) => ss
                 .iter()
@@ -43,7 +43,7 @@ fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr
     ];
     for (title, b) in contents {
         // if the title is empty, the h3 tag should not be listed in the table of contents
-        if title == "" {
+        if title.is_empty() {
             ans.push(IndentedStr::Line(S("<h3></h3>")));
         } else {
             *toc_num += 1;
@@ -61,11 +61,11 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
     // if the title is empty, the h3 tag should not be listed in the table of contents
     let v1_entries: Vec<String> =
         l.v1.iter()
-            .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+            .filter_map(|(k, _)| if k.is_empty() { None } else { Some(k.clone()) })
             .collect();
     let v2_entries: Vec<String> =
         l.v2.iter()
-            .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+            .filter_map(|(k, _)| if k.is_empty() { None } else { Some(k.clone()) })
             .collect();
 
     let mut toc = vec![(S("燐字"), [&v1_entries[..], &v2_entries[..]].concat())];
@@ -75,7 +75,7 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
             lang.ja(),
             contents
                 .iter()
-                .filter_map(|(k, _)| if k == "" { None } else { Some(k.to_owned()) })
+                .filter_map(|(k, _)| if k.is_empty() { None } else { Some(k.clone()) })
                 .collect(),
         ));
     }
@@ -221,17 +221,13 @@ impl LinziPortion {
         }
 
         ans.push(IndentedStr::ls("<div></div>"));
+        ans.push(IndentedStr::Line(format!(
+            "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
+            grau_prua_yr
+        )));
         if grau_prua_yr == "grau_prua_yr/template.png" {
-            ans.push(IndentedStr::Line(format!(
-                "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
-                grau_prua_yr
-            )));
             ans.push(IndentedStr::Line(S("<div style=\"display:block;text-align:left\">（inkscapeで534x246、設定「小」。）</div>")));
         } else {
-            ans.push(IndentedStr::Line(format!(
-                "<div><img src=\"{}\" width=\"200\" height=\"91\" border=\"0\"></div>",
-                grau_prua_yr
-            )));
         }
         ans.push(IndentedStr::ls("<div></div>"));
 

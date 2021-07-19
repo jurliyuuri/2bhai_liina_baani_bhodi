@@ -3,8 +3,6 @@
 #[macro_use]
 extern crate lazy_static;
 
-use env_logger;
-
 use std::env;
 
 use std::fs::File;
@@ -27,10 +25,10 @@ use lang::Lang;
 
 mod markup;
 
-use markup::{Article, LangEntry, LinziPortion, write_page};
+use markup::{write_page, Article, LangEntry, LinziPortion};
 
 mod lenticular;
-use lenticular::{Lenticular};
+use lenticular::Lenticular;
 
 use glob::glob;
 
@@ -43,7 +41,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for entry in glob("*.json")? {
         let a = entry?;
         let name = a.display().to_string();
-        let linzi = name.chars().nth(0).unwrap().to_string();
+        let linzi = name.chars().next().unwrap().to_string();
         if name.chars().nth(1) == Some('.') {
             // all the info is in a single file
             write_page(
@@ -62,12 +60,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             let linzi_json_path = format!("{linzi}_燐字.json", linzi = linzi);
             let linzi_str = std::fs::read_to_string(linzi_json_path.clone())
-                .expect(&format!("{path} not found", path = linzi_json_path.clone()));
+                .unwrap_or_else(|_| panic!("{path} not found", path = linzi_json_path.clone()));
 
             let linzi_portion = serde_json::from_str::<LinziPortion>(&linzi_str)
                 .expect(&(S("failed to parse LinziPortion JSON in ") + &linzi_json_path));
             let mut dat = Vec::new();
-            for lang_name in vec![
+            for lang_name in [
                 "ラネーメ祖語",
                 "アイル語",
                 "パイグ語",
@@ -82,7 +80,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     lang_name = lang_name
                 );
                 let s = std::fs::read_to_string(json_path.clone())
-                    .expect(&format!("{path} not found", path = json_path.clone()));
+                    .unwrap_or_else(|_| panic!("{path} not found", path = json_path.clone()));
                 let lang_entry = serde_json::from_str::<LangEntry>(&s).unwrap();
                 dat.push(lang_entry);
             }
@@ -104,11 +102,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn write_page_raw(
-    linzi: &str,
-    toc: &str,
-    cont: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
+fn write_page_raw(linzi: &str, toc: &str, cont: &str) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = File::create(format!("docs/{} - 燐字海.html", linzi))?;
     write!(
         file,

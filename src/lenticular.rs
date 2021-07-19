@@ -44,10 +44,10 @@ where
             }
         }
 
-        if errors.len() > 0 {
-            Err(errors)
-        } else {
+        if errors.is_empty() {
             Ok(ans)
+        } else {
+            Err(errors)
         }
     }
 }
