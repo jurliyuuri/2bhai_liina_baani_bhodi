@@ -47,7 +47,7 @@ fn render_lang_entry(lang_entry: &LangEntry, toc_num: &mut usize) -> IndentedStr
             ans.push(IndentedStr::Line(S("<h3></h3>")));
         } else {
             *toc_num += 1;
-            ans.push(IndentedStr::with_toc("h3", *toc_num, &title));
+            ans.push(IndentedStr::with_toc("h3", *toc_num, title));
         }
         ans.append(&mut b.clone().into());
     }
@@ -86,7 +86,7 @@ pub fn write_page(linzi: &str, article: Article) -> Result<(), Box<dyn std::erro
 
     let mut sections = vec![IndentedStr::c("section", linzi_portion)];
     for lang_entry in dat {
-        sections.push(render_lang_entry(&lang_entry, &mut toc_num))
+        sections.push(render_lang_entry(&lang_entry, &mut toc_num));
     }
     let cont = IndentedStr::c("article", sections);
 

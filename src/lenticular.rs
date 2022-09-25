@@ -1,4 +1,5 @@
 #[derive(Debug, Clone)]
+#[allow(clippy::enum_variant_names)]
 pub enum Error {
     MismatchedRightLenticular(String),
     MismatchedLeftLenticular(String),

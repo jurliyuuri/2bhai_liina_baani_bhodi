@@ -19,12 +19,10 @@ impl Lang {
                 })
                 .collect::<HashMap<_, _>>();
         }
-        if let Some(u) = HASHMAP.get(&self.0) {
-            u.clone()
-        } else {
+        HASHMAP.get(&self.0).map_or_else(|| {
             warn!("Unknown language name `{}`; unable to create a link. If this is not a typo, please add it to config_links.tsv", self.0);
             S("")
-        }
+        }, std::clone::Clone::clone)
     }
 
     pub fn ja(&self) -> String {

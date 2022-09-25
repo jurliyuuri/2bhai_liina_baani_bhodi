@@ -1,5 +1,5 @@
-#![warn(clippy::pedantic)]
-#![allow(clippy::non_ascii_literal)]
+#![warn(clippy::pedantic, clippy::nursery)]
+#![allow(clippy::non_ascii_literal, clippy::use_self)]
 #[macro_use]
 extern crate lazy_static;
 
@@ -102,15 +102,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn write_page_raw(linzi: &str, toc: &str, cont: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn write_page_raw(linzi: &str, toc: &str, content: &str) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = File::create(format!("docs/{} - 燐字海.html", linzi))?;
     write!(
         file,
         "{}",
         LinzklarTemplate {
             linzi,
-            toc: &toc,
-            content: &cont
+            toc,
+            content
         }
         .render()
         .unwrap()
