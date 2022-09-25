@@ -38,16 +38,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     env::set_var("RUST_LOG", "warn");
     env_logger::init();
     let mut linzi_already_handled = HashSet::new();
-    for entry in glob("*.json")? {
+    for entry in glob("entries/*.json")? {
         let a = entry?;
-        let name = a.display().to_string();
+        let name = a.file_name().unwrap().to_str().unwrap();
         let linzi = name.chars().next().unwrap().to_string();
         if name.chars().nth(1) == Some('.') {
             // all the info is in a single file
             write_page(
                 &linzi,
                 serde_json::from_str::<Article>(
-                    &std::fs::read_to_string(format!("{}.json", linzi)).unwrap(),
+                    &std::fs::read_to_string(format!("entries/{}.json", linzi)).unwrap(),
                 )
                 .unwrap()
                 .lenticular_to_link()
@@ -58,7 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 continue;
             }
 
-            let linzi_json_path = format!("{linzi}_燐字.json", linzi = linzi);
+            let linzi_json_path = format!("entries/{linzi}_燐字.json", linzi = linzi);
             let linzi_str = std::fs::read_to_string(linzi_json_path.clone())
                 .unwrap_or_else(|_| panic!("{path} not found", path = linzi_json_path.clone()));
 
@@ -75,7 +75,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "リパライン語",
             ] {
                 let json_path = format!(
-                    "{linzi}_{lang_name}.json",
+                    "entries/{linzi}_{lang_name}.json",
                     linzi = linzi,
                     lang_name = lang_name
                 );
