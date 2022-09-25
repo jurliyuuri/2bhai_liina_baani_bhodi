@@ -4,14 +4,22 @@
 
 ## 使い方
 
+### ページ生成
+
 * [Rust をインストール](https://www.rust-lang.org/ja/tools/install)
 * `cargo run` を実行する
 
 ことにより、`entries/${燐字名}_${言語名}.json` のファイルが全て統合され、 燐字海本体を構成する `docs/${燐字名} - 燐字海.html` が出力される。
 
-なお、 `docs/` 内の他のファイルは変更されないため、画像だったりとかは `docs/` 内の適切な場所に配置することで上手くいく。
-
 そして、GitHub Pages をセットアップしてあるので、このリポジトリに commit & push することで [http://jurliyuuri.github.io/2bhai_liina_baani_bhodi/](http://jurliyuuri.github.io/2bhai_liina_baani_bhodi/) からアクセスできるようになる。
+
+### ページをいじりたいとき
+
+`docs/` 内の他のファイルは変更されないため、画像だったりとかは `docs/` 内の適切な場所に配置することで上手くいく。
+
+燐字記事の見た目などをいじりたいときには、`templates/linzklar.html` をいじるべきである。
+
+言語名からの外部リンクは、 `config_links.tsv` をいじるべきである。
 
 ## 現状自動化できていること
 
