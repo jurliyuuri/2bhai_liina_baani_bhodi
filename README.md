@@ -6,10 +6,9 @@
 
 ### ページ生成
 
-* [Rust をインストール](https://www.rust-lang.org/ja/tools/install)
-* `cargo run` を実行する
+Rust が入っていないなら [Rust をインストール](https://www.rust-lang.org/ja/tools/install)。
 
-ことにより、`entries/${燐字名}_${言語名}.json` のファイルが全て統合され、 燐字海本体を構成する `docs/${燐字名} - 燐字海.html` が出力される。
+`cargo run --release` を実行することにより、`entries/${燐字名}_${言語名}.json` のファイルが全て統合され、 燐字海本体を構成する `docs/${燐字名} - 燐字海.html` が出力される。
 
 そして、GitHub Pages をセットアップしてあるので、このリポジトリに commit & push することで [http://jurliyuuri.github.io/2bhai_liina_baani_bhodi/](http://jurliyuuri.github.io/2bhai_liina_baani_bhodi/) からアクセスできるようになる。
 
